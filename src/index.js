@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './stylesheets/index.css';
-import App from './App';
+import MyMediaApp from './my-media-app';
 import reportWebVitals from './other/reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <MyMediaApp />
   </React.StrictMode>,
   document.getElementById('root')
 );

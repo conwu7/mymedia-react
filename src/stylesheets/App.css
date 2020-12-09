@@ -1,0 +1,15 @@
+.App {
+    padding: 5px 10px;
+}
+
+@media screen and (max-device-width: 680px) {
+    .App {
+      display: block;
+      position: relative; /*for absolute positioning or to get them behind
+                           pop-ups with z-index
+                           this also prevents absolute-position elements being outside
+                           the parent element from stretching the view*/
+      width: 100vw;
+      overflow: hidden;
+    }
+  }
