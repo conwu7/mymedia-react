@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 import {useState, useEffect} from "react";
 
 import './stylesheets/reset.css';
@@ -10,21 +10,18 @@ import Dashboard from './pages/dashboard';
 import Account from './pages/account';
 
 import AppHeader from './components/app-header';
-import NavBar from './components/navbar';
-import NavBarNoUser from './components/navbar-no-user';
+import {NavBar, NavBarNoUser} from './components/navbar';
+
+import {checkForUser} from './helpers/common';
 
 function MyMediaApp() {
   const [user, setUser] = useState('');
-  useEffect(() => {
-    fetch('api/getuserdetails')
-    .then(response => response.json())
-    .then(apiResponse => apiResponse.success ? setUser(apiResponse.result.username) : "" )
-    .catch(err => console.log(err))
-  }, []);
+  const [isUserCheckDone, setUserCheckDone] = useState(false);
+  useEffect(() => {checkForUser(setUser, setUserCheckDone)}, [])
+  if (!isUserCheckDone) return null;
   return (
-    <div className="App">
+    <div className="App" id="App" tabIndex="-1" style={{outline: "none"}}>
       <Router>
-        <AppHeader />
         {user ? <NavBar /> : <NavBarNoUser />}
         <Switch>
           <Route path="/account">
@@ -36,8 +33,11 @@ function MyMediaApp() {
           <Route path="/signup">
             <SignUpForm user={user}/>
           </Route>
-          <Route path="/">
+          <Route path="/dashboard">
             <Dashboard user={user}/>
+          </Route>
+          <Route path="/">
+            <Redirect to="/dashboard" />
           </Route>
         </Switch>
       </Router>

@@ -7,7 +7,6 @@ import {postToApi} from '../helpers/common';
 export default function LoginForm (props) {
     const [isFormSubmitted, setFormSubmitted] = useState(false);
     const [serverError, setServerError] = useState("");
-    const [redirect, setRedirect] = useState(false);
     const formik = useFormik({
         initialValues: {
             username: '',
@@ -24,9 +23,9 @@ export default function LoginForm (props) {
             }
         }
     });
+    if (props.user) return <Redirect to="/" />;
     return (
         <div className={style.signUpPage}>
-            {props.user? <Redirect to="/" /> : null}
             <form onSubmit={formik.handleSubmit} className={style.signUpForm}>
                 <fieldset>
                     <label htmlFor="username">Username</label>

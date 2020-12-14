@@ -16,3 +16,35 @@ export async function postToApi (values, url) {
         }
     })
 }
+
+export function checkForUser (setUser, setUserCheckDone) {
+    fetch('/api/getuserdetails')
+        .then(response => response.json())
+        .then(apiResponse => {
+            if (apiResponse.success) setUser(apiResponse.result.username);
+            setUserCheckDone(true);
+        })
+        .catch(err => console.log(err))
+}
+
+export async function fetchListsByCategory(listCategory) {
+    // ranked, unranked or towatch
+    return new Promise(async (resolve, reject) => {
+        const response = await fetch(`/api/lists/${listCategory}`);
+        const apiResponse = await response.json();
+        if (!apiResponse.success) return reject(apiResponse.err);
+        resolve(apiResponse.result);
+    })
+}
+
+export function getCategories () {
+    const categories = [
+        {name: 'ranked', text: 'Ranked'},
+        {name: 'unranked', text: 'Unranked'},
+        {name: 'towatch', text: 'To Watch'},
+    ]
+    categories.ranked = 'Ranked';
+    categories.unranked = 'Unranked';
+    categories.towatch = 'To Watch';
+    return categories
+} 

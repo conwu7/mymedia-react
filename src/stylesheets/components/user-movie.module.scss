@@ -1,0 +1,52 @@
+.userMovie {
+    $poster-width: 180px;
+    $poster-height: 270px;
+
+    margin: 10px;
+    width: $poster-width;
+    
+    p, span {
+        text-decoration: none;
+        font-style: italic;
+        font-size: 1.1em;
+    }
+    .poster {
+        height: $poster-height;
+        width: $poster-width;
+    }
+    .posterContainer {
+        height: $poster-height;
+        width: $poster-width;
+        margin-bottom: 15px !important;
+    }
+    .movieTitle {
+        min-height: 40px;
+        max-height: 60px;
+        overflow: auto;
+    }
+    .movieDetails, .userMovieDetails {
+        font-size: 0.9em;
+        color: darkslategray;
+
+        * {
+            padding: 1px;
+        }
+
+        h1 {
+            font-weight: bold;
+            color: darkslategray
+        }
+        .releaseDate, .imdbRating {
+            font-style: italic;
+            font-size: 0.9em;
+            color: rgb(73, 99, 90);
+        }
+        .imdbRating span {
+            font-style: normal;
+            font-size: 1.2em;
+        }
+    }
+    .movieDetails>*, .userMovieDetails>* {
+        margin: 5px 0;
+    }
+}
