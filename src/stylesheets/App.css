@@ -7,7 +7,7 @@ html {
     font-family: 'Quicksand', sans-serif;
     scroll-behavior: smooth;
 }
-button {
+button, input {
   font-family: 'Quicksand', sans-serif;
   -webkit-appearance: none;
 }

@@ -3,6 +3,7 @@ import { Redirect, useHistory, useLocation } from 'react-router-dom';
 
 import ListTypesContainer from '../components/list-types-container';
 import SearchForMovie from '../components/search';
+import Footer from '../components/footer';
 import {CloseActivityButton, CenteredSearchBar} from '../components/common';
 
 import dashboardStyle from '../stylesheets/pages/dashboard.module.scss';
@@ -48,25 +49,36 @@ export default function Dashboard (props) {
         history.push(`/dashboard/lists/${newCategory}`);
         document.title = ` - ${newCategory}`;
     }
-    const handleFormChange = () => {
-        setAppOverflow(!blockAppOverflow);
-        setSearchStatus(!useSearch);
+    const handleActivityOpen = () => {
+        setAppOverflow(true);
+        setSearchStatus(true);
+    }
+    const handleActivityClose = () => {
+        setAppOverflow(false);
+        setSearchStatus(false);
     }
     if (!props.user) return (<h1>Sign up or login to use this website</h1>)
     return (
-        <div id="appDashboard" className={dashboardStyle.dashboard}>
-            <CenteredSearchBar 
-                fullWidth={true}
-                disabled={useSearch} 
-                handleClick={handleFormChange} 
-                placeholder="Search for a movie"/>
-            {useSearch && 
-                <SearchForMovie >
-                    <CloseActivityButton {...{handleFormChange}} />
-                </SearchForMovie>
-            }
-            <ListTypesSelector {...{listCategory, handleCategoryChange, categories}}/>
-            <ListTypesContainer {...{listCategory, categories}}/>
+        <div>
+            <div id="appDashboard" className={dashboardStyle.dashboard}>
+                <ListTypesSelector {...{listCategory, handleCategoryChange, categories}}/>
+                <div className={dashboardStyle.searchButtonContainer}>
+                    <button 
+                        className={dashboardStyle.searchButton}
+                        onClick={handleActivityOpen}
+                    >Search for a movie</button>
+                </div>
+                {
+                    <SearchForMovie 
+                        isSpecificList={false}
+                        closeButton={<CloseActivityButton {...{handleActivityClose}} />}
+                        useActivity={useSearch}
+                    >
+                    </SearchForMovie>
+                }
+                <ListTypesContainer {...{listCategory, categories}}/>
+                {/* <Footer /> */}
+            </div>
         </div>
     )
 }

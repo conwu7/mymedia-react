@@ -1,5 +1,25 @@
 .dashboard {
     position: relative;
-    max-height: 90vh;
+    height: calc(100vh - 50px);;
     overflow: auto;
+    bottom: 0;
+}
+.searchButtonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 10px;
+    padding: 2px;
+    border-radius: 10px;
+    background-color: white;
+}
+.searchButton {
+    background-color: whitesmoke;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    padding: 5px 10px;
+    font-size: 1.2em;
+    color: gray;
+    cursor: pointer;
 }

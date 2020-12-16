@@ -1,6 +1,7 @@
 .container {
-    $inputAndButtonMargin: 7px;
+    $inputAndButtonMargin: 10px;
     $borderRadius: 7px;
+    $inputAndButtonHeight: 40px;
 
     form {
         display: flex;
@@ -8,18 +9,13 @@
         justify-content: center;
         align-items: stretch;
     }
-
     input {
         height: 30px;
         width: 60%;
         margin: $inputAndButtonMargin;
         margin-right: 0;
-        border: 1px solid rgba(223,225,229,0);
-        box-shadow: 0 1px 2px rgba(32,33,36,.28);
-        border-top-left-radius: $borderRadius;
-        border-bottom-left-radius: $borderRadius;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
+        border: 1px solid transparent;
+        box-shadow: 0 1px 6px rgba(32,33,36,.28);
         outline: none;
         font-size: 1.05em;
         text-align: center;
@@ -41,7 +37,21 @@
         border: none;
         border-top-right-radius: $borderRadius;
         border-bottom-right-radius: $borderRadius;
+        box-shadow: 0 1px 2px rgba(32,33,36,.28);
         text-align: center;
         font-size: 1.2em;
+    }
+    .useSearchButton {
+        input {
+            border-top-left-radius: $borderRadius;
+            border-bottom-left-radius: $borderRadius;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        input, button {
+            box-sizing: border-box;
+            height: $inputAndButtonHeight;
+            box-shadow: 0 1px -1px rgba(32,33,36,.28);
+        }
     }
 }

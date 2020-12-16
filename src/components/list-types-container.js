@@ -1,29 +1,54 @@
-import {useEffect, useState} from 'react';
-import {Route, useRouteMatch} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Route, Switch, useRouteMatch, useLocation } from 'react-router-dom';
+import { useTransition, animated } from 'react-spring';
+
+import { CollapsibleCard } from '../components/common';
 
 import listContainerStyle from '../stylesheets/components/list-container.module.scss';
 import userMovieStyle from '../stylesheets/components/user-movie.module.scss';
-import {CollapsibleCard} from '../components/common';
 
-import {fetchListsByCategory} from '../helpers/common';
+import { fetchListsByCategory, getPageFromPath } from '../helpers/common';
 
 import defaultPoster from '../images/default-poster.png';
 
 export default function ListTypesContainer (props) {
+    const { categories } = props;
     let { path } = useRouteMatch();
+    const location = useLocation();
+    const transitions = useTransition(
+        location, 
+        location => location.pathname,
+        {
+            from: {
+                position: 'absolute',
+                width: '100%',
+                opacity: 0,
+                transform: 'translate(100%,0)'
+          },
+            enter: { opacity: 1, transform: 'translate(0%,0)' },
+            leave: { opacity: 0,transform: 'translate(0, 100%)' },
+        }
+    );
     return (
-        <div>
-            {/* <ListContainer /> */}
-            
-            {props.categories.map(category => (
-                <Route 
-                    key={category.name}
-                    path={path+'/lists/'+category.name} 
-                    >
-                        <AllListsContainer category={category.name}/>
-                </Route>
-            ))}
-        </div>
+        transitions.map(({item, props, key}) => (
+            <animated.div 
+                key={key} 
+                style={props}
+            >
+                <Switch location={item}>
+                    {/* <ListContainer /> */}
+                    
+                    {categories.map(category => (
+                        <Route 
+                            key={category.name}
+                            path={path+'/lists/'+category.name} 
+                            >
+                                <AllListsContainer category={category.name}/>
+                        </Route>
+                    ))}
+                </Switch>
+            </animated.div>
+        ))
     )
 }
 
@@ -62,7 +87,9 @@ function ListContainer (props) {
                     skipStyleHeader={true}
                     buttonSize="largeBtn"
                 >
-                    <AllUserMoviesContainer userMoviesInstants={list.userMovieInstants}/>
+                    <AllUserMoviesContainer 
+                        userMoviesInstants={list.userMovieInstants}
+                        />
                 </CollapsibleCard>
         </div>
     )
@@ -71,7 +98,7 @@ function ListContainer (props) {
 function ListDetails (props) {
     const {list} = props;
     return (
-        <div>
+        <div className={listContainerStyle.listDetails}>
             <h1>{list.name}</h1>
             <h2>{list.description}</h2>
         </div>
@@ -117,28 +144,48 @@ function CombinedDetails (props) { //temporarily using this to mix the positions
                     />
             </div>
             <h1 className={userMovieStyle.movieTitle}>{movie.title}</h1>
-            <CollapsibleCard cardHeader="To Watch Notes" isCollapsed={true}>
+            <CollapsibleCard cardHeader="Details" isCollapsed={true}>
+                
+                <p className={userMovieStyle.imdbRating}>
+                    <a href={`https://imdb.com/title/${movie.imdbID}`} target="_blank" rel="noopener noreferrer">IMDB</a> <span>{movie.imdbRating || "-"}</span>/10
+                </p>
                 <ToWatchNotes {...{toWatchNotes}}/>
-            </CollapsibleCard>
-            <CollapsibleCard cardHeader="Info" isCollapsed={true}>
-                <p className={userMovieStyle.imdbRating}>IMDB <span>{movie.imdbRating || "-"}</span>/10</p>
                 <p className={userMovieStyle.releaseDate}>Released on <span>{movie.releaseDate}</span></p>
-            </CollapsibleCard>
-            <CollapsibleCard isCollapsed={true} cardHeader={"Plot"}>
                 <p>{movie.plot || "-"}</p>
-            </CollapsibleCard>
-            <WatchStatus {...{isWatched}} />
-            {isWatched? 
-            (
-                <CollapsibleCard isCollapsed={true} cardHeader="User Review">
+                <WatchStatus {...{isWatched}} />
+                {isWatched? 
+                (
                     <UserNotesAndRating {...{userRating, reviewNotes}} />
-                </CollapsibleCard>
-            )
-            :null}
+                )
+                :null}
+            </CollapsibleCard>
         </div>
     </div>
     )
 }
+{/* <CollapsibleCard cardHeader="Details" isCollapsed={true}>
+                <CollapsibleCard cardHeader="To Watch Notes" isCollapsed={false}>
+                    <ToWatchNotes {...{toWatchNotes}}/>
+                </CollapsibleCard>
+                <CollapsibleCard cardHeader="Info" isCollapsed={true}>
+                    <p className={userMovieStyle.imdbRating}>
+                        <a href={`https://imdb.com/title/${movie.imdbID}`} target="_blank" rel="noopener noreferrer">IMDB</a> <span>{movie.imdbRating || "-"}</span>/10
+                    </p>
+                    <p className={userMovieStyle.releaseDate}>Released on <span>{movie.releaseDate}</span></p>
+                </CollapsibleCard>
+                <CollapsibleCard isCollapsed={true} cardHeader={"Plot"}>
+                    <p>{movie.plot || "-"}</p>
+                </CollapsibleCard>
+                <WatchStatus {...{isWatched}} />
+                {isWatched? 
+                (
+                    <CollapsibleCard isCollapsed={true} cardHeader="User Review">
+                        <UserNotesAndRating {...{userRating, reviewNotes}} />
+                    </CollapsibleCard>
+                )
+                :null}
+            </CollapsibleCard> */}
+
 
 // function MovieDetails (props) {
 //     const {movie} = props;

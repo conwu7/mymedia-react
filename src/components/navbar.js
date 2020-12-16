@@ -13,8 +13,7 @@ export function NavBar () {
     }
     return (
         <ul className={style.navbar}>
-            <li><Link to="/">DASHBOARD</Link></li>
-            <li><Link to="myaccount">ACCOUNT</Link></li>
+            <li><Link to="/">MyMedia.App</Link></li>
             <li><button onClick={handleLogout}>LOGOUT</button></li>
         </ul>
     )

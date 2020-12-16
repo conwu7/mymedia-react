@@ -1,16 +1,20 @@
 .selectorContainer {
     display: flex;
-    position: sticky;
-    top: 0;
+    position: fixed;
+    bottom: 0;
     width: 100%;
-    justify-content: center;
-    margin-top: 10px;
+    justify-content: space-around;
     background-color: whitesmoke;
+    font-size: 1.05em;
+    z-index: 2;
 
+    .activeCategory {
+        font-weight: bold;
+    }
     button {
         margin: 0 10px;
-        padding: 7px;
-        border: 2px solid transparent;
+        padding: 7px 0;
+        border: 0;
         font-size: 1.25em;
         color: gray;
         background-color: transparent;
@@ -22,13 +26,11 @@
         color: darkslategray;
     }
 }
-
-button.activeCategory {
-    color: darkslategray;
-    font-weight: bolder;
-}
-.hidden {
-    height: 0;
-    border: none;
-    overflow: hidden;
+@media only screen and (min-device-width: 680px) {
+    .selectorContainer {
+        justify-content: space-evenly;
+        position: sticky;
+        top: 0;
+        font-size: 1em;
+    }
 }

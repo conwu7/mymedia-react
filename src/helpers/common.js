@@ -28,7 +28,7 @@ export function checkForUser (setUser, setUserCheckDone) {
 }
 
 export async function fetchListsByCategory(listCategory) {
-    // ranked, unranked or towatch
+    // ranked, other or towatch
     return new Promise(async (resolve, reject) => {
         const response = await fetch(`/api/lists/${listCategory}`);
         const apiResponse = await response.json();
@@ -37,14 +37,24 @@ export async function fetchListsByCategory(listCategory) {
     })
 }
 
+export async function getAllListNames () {
+    return fetch('/api/lists/getalllistnames')
+            .then(response => response.json())
+            .then(apiResponse => apiResponse.result)
+} 
+
 export function getCategories () {
     const categories = [
-        {name: 'ranked', text: 'Ranked'},
-        {name: 'unranked', text: 'Unranked'},
         {name: 'towatch', text: 'To Watch'},
+        {name: 'ranked', text: 'Ranked'},
+        {name: 'other', text: 'Other'}
     ]
     categories.ranked = 'Ranked';
-    categories.unranked = 'Unranked';
     categories.towatch = 'To Watch';
+    categories.other = 'Other';
     return categories
 } 
+export function getPageFromPath (pathname) {
+    // e.g. pathname /some/thing/here. return 'here'
+    return pathname.split('/').slice(-1)[0];
+}
