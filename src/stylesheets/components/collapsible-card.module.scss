@@ -15,7 +15,6 @@ $padding-size: 5px;
         border: none;
         outline: none;
         background-color: transparent;
-        cursor: pointer;
         
         svg {
             transform: rotate(0deg);
@@ -41,11 +40,14 @@ $padding-size: 5px;
     }
 }
 .cardHeader.useStyleHeader {
-    font-size: 0.8em;
+    font-size: 1.1em;
     text-decoration-line: underline;
     text-decoration-color: lightgray;
-
 }
 .collapsibleSection {
     overflow: hidden;
+
+    button {
+        outline: none;
+    }
 }

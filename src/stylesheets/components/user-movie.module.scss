@@ -1,23 +1,79 @@
-.userMovie {
-    $poster-width: 180px;
-    $poster-height: 270px;
+$poster-width: 120px;
+$poster-height: 180px;
+$poster-width-desktop: 180px;
+$poster-height-desktop: 270px;
 
-    margin: 10px;
-    width: $poster-width;
-    
-    p, span {
+.userMovie {
+    position: relative;
+    margin: 5px;
+    max-width: $poster-width;
+
+    * {
+        box-sizing: border-box;
+    }
+    span, p {
         text-decoration: none;
         font-style: italic;
-        font-size: 1.1em;
+        color: black;
     }
-    .poster {
+    p {
+        font-size: 1em;
+        margin: 5px 2px;;
+    }
+    span {
+        font-size: 1.15em;
+    }
+    .menuSpace {
+        height: 32px;
+    }
+    .menuContainer {
+        display: flex;
+        justify-content: center;
+        position: absolute;
+        width: 100%;
+        color: gray;
+        background-color: white;
+
+        button {
+            margin: auto;
+        }
+        svg {
+            margin: auto;
+            transform: scale(1.4, 1.2);
+        }
+        .buttonContainer {
+            display: flex;
+            flex-direction: column;
+
+            button {
+                width: 100%;
+                margin: 5px auto;
+                padding: 5px 10px;
+                border: none;
+                border-radius: 10px;
+                background-color: whitesmoke;
+                text-decoration: underline;
+                color: gray;
+                font-size: 1em;
+            }
+            button.remove {
+                color: firebrick;
+            }
+        }
+    }
+    .poster, .posterContainer {
         height: $poster-height;
         width: $poster-width;
         border-radius: 7px;
+        text-align: center;
+    }
+    @media only screen and (min-width: 680px) {
+        .poster, .posterContainer {
+            height: $poster-height-desktop;
+            width: $poster-width-desktop;
+        }
     }
     .posterContainer {
-        height: $poster-height;
-        width: $poster-width;
         margin-bottom: 15px !important;
     }
     .movieTitle {
@@ -28,10 +84,6 @@
     .movieDetails, .userMovieDetails {
         font-size: 0.9em;
         color: darkslategray;
-
-        * {
-            padding: 1px;
-        }
 
         h1 {
             font-weight: bold;
@@ -49,5 +101,10 @@
     }
     .movieDetails>*, .userMovieDetails>* {
         margin: 5px 0;
+    }
+}
+@media only screen and (min-width: 680px) {
+    .userMovie {
+        max-width: $poster-width-desktop;
     }
 }

@@ -1,29 +1,28 @@
 .selectorContainer {
     display: flex;
     position: fixed;
+    border-top: 1px solid lightgray;
     bottom: 0;
     width: 100%;
     justify-content: space-around;
-    background-color: whitesmoke;
+    background-color:whitesmoke;
     font-size: 1.05em;
     z-index: 2;
 
     .activeCategory {
         font-weight: bold;
+        color: gray;
     }
     button {
-        margin: 0 10px;
-        padding: 7px 0;
+        margin: 10px;
+        padding: 0 8px;
         border: 0;
-        font-size: 1.25em;
-        color: gray;
+        font-size: 1em;
+        color: lightgray;
         background-color: transparent;
         outline: none;
         cursor: pointer;
         transition: 200ms ease;
-    }
-    button:hover {
-        color: darkslategray;
     }
 }
 @media only screen and (min-device-width: 680px) {

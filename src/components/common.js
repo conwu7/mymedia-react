@@ -2,17 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useSpring, animated, useTransition } from "react-spring";
 import { useMeasure } from "react-use";
 
-import {GrClose} from 'react-icons/gr';
-import {FcCollapse, FcExpand} from 'react-icons/fc';
+import { GrClose } from 'react-icons/gr';
+import { FcCollapse } from 'react-icons/fc';
 
 import collapsibleCardStyle from '../stylesheets/components/collapsible-card.module.scss';
 import centeredSearchBarStyle from '../stylesheets/components/centered-search-bar.module.scss';
 import popUpActivityStyle from '../stylesheets/components/pop-up-activity.module.scss';
 
 export function CloseActivityButton (props) {
+    const {handleActivityClose, className} = props;
     return <button 
-                onClick={props.handleActivityClose}
-                className={props.className}
+                onClick={handleActivityClose}
+                className={className}
                 >
                     <GrClose />
                     </button>
@@ -21,9 +22,9 @@ export function PopUpActivity (props) {
     const {closeButton, children, useActivity} = props;
     const transitions = useTransition(
         useActivity, null, {
-            from: {opacity: 0},
-            enter: {opacity: 1},
-            leave: {opacity: 0}
+            from: {opacity: 0, marginTop: 600},
+            enter: {opacity: 1, marginTop: 0},
+            leave: {opacity: 0, marginTop: 600}
         }
     )
     return ( transitions.map(({item, props: tProps, key}) => (
@@ -45,34 +46,79 @@ export function PopUpActivity (props) {
     )))
 }
 export function CollapsibleCard (props) {
-    let {cardHeader, skipStyleHeader, buttonSize} = props;
+    let {cardHeader, skipStyleHeader, buttonSize,
+        hideButton, collapseButton, skipAllStyling,
+        hideOnFocusLost, disableHeaderButton} = props;
     const [ref, {height}] = useMeasure();
+    const cardRef = React.createRef();
+    const cardHeaderRef = React.createRef();
     const [isCollapsed, setCollapsedStatus] = useState(props.isCollapsed);
     const spring = useSpring({
         to: {
             height: isCollapsed? 0: height
         }
     })
-    const handleChange = () => {
+    const handleCollapse = (e) => {
         setCollapsedStatus(!isCollapsed);
     }
+    useEffect(() => {
+        const handleEventListeners = (e) => {
+            const el = cardRef.current;
+            const btn = cardHeaderRef.current;
+            if ((!el.contains(e.target) && !el.isSameNode(e.target))
+                 && (btn && !btn.contains(e.target) && !btn.isSameNode(e.target))) {
+                    setCollapsedStatus(true);
+                }
+        }
+        if (!hideOnFocusLost) return
+        const App = document.getElementById('App');
+        App.addEventListener('click', handleEventListeners)
+        return () => {
+            App.removeEventListener('click', handleEventListeners)
+        }
+    }, [hideOnFocusLost, cardHeaderRef, cardRef])
     return (
         <div className={collapsibleCardStyle.collapsibleCard}>
-            <div className={collapsibleCardStyle.cardHeader +
-                " "+ (!skipStyleHeader?collapsibleCardStyle.useStyleHeader:"")}
+            <div 
+                ref={cardHeaderRef}
+                className={
+                    collapsibleCardStyle.cardHeader +
+                    " "+ (!skipStyleHeader?collapsibleCardStyle.useStyleHeader:"")
+                }
+                onClick={!disableHeaderButton?handleCollapse:undefined}
             >
                 {cardHeader}
-                <button onClick={handleChange} 
-                className={`${collapsibleCardStyle[buttonSize]} ${isCollapsed?collapsibleCardStyle.btnExpand:""}`}>
-                    {
-                        <FcCollapse 
-                            id="expandCollapseButton"
-                        />
-                    }
-                </button>
+                {!hideButton &&
+                    (skipAllStyling?
+                    <button 
+                        onClick={handleCollapse} 
+                    >
+                        {collapseButton?
+                            collapseButton
+                            :<FcCollapse />
+                        }
+                    </button>
+                    :
+                    <button 
+                        onClick={handleCollapse} 
+                        className={`${collapsibleCardStyle[buttonSize]} ${isCollapsed?collapsibleCardStyle.btnExpand:""}`}>
+                        {collapseButton?
+                            collapseButton
+                            :<FcCollapse />
+                        }
+                    </button>)
+                }
             </div>
-            <animated.div style={spring}
-                className={`${collapsibleCardStyle.collapsibleSection}`}
+            <animated.div 
+                style={spring}
+                ref={cardRef}
+                className={
+                    `${collapsibleCardStyle.collapsibleSection} `+
+                    (skipAllStyling?
+                        ""
+                        :`${isCollapsed ? collapsibleCardStyle.isCollapsed: collapsibleCardStyle.isExpanded}`
+                    )
+                }
             >
                 <div ref={ref}>{props.children}</div>
             </animated.div>
@@ -107,7 +153,7 @@ export function CenteredSearchBar (props) {
                     ref={inputRef}
                     className={fullWidth?centeredSearchBarStyle.fullWidth:""}
                 />
-                {showSearchButton?(<button type="submit">Search</button>):null}
+                {showSearchButton?(<button type="submit" tabIndex={0}>Search</button>):null}
             </form>
         </div>
     )

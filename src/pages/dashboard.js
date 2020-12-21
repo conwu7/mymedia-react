@@ -1,19 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect, useHistory, useLocation } from 'react-router-dom';
 
 import ListTypesContainer from '../components/list-types-container';
 import SearchForMovie from '../components/search';
-import Footer from '../components/footer';
-import {CloseActivityButton, CenteredSearchBar} from '../components/common';
+// import Footer from '../components/footer';
+import { CloseActivityButton } from '../components/common';
 
 import dashboardStyle from '../stylesheets/pages/dashboard.module.scss';
 import selectorStyle from '../stylesheets/components/list-types-selector.module.scss';
 
-import {getCategories} from '../helpers/common';
+import { getCategories, fetchFromApi } from '../helpers/common';
 
 export default function Dashboard (props) {
     const [useSearch, setSearchStatus] = useState(false);
     const [blockAppOverflow, setAppOverflow] = useState(false);
+    const [allLists, setAllLists] = useState({});
     // set ranked or pull in path list
     let defaultList = 'ranked';
     const categories = getCategories();
@@ -39,7 +40,6 @@ export default function Dashboard (props) {
         } else {
             App.style.overflow="auto";
         }
-
     }, [blockAppOverflow])
     if (!paths[2] || !paths[3]) return (<Redirect to={`/dashboard/lists/${listCategory}`}/>);
     //
@@ -57,6 +57,14 @@ export default function Dashboard (props) {
         setAppOverflow(false);
         setSearchStatus(false);
     }
+    const getLists = (listCategory) => {
+        fetchFromApi(`lists/${listCategory}`)
+        .then(lists => setAllLists({...allLists, [listCategory]: lists}))
+        .catch(err => console.log(err))
+    };
+    const handleUpdatedList = (listCategory) => {
+        getLists(listCategory);
+    }
     if (!props.user) return (<h1>Sign up or login to use this website</h1>)
     return (
         <div>
@@ -73,10 +81,17 @@ export default function Dashboard (props) {
                         isSpecificList={false}
                         closeButton={<CloseActivityButton {...{handleActivityClose}} />}
                         useActivity={useSearch}
+                        handleUpdatedList={handleUpdatedList}
                     >
                     </SearchForMovie>
                 }
-                <ListTypesContainer {...{listCategory, categories}}/>
+                <ListTypesContainer 
+                    listCategory={listCategory}
+                    categories={categories}
+                    allLists={allLists}
+                    getLists={getLists}
+                    refreshList={handleUpdatedList}
+                />
                 {/* <Footer /> */}
             </div>
         </div>

@@ -17,6 +17,32 @@ export async function postToApi (values, url) {
     })
 }
 
+export function fetchFromApi (link) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await fetch(`/api/${link}`);
+            const apiResponse = await response.json();
+            if (!apiResponse.success) return reject(apiResponse.err);
+            resolve(apiResponse.result);
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
+export function deleteFromApi (link) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await fetch(`/api/${link}`, {method: 'DELETE'});
+            const apiResponse = await response.json();
+            if (!apiResponse.success) return reject(apiResponse.err)
+            resolve(apiResponse.result);
+        } catch (err) {
+            reject(err);
+        }
+    })
+}
+
 export function checkForUser (setUser, setUserCheckDone) {
     fetch('/api/getuserdetails')
         .then(response => response.json())
@@ -26,22 +52,6 @@ export function checkForUser (setUser, setUserCheckDone) {
         })
         .catch(err => console.log(err))
 }
-
-export async function fetchListsByCategory(listCategory) {
-    // ranked, other or towatch
-    return new Promise(async (resolve, reject) => {
-        const response = await fetch(`/api/lists/${listCategory}`);
-        const apiResponse = await response.json();
-        if (!apiResponse.success) return reject(apiResponse.err);
-        resolve(apiResponse.result);
-    })
-}
-
-export async function getAllListNames () {
-    return fetch('/api/lists/getalllistnames')
-            .then(response => response.json())
-            .then(apiResponse => apiResponse.result)
-} 
 
 export function getCategories () {
     const categories = [

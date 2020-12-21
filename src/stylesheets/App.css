@@ -10,6 +10,7 @@ html {
 button, input {
   font-family: 'Quicksand', sans-serif;
   -webkit-appearance: none;
+  cursor: pointer;
 }
 
 @media screen and (max-device-width: 680px) {
