@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import {useFormik} from 'formik';
 import style from '../stylesheets/pages/sign-up.module.scss';
-import {postToApi} from '../helpers/common';
+import {putOrPostToApi} from '../helpers/common';
 
 export default function LoginForm (props) {
     const [isFormSubmitted, setFormSubmitted] = useState(false);
@@ -13,12 +13,13 @@ export default function LoginForm (props) {
             password: '',
         },
         onSubmit: async values => {
-            if (isFormSubmitted) return;
-            setFormSubmitted(true);
-            const response = await postToApi(values, "/api/login");
-            if (response.success) return window.location.reload();
-            if (response.err) {
-                setServerError(response.err);
+            try {
+                if (isFormSubmitted) return;
+                setFormSubmitted(true);
+                const response = await putOrPostToApi(values, "login", 'post');
+                window.location.reload()
+            } catch (err) {
+                setServerError(err);
                 setFormSubmitted(false);
             }
         }

@@ -69,25 +69,31 @@
             border: none;
             padding: 2px;
             border-radius: 7px;
-            background: white;
+            background: whitesmoke;
             cursor: pointer;
         }
         .allListsContainer {
             margin: auto;
+            padding: 5px;
             text-align: center;
+            background-color: white;
+            color: darkslategray;
 
+            button {
+                padding: 10px 15px;
+                margin: 5px auto;
+                font-size: 1.15em;
+                color: inherit;
+            }
             li {
                 display: block;
                 padding: 5px;
-            }
-            button {
-                font-size: 1.15em;
             }
         }
         .addToWatchNotes {
             width: 90%;
             padding: 10px;
-            margin: 10px;
+            margin: 10px auto;
             border-radius: 10px;
             background-color: whitesmoke;
         }
@@ -107,5 +113,9 @@
             margin: auto;
         }
     }
-
+}
+.searchFormContainer>div:nth-child(2) {
+    background-color: white;
+    border-radius: 10px;
+    padding: 5px 0;
 }

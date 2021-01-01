@@ -3,7 +3,7 @@ import { useSpring, animated, useTransition } from "react-spring";
 import { useMeasure } from "react-use";
 
 import { GrClose } from 'react-icons/gr';
-import { FcCollapse } from 'react-icons/fc';
+import { MdExpandLess } from 'react-icons/md';
 
 import collapsibleCardStyle from '../stylesheets/components/collapsible-card.module.scss';
 import centeredSearchBarStyle from '../stylesheets/components/centered-search-bar.module.scss';
@@ -19,14 +19,22 @@ export function CloseActivityButton (props) {
                     </button>
 }
 export function PopUpActivity (props) {
-    const {closeButton, children, useActivity} = props;
+    const {closeButton: cButton, children, useActivity, handleActivityClose} = props;
     const transitions = useTransition(
         useActivity, null, {
             from: {opacity: 0, marginTop: 600},
             enter: {opacity: 1, marginTop: 0},
-            leave: {opacity: 0, marginTop: 600}
+            leave: {opacity: 0, marginTop: 600, zIndex: 1}
         }
     )
+    let closeButton;
+    if (!cButton) {
+        closeButton=<CloseActivityButton
+                        handleActivityClose={handleActivityClose}
+                    />
+    } else {
+        closeButton = cButton;
+    }
     return ( transitions.map(({item, props: tProps, key}) => (
         item &&
             <animated.div 
@@ -55,10 +63,11 @@ export function CollapsibleCard (props) {
     const [isCollapsed, setCollapsedStatus] = useState(props.isCollapsed);
     const spring = useSpring({
         to: {
-            height: isCollapsed? 0: height
+            height: isCollapsed? 0: height+10
+            // Adding 10 here cause it seems to undercut the height a little
         }
     })
-    const handleCollapse = (e) => {
+    const handleCollapse = () => {
         setCollapsedStatus(!isCollapsed);
     }
     useEffect(() => {
@@ -90,21 +99,23 @@ export function CollapsibleCard (props) {
                 {cardHeader}
                 {!hideButton &&
                     (skipAllStyling?
-                    <button 
+                    <button
+                        type="button"
                         onClick={handleCollapse} 
                     >
                         {collapseButton?
                             collapseButton
-                            :<FcCollapse />
+                            :<MdExpandLess />
                         }
                     </button>
                     :
-                    <button 
+                    <button
+                        type="button"
                         onClick={handleCollapse} 
                         className={`${collapsibleCardStyle[buttonSize]} ${isCollapsed?collapsibleCardStyle.btnExpand:""}`}>
                         {collapseButton?
                             collapseButton
-                            :<FcCollapse />
+                            :<MdExpandLess />
                         }
                     </button>)
                 }
@@ -112,13 +123,7 @@ export function CollapsibleCard (props) {
             <animated.div 
                 style={spring}
                 ref={cardRef}
-                className={
-                    `${collapsibleCardStyle.collapsibleSection} `+
-                    (skipAllStyling?
-                        ""
-                        :`${isCollapsed ? collapsibleCardStyle.isCollapsed: collapsibleCardStyle.isExpanded}`
-                    )
-                }
+                className={collapsibleCardStyle.collapsibleSection}
             >
                 <div ref={ref}>{props.children}</div>
             </animated.div>
@@ -133,14 +138,16 @@ export function CollapsibleCard (props) {
 export function CenteredSearchBar (props) {
     const {onChange, handleClick, value,
          inputName, showSearchButton, fullWidth,
-         placeholder, disabled, onSubmit} = props; //***modify - introduce real input functionality to this
+         placeholder, disabled, onSubmit} = props;
     const inputRef = React.createRef();
     useEffect(() => {
         inputRef.current.focus();
     }, [inputRef])
     return (
         <div className={centeredSearchBarStyle.container}>
-            <form onSubmit={onSubmit} className={showSearchButton?centeredSearchBarStyle.useSearchButton:""}>
+            <form
+                onSubmit={onSubmit}
+                className={showSearchButton?centeredSearchBarStyle.useSearchButton:""}>
                 <input 
                     onClick={handleClick}
                     onChange={onChange}
@@ -153,7 +160,15 @@ export function CenteredSearchBar (props) {
                     ref={inputRef}
                     className={fullWidth?centeredSearchBarStyle.fullWidth:""}
                 />
-                {showSearchButton?(<button type="submit" tabIndex={0}>Search</button>):null}
+                {showSearchButton?(
+                    <button
+                        type="submit"
+                        tabIndex={0}
+                        disabled={disabled}
+                    >
+                    Search
+                    </button>)
+                    :null}
             </form>
         </div>
     )

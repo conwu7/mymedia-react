@@ -1,7 +1,7 @@
 .listContainer {
-    padding: 15px 0;
     margin: 0 10px 10px;
-    
+    padding: 0 5px;
+    box-shadow: 0 0 8px 1px rgba(32,33,36,.15);
     border-radius: 10px;
     background-color: white;
 }
@@ -11,8 +11,7 @@
     overflow: auto;
 }
 .allListsContainer {
-    background-color: transparent;
 }
 .listDetails {
-    padding: 0 15px;
+    padding: 10px 10px;
 }

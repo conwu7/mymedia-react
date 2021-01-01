@@ -1,9 +1,7 @@
 $padding-size: 5px;
 
 .collapsibleCard {
-    padding: $padding-size;
-    // border: 1px solid rgb(245, 245, 245);
-    border-radius: 5%;
+    font-family: inherit;
 }
 .cardHeader {
     display: flex;

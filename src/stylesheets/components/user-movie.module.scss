@@ -7,13 +7,14 @@ $poster-height-desktop: 270px;
     position: relative;
     margin: 5px;
     max-width: $poster-width;
+    padding: 5px 0;
 
     * {
         box-sizing: border-box;
     }
     span, p {
         text-decoration: none;
-        font-style: italic;
+        //font-style: italic;
         color: black;
     }
     p {
@@ -24,7 +25,7 @@ $poster-height-desktop: 270px;
         font-size: 1.15em;
     }
     .menuSpace {
-        height: 32px;
+        height: 25px;
     }
     .menuContainer {
         display: flex;
@@ -39,7 +40,7 @@ $poster-height-desktop: 270px;
         }
         svg {
             margin: auto;
-            transform: scale(1.4, 1.2);
+            transform: scale(1.3, 1.3);
         }
         .buttonContainer {
             display: flex;
@@ -90,13 +91,15 @@ $poster-height-desktop: 270px;
             color: darkslategray
         }
         .releaseDate, .imdbRating {
-            font-style: italic;
             font-size: 0.9em;
             color: rgb(73, 99, 90);
         }
         .imdbRating span {
             font-style: normal;
             font-size: 1.2em;
+        }
+        .imdbRating a {
+            color: dodgerblue;
         }
     }
     .movieDetails>*, .userMovieDetails>* {

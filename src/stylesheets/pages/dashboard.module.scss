@@ -1,15 +1,15 @@
 .dashboard {
     position: relative;
-    bottom: 0;
 }
 .searchButtonContainer {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 10px 10px;
-    padding: 2px;
+    padding: 5px;
     border-radius: 10px;
     background-color: white;
+    box-shadow: 0 0 8px 1px rgba(32,33,36,.15);
 }
 .searchButton {
     background-color: whitesmoke;
@@ -20,4 +20,16 @@
     font-size: 1.2em;
     color: gray;
     cursor: pointer;
+}
+.noUserMessage {
+    width: fit-content;
+    padding: 20px 10px;
+    margin: auto;
+    text-align: center;
+}
+@media only screen and (min-width: 680px) {
+    .dashboard {
+        margin: auto;
+        max-width: 85vw;
+    }
 }

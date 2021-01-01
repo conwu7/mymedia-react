@@ -47,4 +47,20 @@
         overflow: auto;
         transition: all 300ms linear;
     }
+    @media only screen and (min-width: 680px) {
+        .mainContent {
+            max-height: calc(100vh - 80px - 100px);
+        }
+    }
+    @media all and (display-mode: standalone) {
+        .mainContent {
+            max-height: calc(100vh - 80px - 100px);
+        }
+    }
+}
+@media only screen and (min-width: 680px) {
+    .mainContentContainer {
+        margin: auto;
+        max-width: 75vw;
+    }
 }

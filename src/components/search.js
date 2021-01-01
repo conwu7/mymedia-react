@@ -1,36 +1,42 @@
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 
-import { CenteredSearchBar,PopUpActivity, CloseActivityButton, CollapsibleCard } from '../components/common';
-
+import { CenteredSearchBar,PopUpActivity, CloseActivityButton, CollapsibleCard } from './common';
+import ListSelector from "./list-selector";
 import style from '../stylesheets/components/search.module.scss';
 
-import { fetchFromApi, postToApi } from '../helpers/common';
+import { fetchOrDeleteFromApi, putOrPostToApi } from '../helpers/common';
 
 import { AiOutlineLoading } from 'react-icons/ai';
+import { MdAddCircleOutline } from 'react-icons/md';
 import defaultPoster from '../images/default-poster.png';
 
-export default function SearchForMovie (props) {
+export default function SearchForMedia (props) {
     const [searchString, setSearchString] = useState("");
     const [isSearching, setSearchingStatus] = useState(false);
     const [isSearchComplete, setSearchComplete] = useState(false);
     const [searchError, setSearchError] = useState("");
     const [searchResults, setSearchResults] = useState([]);
-    const [listNames, setListNames] = useState({});
-    const {isSpecificList, closeButton, useActivity, handleUpdatedList} = props;
+    const {isSpecificList, closeButton, useActivity,
+        refreshList, mediaType, movieListNames, tvListNames} = props;
+    let focusTimeout;
     useEffect(() => {
-        fetchFromApi('lists/getalllistnames')
-            .then(result => setListNames(result))
-            .catch(err => console.log(err))
-    }, [])
+        return (() => {clearTimeout(focusTimeout)})
+    }, [focusTimeout]);
+    useEffect(() => {
+        setSearchResults([]);
+        setSearchComplete(false);
+        setSearchString("");
+    }, [mediaType])
     const handleSearch = async () => {
         if (isSearching) return
         setSearchingStatus(true);
-        setTimeout(() => {
+        focusTimeout = setTimeout(() => {
             document.querySelector(".takeFocus").focus();
         }, 100);
         try {
-            const searchResults = await fetchFromApi(`movies/search?searchString=${searchString}`);
+            const path = mediaType==='tv' ? 'tvShows': 'movies';
+            const searchResults = await fetchOrDeleteFromApi(`${path}/search?searchString=${searchString}`, 'get');
             setSearchResults(searchResults);
         } catch (err) {
             setSearchResults([]);
@@ -45,34 +51,41 @@ export default function SearchForMovie (props) {
             closeButton={closeButton}
             useActivity={useActivity}
         >
-            <div tabIndex="2" className="takeFocus"></div>
+            <div tabIndex="2" className="takeFocus" style={{height: 0, overflow: "hidden"}}>Hello there !</div>
             <div className={style.searchFormContainer}> 
                 <div className={style.searchForm}>
-                    <SearchBar {...{searchString, setSearchString, handleSearch}}/>
+                    <SearchBar
+                        searchString={searchString}
+                        setSearchString={setSearchString}
+                        handleSearch={handleSearch}
+                        useActivity={useActivity}
+                    />
                 </div>
                 <SearchResultsContainer 
                     isSearching={isSearching}
                     isSearchComplete={isSearchComplete}
                     searchError={searchError}
-                    listNames={listNames}
+                    tvListNames={tvListNames}
+                    movieListNames={movieListNames}
                     searchResults={searchResults}
                     isSpecificList={isSpecificList}
-                    handleUpdatedList={handleUpdatedList}
+                    handleUpdatedList={refreshList}
+                    mediaType={mediaType}
                 />
             </div>
         </PopUpActivity>
     )
 }
 function SearchBar (props) {
-    const {searchString, setSearchString, handleSearch} = props;
+    const {searchString, setSearchString, handleSearch, useActivity} = props;
     const formik = useFormik({
         initialValues: {
             searchString
         },
-        onSubmit: values => {
+        onSubmit: () => {
             handleSearch();
         },
-        validate: (values, props) => {
+        validate: (values) => {
             setSearchString(values.searchString);
         }
     });
@@ -84,28 +97,37 @@ function SearchBar (props) {
             value={formik.values.searchString}
             onSubmit={formik.handleSubmit}
             showSearchButton={true}
+            disabled={!useActivity}
         />
     )
 }
 function SearchResultsContainer (props) {
     const resultsRef = React.createRef();
     const {searchResults, isSpecificList, handleUpdatedList,
-        isSearchComplete, isSearching, listNames} = props;
+            isSearchComplete, isSearching, mediaType,
+            movieListNames, tvListNames} = props;
     let searchError = props.searchError || "No Result";
     return (
-        <div className={style.searchResultsContainer} tabIndex="1" style={{outline: "none"}} ref={resultsRef}>
+        <div
+            className={style.searchResultsContainer}
+            tabIndex="1"
+            style={{outline: "none"}}
+            ref={resultsRef}
+        >
             {isSearching?
                 <div className={style.loading}><AiOutlineLoading /></div>
                 : !isSearchComplete? 
                 "Press Enter or click Search!"
                 : searchResults.length===0? 
                 searchError
-                : searchResults.map(movie => (
+                : searchResults.map(media => (
                     <ResultCardOMDB 
-                        key={movie.id} 
-                        movie={movie}
+                        key={media.id}
+                        media={media}
+                        mediaType={mediaType}
                         isSpecificList={isSpecificList}
-                        listNames={listNames}
+                        tvListNames={tvListNames}
+                        movieListNames={movieListNames}
                         handleUpdatedList={handleUpdatedList}
                         />
                     ))
@@ -114,67 +136,72 @@ function SearchResultsContainer (props) {
     )
 }
 function ResultCardOMDB (props) { //using OMDB api properties
-    const {movie, isSpecificList, list, listNames, handleUpdatedList} = props;
+    const {media, mediaType, isSpecificList, list, handleUpdatedList,
+            tvListNames, movieListNames} = props;
     return (
         <div className={style.resultCard}>
             <div className={style.posterContainer}>
-                {movie.i?
-                <div><img src={movie.i.imageUrl} alt="movie poster"/></div>
-                : <img src={movie.posterUrl || defaultPoster} alt={movie.title+" poster"} />
+                {media.i?
+                <div><img src={media.i.imageUrl} alt="movie poster"/></div>
+                : <img src={media.posterUrl || defaultPoster} alt={media.title+" poster"} />
                 }
             </div>
             <div className={style.movieInfoContainer}>
-                <h1 className={style.movieTitle}>{movie.l}</h1>
-                <p className={style.actors}>{movie.s}</p>
-                <p className={style.releaseDate}>{movie.y}</p>
+                <h1 className={style.movieTitle}>{media.l}</h1>
+                <p className={style.actors}>{media.s}</p>
+                <p className={style.releaseDate}>{media.y}</p>
             </div>
             <div className={style.actionContainer}>
                 {isSpecificList?
                     <SpecificListAction 
-                        imdbID={movie.id} 
+                        imdbID={media.id}
                         list={list}
                         /> 
                     : <NonSpecificListAction 
-                        imdbID={movie.id} 
-                        listNames={listNames}
+                        imdbID={media.id}
+                        tvListNames={tvListNames}
+                        movieListNames={movieListNames}
                         handleUpdatedList={handleUpdatedList}
+                        mediaType={mediaType}
                         />
                 }
             </div>
         </div>
     )
 }
-function SpecificListAction (props) {
+function SpecificListAction () {
     return null
 }
 function NonSpecificListAction (props) {
-    const {listNames, imdbID, handleUpdatedList} = props;
+    const {imdbID, handleUpdatedList, mediaType,
+            tvListNames, movieListNames} = props;
     const [useActionActivity, setActionActivityStatus] = useState(false);
     const formik = useFormik({
         initialValues: {
             toWatchNotes: ""
         },
-        onSubmit: values => {return}
+        onSubmit: () => {}
     })
     // Too many server/db calls
     // useEffect(() => {
-    //     fetchFromApi(`usermovies/${imdbID}`)
-    //         .then(userMovie => {
-    //             formik.values.toWatchNotes = userMovie.toWatchNotes;
+    //     fetchFromApi(`userMovies/${imdbID}`)
+    //         .then(userMedia => {
+    //             formik.values.toWatchNotes = userMedia.toWatchNotes;
     //         })
     //         .catch(err => null);
     // }, [imdbID]);
-    const handleAddToList = (listCategory, listName) => {
-        return async (e) => {
-            const response = await postToApi(
-                formik.values, 
-                `/api/lists/${listCategory}/${listName}/${imdbID}`);
-            if (response.success) {
-                window.alert("Movie added to list");
-                handleUpdatedList(listCategory);
-                handleActivityClose();
-            }
-            if (!response.success) window.alert("Unable to add movie to list. "+response.err);
+    const handleAddToList = async (listCategory, listID) => {
+        const media = mediaType === 'tv' ? 'Tv Show' : 'Movie';
+        try {
+            await putOrPostToApi(
+                formik.values,
+                `lists/${listCategory}/${listID}/${imdbID}`,
+                'post');
+            window.alert(`${media} added to list`);
+            handleUpdatedList(listCategory);
+            handleActivityClose();
+        } catch (err) {
+            window.alert(`Unable to add ${media} to list. ` + err);
         }
     }
     const handleActivityOpen = () => {
@@ -183,14 +210,20 @@ function NonSpecificListAction (props) {
     const handleActivityClose = () => {
         setActionActivityStatus(false);
     }
-    
+    const handleSelection = (list, listCategory) => {
+        handleAddToList(listCategory, list._id)
+            .catch(err => console.log(err));
+    }
     return (
         <div className={style.nonSpecificAction}>
             <button onClick={handleActivityOpen}>Add to a list</button>
             {
                 <PopUpActivity 
                     useActivity={useActionActivity}
-                    closeButton={<CloseActivityButton className={style.actionButton} {...{handleActivityClose}}/>}
+                    closeButton={<CloseActivityButton
+                        className={style.actionButton}
+                        handleActivityClose={handleActivityClose}
+                        />}
                     >
                     <div className={style.allListsContainer}>
                         <div className={style.addToWatchNotes}>
@@ -198,7 +231,9 @@ function NonSpecificListAction (props) {
                                 isCollapsed={true} 
                                 cardHeader={
                                     <div className={style.userNotesLabel}>
-                                        <label htmlFor="toWatchNotes">Expand to add Watch Notes,</label>
+                                        <label htmlFor="toWatchNotes">
+                                            Expand to add Watch Notes,
+                                        </label>
                                         <p>then select a list</p>
                                     </div>
                                 }
@@ -207,47 +242,20 @@ function NonSpecificListAction (props) {
                                 <textarea
                                 id="toWatchNotes"
                                 name="toWatchNotes"
-                                type="text"
                                 onChange={formik.handleChange}
                                 onSubmit={formik.handleSubmit}
                                 value={formik.values.toWatchNotes}
                             />
                             </CollapsibleCard>
                         </div>
-                        <ul>
-                            To Watch
-                            {listNames.toWatchLists.length===0?
-                            <p>-</p>
-                            :listNames.toWatchLists.map(list => (
-                                <li key={list._id}>
-                                    <button onClick={handleAddToList('towatch', list.name)}>
-                                    {list.name}
-                                    </button>
-                                </li>
-                            ))}
-                            <br />
-                            Others
-                            {listNames.otherLists.length===0?
-                            <p>-</p>
-                            :listNames.otherLists.map(list => (
-                                <li key={list._id}>
-                                    <button onClick={handleAddToList('other', list.name)}>
-                                        {list.name}
-                                    </button>
-                                </li>
-                            ))}
-                            <br />
-                            Ranked
-                            {listNames.rankedLists.length===0?
-                            <p>-</p>
-                            :listNames.rankedLists.map(list => (
-                                <li key={list._id}>
-                                    <button onClick={handleAddToList('ranked', list.name)}>
-                                    {list.name}
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
+                        <ListSelector
+                            showTv={mediaType === 'tv'}
+                            showMovies={mediaType === 'movies'}
+                            actionIcon={<MdAddCircleOutline />}
+                            handleSelection={handleSelection}
+                            tvListNames={tvListNames.toWatchListsTv}
+                            movieListNames={movieListNames.toWatchLists}
+                        />
                     </div>
             </PopUpActivity>
             }

@@ -9,7 +9,6 @@ import LoginForm from './pages/login';
 import Dashboard from './pages/dashboard';
 import Account from './pages/account';
 
-import AppHeader from './components/app-header';
 import {NavBar, NavBarNoUser} from './components/navbar';
 
 import {checkForUser} from './helpers/common';
@@ -20,7 +19,7 @@ function MyMediaApp() {
   useEffect(() => {checkForUser(setUser, setUserCheckDone)}, [])
   if (!isUserCheckDone) return null;
   return (
-    <div className="App" id="App" tabIndex="-1" style={{outline: "none"}}>
+    <div className="App" id="App">
       <Router>
         {user ? <NavBar /> : <NavBarNoUser />}
         <Switch>

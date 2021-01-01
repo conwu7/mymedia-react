@@ -1,67 +1,37 @@
 .navbar {
-    display: flex;
-    position: fixed;
+    position: -webkit-sticky;
+    position: sticky;
     top: 0;
     width: 100%;
-    justify-content: center;
-    align-items: center;
-    list-style: none;
-    background-color: darkslategray;
+    color: darkslategray;
+    box-shadow: 0 0 8px 1px rgba(32,33,36,.28);
+    background-color: white;
     z-index: 999;
-    font-family: Raleway, sans-serif;
 
+    ul {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        list-style: none;
+    }
+    .appName {
+        width: 100%;
+        text-align: left;
+        font-family: 'Righteous', serif;
+        font-size: 1.2em;
+    }
     li {
         margin: 15px 20px;
-        cursor: pointer;
         font-weight: bold;
     }
     a, button {
         padding: 0;
         border: none;
         font-size: 1em;
-        font-weight: normal;
+        font-weight: inherit;
         text-decoration: none;
-        color: whitesmoke;
+        color: inherit;
         background-color: inherit;
-    }
-    li:nth-child(1) {
-        width: 100%;
-        text-align: left;
-    }
-    .menu {
-        position: absolute;
-        right: 0;
-        top: 0;
-        margin-top: 9px;
-        button {
-            color: lightcoral;
-            cursor: pointer;
-        }
-    }
-    .menu {
-        margin-right: 0;
-        padding: 0 10px;
-        border-bottom-left-radius: 10px;
-        color: rgba(245, 245, 245, 0.8);
-        font-weight: bold;
-        background-color: darkslategray;
-        box-shadow: 0 0 2px -2px rgba(32,33,36,.28);
-
-        button {
-            width: 100%;
-            display: block;
-            text-align: right;
-            font-weight: bold;
-        }
-        svg {
-            transform: scale(1.3, 1);
-        }
-        .menuItemsContainer {
-            padding: 30px 0px 0px;
-        }
-        .menuItemsContainer * {
-            font-size: 1em;
-            padding: 20px 5px 15px;
-        }
     }
 }

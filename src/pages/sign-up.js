@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import {useFormik} from 'formik';
 import style from '../stylesheets/pages/sign-up.module.scss';
-import {postToApi} from '../helpers/common';
+import {putOrPostToApi} from '../helpers/common';
 
 export default function SignUpForm (props) {
     const [isFormSubmitted, setFormSubmitted] = useState(false);
@@ -14,12 +14,13 @@ export default function SignUpForm (props) {
             password: '',
         },
         onSubmit: async values => {
-            if (isFormSubmitted) return;
-            setFormSubmitted(true);
-            const response = await postToApi(values, '/api/signup');
-            if (response.success) return window.location.reload();
-            if (response.err) {
-                setServerError(response.err);
+            try {
+                if (isFormSubmitted) return;
+                setFormSubmitted(true);
+                await putOrPostToApi(values, 'signup', 'post');
+                window.location.reload();
+            } catch (err) {
+                setServerError(err);
                 setFormSubmitted(false);
             }
         }
@@ -28,7 +29,6 @@ export default function SignUpForm (props) {
     return (
         <div className={style.signUpPage}>
             <form onSubmit={formik.handleSubmit} className={style.signUpForm}>
-                <h1>SIGN UP FORM</h1>
                 <fieldset>
                     <label htmlFor="username">Username</label>
                     <input
