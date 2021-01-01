@@ -1,0 +1,120 @@
+.editUserMediaContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+.posterAndTitleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mediaPosterContainer {
+  width: 30%;
+  padding: 10px;
+}
+.mediaTitleContainer {
+  width: 45%;
+  padding: 15px;
+}
+.mediaPoster {
+  width: 120px;
+  height: auto;
+}
+.mediaTitle {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.form>div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  padding: 15px 10px;
+  margin: 10px auto;
+  border-radius: 10px;
+  background-color: whitesmoke;
+}
+
+.toWatchNotes, .reviewNotes {
+  div {
+    width: 100%;
+  }
+}
+.watchStatusButtons {
+  display: inline-flex;
+  width: 50%;
+  margin: auto;
+  justify-content: space-evenly;
+
+  button {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    svg {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      transition: all 250ms linear;
+      fill: white;
+    }
+  }
+  button.notWatched svg {
+    stroke-width: 3;
+    fill: red;
+  }
+  button.watched svg {
+    stroke-width: 3;
+    fill: green;
+  }
+}
+
+.ratingStars {
+  display: flex;
+  margin: auto;
+  padding: 10px 0;
+  button {
+    border: none;
+    padding: 1px;
+    background-color: transparent;
+  }
+  svg {
+    width: 23px;
+    height: 23px;
+    transition: all 250ms linear;
+    fill: white;
+  }
+  .shadedStars svg {
+    fill: green;
+}
+
+}
+.editUserMediaContainer {
+  label, input, textarea {
+    margin: 10px auto;
+    outline: none;
+  }
+  textarea {
+    display: block;
+    border: 2px solid lightgray;
+    border-radius: 10px;
+    height: 150px;
+    width: 80%;
+    font-size: 1.05em;
+    font-family: inherit;
+  }
+}
+.saveChanges {
+  display: block;
+  width: fit-content;
+  text-align: center;
+  border: 2px solid gray;
+  border-radius: 10px;
+  padding: 10px 50px;
+  margin: 20px auto 10px;
+  background-color: whitesmoke;
+  font-size: 1em;
+  font-weight: bold;
+  text-decoration: none;
+  color: cadetblue;
+}

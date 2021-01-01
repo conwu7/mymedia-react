@@ -1,0 +1,27 @@
+$buttonBorder: 2px solid rgba(208, 208, 208, 0.2);
+
+.listCategory {
+  margin: 10px;
+  font-size: 1.1em;
+}
+button.listButton:nth-child(1) {
+  border-top: $buttonBorder;
+}
+button.listButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: none;
+  border-top: $buttonBorder;
+  border-bottom: $buttonBorder;
+  border-radius: 10px;
+  text-align: left;
+  background-color: whitesmoke;
+
+  svg {
+    font-weight: bold;
+    height: 20px;
+    width: 20px;
+  }
+}
