@@ -1,0 +1,10 @@
+.errorDiv {
+    width: 100%;
+    color: firebrick;
+    margin: 10px 2px 15px;
+    text-align: center;
+    transition: all 200ms ease-out;
+}
+.errorDiv:empty {
+    margin: 0;
+}

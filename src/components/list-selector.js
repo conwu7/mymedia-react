@@ -1,5 +1,6 @@
 import { MdRadioButtonUnchecked } from 'react-icons/md';
 import style from '../stylesheets/components/list-selector.module.scss';
+import listStyle from '../stylesheets/components/list-button.module.scss';
 
 export default function ListSelector (props) {
     const {showTv, showMovies, handleSelection, actionIcon,
@@ -12,7 +13,7 @@ export default function ListSelector (props) {
         <section>
             {
                 showMovies &&
-                <div>
+                <div className={listStyle.container}>
                     <p className={style.listCategory}>MOVIES</p>
                     {movieListNames.map(list => (
                         <button
@@ -29,14 +30,14 @@ export default function ListSelector (props) {
             }
             {
                 showTv &&
-                    <div>
+                    <div className={listStyle.container}>
                         <p className={style.listCategory}>TV SHOWS</p>
                         {tvListNames.map(list => (
                             <button
                                 key={list._id}
                                 type="button"
                                 onClick={handleClick(list, 'towatchtv')}
-                                className={style.listButton}
+                                // className={style.listButton}
                             >
                                 <span>{list.name}</span>
                                 {icon}

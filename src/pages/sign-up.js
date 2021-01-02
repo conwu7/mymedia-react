@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
-import {Redirect} from 'react-router-dom';
-import {useFormik} from 'formik';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
+import { useFormik } from 'formik';
 import style from '../stylesheets/pages/sign-up.module.scss';
-import {putOrPostToApi} from '../helpers/common';
+import { putOrPostToApi } from '../helpers/common';
+import { SignUpSchema } from "../helpers/validation";
 
 export default function SignUpForm (props) {
     const [isFormSubmitted, setFormSubmitted] = useState(false);
@@ -13,6 +14,7 @@ export default function SignUpForm (props) {
             email: '', 
             password: '',
         },
+        validationSchema: SignUpSchema,
         onSubmit: async values => {
             try {
                 if (isFormSubmitted) return;
@@ -36,10 +38,13 @@ export default function SignUpForm (props) {
                         name="username"
                         type="text"
                         onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         value={formik.values.username}
                     />
+                    <div className="errorDiv">
+                        {formik.touched.username && formik.errors.username}
+                    </div>
                 </fieldset>
-                <div>{formik.errors.username}</div>
                 <fieldset>
                     <label htmlFor="email">Email</label>
                     <input
@@ -47,10 +52,13 @@ export default function SignUpForm (props) {
                         name="email"
                         type="email"
                         onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         value={formik.values.email}
                     />
+                    <div className="errorDiv">
+                        {formik.touched.email && formik.errors.email}
+                    </div>
                 </fieldset>
-                <div>{formik.errors.email}</div>
                 <fieldset>
                     <label htmlFor="password">Password</label>
                     <input
@@ -58,12 +66,15 @@ export default function SignUpForm (props) {
                         name="password"
                         type="password"
                         onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         value={formik.values.password}
                     />
+                    <div className="errorDiv">
+                        {formik.touched.password && formik.errors.password}
+                    </div>
                 </fieldset>
-                <div>{formik.errors.password}</div>
                 <button type="submit">Submit</button>
-                <div>{serverError}</div>
+                <div className="errorDiv">{serverError}</div>
             </form>
         </div>
     );

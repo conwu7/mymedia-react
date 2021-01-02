@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
-import {Redirect} from 'react-router-dom';
-import {useFormik} from 'formik';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
+import { useFormik } from 'formik';
 import style from '../stylesheets/pages/sign-up.module.scss';
-import {putOrPostToApi} from '../helpers/common';
+import { putOrPostToApi } from '../helpers/common';
+import { LoginSchema } from '../helpers/validation'
+
 
 export default function LoginForm (props) {
     const [isFormSubmitted, setFormSubmitted] = useState(false);
@@ -12,11 +14,12 @@ export default function LoginForm (props) {
             username: '',
             password: '',
         },
+        validationSchema: LoginSchema,
         onSubmit: async values => {
             try {
                 if (isFormSubmitted) return;
                 setFormSubmitted(true);
-                const response = await putOrPostToApi(values, "login", 'post');
+                await putOrPostToApi(values, "login", 'post');
                 window.location.reload()
             } catch (err) {
                 setServerError(err);
@@ -37,8 +40,9 @@ export default function LoginForm (props) {
                         onChange={formik.handleChange}
                         value={formik.values.username}
                     />
+                    <div className="errorDiv">{formik.errors.username}</div>
                 </fieldset>
-                <div>{formik.errors.username}</div>
+
                 <fieldset>
                     <label htmlFor="password">Password</label>
                     <input
@@ -49,7 +53,6 @@ export default function LoginForm (props) {
                         value={formik.values.password}
                     />
                 </fieldset>
-                <div>{formik.errors.password}</div>
                 <button type="submit">Submit</button>
                 <div>{serverError}</div>
             </form>

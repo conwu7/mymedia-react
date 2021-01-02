@@ -1,18 +1,20 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { fetchOrDeleteFromApi, putOrPostToApi } from "../helpers/common";
+import React, { useState } from "react";
+import { putOrPostToApi } from "../helpers/common";
 import { HiOutlineSortAscending } from 'react-icons/hi';
 import { RiEditLine, RiLogoutCircleLine, RiDeleteBin2Line, RiEditBoxLine } from 'react-icons/ri';
 import style from "../stylesheets/pages/settings.module.scss";
 import { PopUpActivity } from "../components/common";
 import {EditList, NewList} from "../components/settings/new-edit-list";
 import DeleteList from "../components/settings/delete-list";
-
+import SortPreferences from "../components/settings/sort-preferences";
 
 export default function Settings (props) {
     const [creatingNewList, setCreatingNewList] = useState(false);
     const [editingList, setEditingList] = useState(false);
     const [deletingList, setDeletingList] = useState(false);
-    const {refreshList, tvListNames, movieListNames} = props;
+    const [modifyingSortPref, setModifyingSortPref] = useState(false);
+    const {refreshList, tvListNames, movieListNames, updateUser,
+            listPref, mediaPref, setListPref, setMediaPref} = props;
     const handleLogout = async () => {
         try {
             if (!window.confirm("Are you sure you want to logout?")) return
@@ -40,6 +42,12 @@ export default function Settings (props) {
     const handleCloseDeleteList = () => {
         setDeletingList(false);
     }
+    const handleOpenModifySortPref = () => {
+        setModifyingSortPref(true);
+    }
+    const handleCloseModifySortPref = () => {
+        setModifyingSortPref(false);
+    }
     return (
         <div className={style.settingsContainer}>
             <button
@@ -65,7 +73,7 @@ export default function Settings (props) {
             </button>
             <button
                 className={style.mainLinks}
-                onClick={undefined}
+                onClick={handleOpenModifySortPref}
             >
                 <span>Sort Preferences</span>
                 <HiOutlineSortAscending />
@@ -109,6 +117,20 @@ export default function Settings (props) {
                     movieListNames={movieListNames}
                     tvListNames={tvListNames}
                     handleActivityClose={handleCloseDeleteList}
+                />
+            </PopUpActivity>
+            <PopUpActivity
+                // SORT PREFERENCES
+                useActivity={modifyingSortPref}
+                handleActivityClose={handleCloseModifySortPref}
+            >
+                <SortPreferences
+                    listPref={listPref}
+                    mediaPref={mediaPref}
+                    setListPref={setListPref}
+                    setMediaPref={setMediaPref}
+                    updateUser={updateUser}
+                    handleActivityClose={handleCloseModifySortPref}
                 />
             </PopUpActivity>
         </div>

@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import { Redirect, useHistory, useLocation } from 'react-router-dom';
 import { BiCameraMovie } from 'react-icons/bi';
-import { RiMovie2Line, RiSettings3Line } from 'react-icons/ri';
+import { RiMovie2Line, RiMenu5Line } from 'react-icons/ri';
 
 import ListTypesContainer from '../components/list-types-container';
 import SearchForMedia from '../components/search';
@@ -13,9 +12,8 @@ import selectorStyle from '../stylesheets/components/list-types-selector.module.
 
 import {getCategories, fetchOrDeleteFromApi } from '../helpers/common';
 
-
 export default function Dashboard (props) {
-    const {user} = props;
+    const {user, updateUser, mediaPref, listPref, setListPref, setMediaPref} = props;
     const [useSearch, setSearchStatus] = useState(false);
     const [blockAppOverflow, setBlockAppOverflow] = useState(false);
     const [allLists, setAllLists] = useState({});
@@ -23,19 +21,12 @@ export default function Dashboard (props) {
     const [movieListNames, setMovieListNames] = useState([]);
     const [tvListNames, setTvListNames] = useState([]);
     const [showSettings, setShowSettings] = useState(false);
-    // set ranked or pull in path list
-    let defaultList = 'towatch';
     const categories = getCategories();
-    const location = useLocation();
-    const history = useHistory();
-    const paths = location.pathname.split('/')
-    if (paths[1]==='dashboard'&&paths[2]==='lists'&&paths.length===4) {
-        defaultList = paths[3];
-    }
-    const [listCategory, setListCategory] = useState(defaultList);
+    const [listCategory, setListCategory] = useState('towatch');
     useEffect(() => {
+        if (!user) return
         document.title = `MyMedia - ${categories[listCategory]}`
-    }, [listCategory, categories]);
+    }, [listCategory, categories, user]);
     useEffect(() => {
         if (!useSearch) {
             document.getElementById("App").focus();
@@ -48,7 +39,7 @@ export default function Dashboard (props) {
         } else {
             App.style.overflow="auto";
         }
-    }, [blockAppOverflow])
+    }, [blockAppOverflow]);
     const refreshListNames = useCallback(
         async function refreshListNames () {
             if (!user) return
@@ -65,12 +56,9 @@ export default function Dashboard (props) {
         refreshListNames()
             .catch(err => console.log(err));
     }, [refreshListNames]);
-    if (!paths[2] || !paths[3]) return (<Redirect to={`/dashboard/lists/${listCategory}`}/>);
-    //
     const handleCategoryChange = (newCategory) => {
         if (newCategory === listCategory) return
         setListCategory(newCategory);
-        history.push(`/dashboard/lists/${newCategory}`);
         document.title = ` - ${newCategory}`;
     }
     const handleActivityOpen = () => {
@@ -93,7 +81,9 @@ export default function Dashboard (props) {
         if (updatingLists) return
         setUpdatingLists(true);
         return fetchOrDeleteFromApi(`lists/${listCategory}`, 'get')
-        .then(lists => setAllLists({...allLists, [listCategory]: lists}))
+        .then(lists => {
+            setAllLists({...allLists, [listCategory]: lists})
+        })
         .catch(err => console.log(err))
         .finally(() => {setUpdatingLists(false)});
     };
@@ -144,6 +134,11 @@ export default function Dashboard (props) {
                             refreshList={handleUpdatedList}
                             tvListNames={tvListNames}
                             movieListNames={movieListNames}
+                            listPref={listPref}
+                            mediaPref={mediaPref}
+                            setListPref={setListPref}
+                            setMediaPref={setMediaPref}
+                            updateUser={updateUser}
                         />
                     </PopUpActivity>
                 }
@@ -151,6 +146,8 @@ export default function Dashboard (props) {
                     listCategory={listCategory}
                     categories={categories}
                     allLists={allLists}
+                    listPref={listPref}
+                    mediaPref={mediaPref}
                     getLists={getLists}
                     refreshList={handleUpdatedList}
                     setBlockAppOverflow={setBlockAppOverflow}
@@ -197,12 +194,12 @@ function ListTypesSelector (props) {
                     onClick={handleOpenSettings}
                     >
                     <div className={selectorStyle.imageContainer}>
-                        <RiSettings3Line />
+                        <RiMenu5Line />
                     </div>
-                    <div>Settings</div>
+                    <div>Menu</div>
                 </button>
             </div>
-            <div className={selectorStyle.raiseOnFullscreen}></div>
+            <div className={selectorStyle.raiseOnFullscreen} />
         </div>
     )
 }

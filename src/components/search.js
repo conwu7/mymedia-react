@@ -6,6 +6,7 @@ import ListSelector from "./list-selector";
 import style from '../stylesheets/components/search.module.scss';
 
 import { fetchOrDeleteFromApi, putOrPostToApi } from '../helpers/common';
+import { SearchSchema, UserMediaSchema } from "../helpers/validation";
 
 import { AiOutlineLoading } from 'react-icons/ai';
 import { MdAddCircleOutline } from 'react-icons/md';
@@ -82,23 +83,26 @@ function SearchBar (props) {
         initialValues: {
             searchString
         },
-        onSubmit: () => {
-            handleSearch();
-        },
-        validate: (values) => {
-            setSearchString(values.searchString);
-        }
+        validationSchema: SearchSchema,
+        validate: (values) => setSearchString(values.searchString),
+        onSubmit: (values) => handleSearch(),
     });
     return (
-        <CenteredSearchBar 
+        <React.Fragment>
+            <CenteredSearchBar
             inputName="searchString"
             type="text"
             onChange={formik.handleChange}
+            blur={formik.handleBlur}
             value={formik.values.searchString}
             onSubmit={formik.handleSubmit}
             showSearchButton={true}
             disabled={!useActivity}
-        />
+            />
+            <div className="errorDiv">
+                {formik.touched.searchString && formik.errors.searchString}
+            </div>
+        </React.Fragment>
     )
 }
 function SearchResultsContainer (props) {
@@ -180,6 +184,7 @@ function NonSpecificListAction (props) {
         initialValues: {
             toWatchNotes: ""
         },
+        validationSchema: UserMediaSchema,
         onSubmit: () => {}
     })
     // Too many server/db calls
@@ -191,6 +196,7 @@ function NonSpecificListAction (props) {
     //         .catch(err => null);
     // }, [imdbID]);
     const handleAddToList = async (listCategory, listID) => {
+        if (formik.errors.toWatchNotes) return
         const media = mediaType === 'tv' ? 'Tv Show' : 'Movie';
         try {
             await putOrPostToApi(
@@ -243,10 +249,14 @@ function NonSpecificListAction (props) {
                                 id="toWatchNotes"
                                 name="toWatchNotes"
                                 onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
                                 onSubmit={formik.handleSubmit}
                                 value={formik.values.toWatchNotes}
-                            />
+                                />
                             </CollapsibleCard>
+                            <div className="errorDiv">
+                                {formik.touched.toWatchNotes && formik.errors.toWatchNotes}
+                            </div>
                         </div>
                         <ListSelector
                             showTv={mediaType === 'tv'}

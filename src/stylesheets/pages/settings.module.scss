@@ -1,20 +1,18 @@
+$buttonBorder: 2px solid rgba(208, 208, 208, 0.2);
+
 .settingsContainer {
   padding: 10px;
   border-radius: 10px;
   background-color: white;
 
-  $buttonBorder: 2px solid rgba(208, 208, 208, 0.2);
-
-  &>*:nth-child(1) {
-    border-top: $buttonBorder;
-  }
   button.mainLinks {
     display: flex;
     justify-content: space-between;
     width: 100%;
     margin: 10px auto;
     padding: 20px 10px;
-    border: none;
+    border-left: none;
+    border-right: none;
     border-top: $buttonBorder;
     border-bottom: $buttonBorder;
     border-radius: 10px;
@@ -30,11 +28,14 @@
       width: 30px;
     }
   }
-  button.logout, button.deleteList {
+  button.deleteList {
+    color: indianred;
+  }
+  button.logout {
     color: firebrick;
   }
 }
-.deleteContainer, .editContainer {
+.deleteContainer, .editContainer, .sortPrefContainer {
   background-color: white;
   padding: 10px;
   text-align: center;
@@ -50,6 +51,26 @@
 .deleteContainer {
   svg {
     color: firebrick;
+  }
+}
+.sortPrefContainer {
+  .saveSort {
+    width: 50%;
+    justify-content: center;
+    margin: 20px auto;
+    border: 2px solid gray;
+    padding: 10px 50px;
+    font-weight: bold;
+    font-size: 1em;
+    color: cadetblue;
+    background-color: white;
+  }
+  .selected {
+    border: 10px solid inherit;
+  }
+  .sortCategory {
+    margin: 10px;
+    font-size: 1.1em;
   }
 }
 .newListForm {
@@ -68,12 +89,12 @@
     display: inline-block;
     padding: 0 10px;
     font-size: 0.8em;
-    width: 120px;
+    width: 35%;
   }
   select, input, textarea {
     box-sizing: border-box;
     height: 50px;
-    width: 170px;
+    width: 60%;
     border: 1px solid gray;
     border-radius: 10px;
     font-size: 0.8em;

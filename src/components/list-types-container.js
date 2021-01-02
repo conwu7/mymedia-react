@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Switch, useRouteMatch, useLocation } from 'react-router-dom';
 import { useTransition, animated } from 'react-spring';
 
 import {CollapsibleCard, PopUpActivity} from './common';
@@ -11,15 +10,14 @@ import listContainerStyle from '../stylesheets/components/list-container.module.
 import userMovieStyle from '../stylesheets/components/user-movie.module.scss';
 
 import defaultPoster from '../images/default-poster.png';
-import { fetchOrDeleteFromApi } from '../helpers/common';
+import { fetchOrDeleteFromApi, sortLists } from '../helpers/common';
 
 export default function ListTypesContainer (props) {
-    const {categories, allLists, getLists, refreshList, setBlockAppOverflow} = props;
-    let {path} = useRouteMatch();
-    const location = useLocation();
+    const {allLists, getLists, refreshList, setBlockAppOverflow,
+            listPref, mediaPref, listCategory} = props;
     const transitions = useTransition(
-        location,
-        location => location.pathname,
+        listCategory,
+        listCategory,
         {
             from: {
                 position: 'absolute',
@@ -50,28 +48,37 @@ export default function ListTypesContainer (props) {
     return (
         <React.Fragment>
             {transitions.map(({item, props, key}) => (
+                item==='towatch' &&
                 <animated.div
                     key={key}
                     style={props}
                 >
-                    <Switch location={item}>
-                        {/* <ListContainer /> */}
-
-                        {categories.map(category => (
-                            <Route
-                                key={category.name}
-                                path={path + '/lists/' + category.name}
-                            >
-                                <AllListsContainer
-                                    allLists={allLists}
-                                    getLists={getLists}
-                                    listCategory={category.name}
-                                    refreshList={refreshList}
-                                    handleEditUserMedia={handleOpenEditMedia}
-                                />
-                            </Route>
-                        ))}
-                    </Switch>
+                    <AllListsContainer
+                        allLists={allLists}
+                        listPref={listPref}
+                        mediaPref={mediaPref}
+                        getLists={getLists}
+                        listCategory={'towatch'}
+                        refreshList={refreshList}
+                        handleEditUserMedia={handleOpenEditMedia}
+                    />
+                </animated.div>
+            ))}
+            {transitions.map(({item, props, key}) => (
+                item==='towatchtv' &&
+                <animated.div
+                    key={key}
+                    style={props}
+                >
+                    <AllListsContainer
+                        allLists={allLists}
+                        listPref={listPref}
+                        mediaPref={mediaPref}
+                        getLists={getLists}
+                        listCategory={'towatchtv'}
+                        refreshList={refreshList}
+                        handleEditUserMedia={handleOpenEditMedia}
+                    />
                 </animated.div>
             ))}
             <PopUpActivity
@@ -89,16 +96,20 @@ export default function ListTypesContainer (props) {
     )
 }
 function AllListsContainer (props) {
-    const {listCategory, allLists, getLists, refreshList, handleEditUserMedia} = props;
+    const {listCategory, allLists, getLists, refreshList, handleEditUserMedia,
+            listPref, mediaPref} = props;
     useEffect(() => {
-        if (typeof allLists[listCategory] === 'undefined') {
-            getLists(listCategory);
+        if (typeof allLists['towatch'] === 'undefined') {
+            getLists('towatch');
         }
-    }, [listCategory, getLists, allLists]);
+        if (typeof allLists['towatchtv'] === 'undefined') {
+            getLists('towatchtv');
+        }
+    }, [getLists, allLists]);
     return (
         <div className={listContainerStyle.allListsContainer}>
-            <SortSettings />
-            {allLists[listCategory] && allLists[listCategory].map((list, index) => (
+            {allLists[listCategory] &&
+            sortLists(allLists[listCategory], listPref, mediaPref).map((list, index) => (
                 <ListContainer 
                     key={list.name} 
                     list={list}
@@ -111,9 +122,6 @@ function AllListsContainer (props) {
         </div>
     )
 }
-function SortSettings (props) {
-    return null
-}
 function ListContainer (props) {
     const {list, listCategory, refreshList, expandByDefault, handleEditUserMedia} = props;
     return (
@@ -123,7 +131,7 @@ function ListContainer (props) {
                     skipStyleHeader={true}
                     buttonSize="largeBtn"
                     isCollapsed={!expandByDefault}
-                    disableHeaderButton={true}
+                    disableHeaderButton={false}
                 >
                     <AllUserMediaContainer
                         mediaInstants={list.mediaInstants}
@@ -140,7 +148,7 @@ function ListDetails (props) {
     const {list} = props;
     return (
         <div className={listContainerStyle.listDetails}>
-            <h1>{list.name}</h1>
+            <h1>{list.name.toLocaleUpperCase()}</h1>
             <h2>{list.description}</h2>
         </div>
     )

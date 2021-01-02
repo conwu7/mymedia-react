@@ -5,6 +5,7 @@ import defaultPoster from '../images/default-poster.png';
 import { CollapsibleCard } from "./common";
 import { FiCheckCircle, FiXCircle, FiStar } from 'react-icons/fi';
 import React, { useState } from "react";
+import { UserMediaSchema } from '../helpers/validation';
 
 export default function EditUserMedia (props) {
     const {userMedia, listCategory, handleActivityClose, refreshList} = props;
@@ -18,6 +19,7 @@ export default function EditUserMedia (props) {
             userRating: userMedia.userRating || 0,
             reviewNotes: userMedia.reviewNotes || "",
         },
+        validationSchema: UserMediaSchema,
         onSubmit: async values => {
             try {
                 await putOrPostToApi(
@@ -126,10 +128,14 @@ function UserMediaTextFields (props) {
                                     id={fieldName}
                                     name={fieldName}
                                     onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
                                     onSubmit={formik.handleSubmit}
                                     value={formik.values[fieldName]}
                                 />
             </CollapsibleCard>
+            <div className="errorDiv">
+                {formik.touched[fieldName] && formik.errors[fieldName]}
+            </div>
         </div>
     )
 }

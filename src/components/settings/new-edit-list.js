@@ -1,9 +1,10 @@
 import style from "../../stylesheets/pages/settings.module.scss";
 import { useFormik } from "formik";
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { putOrPostToApi } from "../../helpers/common";
 import ListSelector from "../list-selector";
 import { BiEditAlt } from 'react-icons/bi';
+import { ListSchema } from '../../helpers/validation';
 
 export function NewList (props) {
     const {handleActivityClose, refreshList} = props;
@@ -13,6 +14,7 @@ export function NewList (props) {
             listName: "",
             description: "",
         },
+        validationSchema: ListSchema,
         onSubmit: async values => {
             try {
                 await putOrPostToApi(
@@ -53,6 +55,7 @@ export function EditList (props) {
             listName: "",
             description: "",
         },
+        validationSchema: ListSchema,
         onSubmit: async values => {
             try {
                 await putOrPostToApi(
@@ -116,18 +119,26 @@ function ListForm (props) {
                     name="listName"
                     id="listName"
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     value={formik.values.listName}
                 />
             </fieldset>
+            <div className="errorDiv">
+                {formik.touched.listName && formik.errors.listName}
+            </div>
             <fieldset>
                 <label htmlFor="description">Description</label>
                 <textarea
                     name="description"
                     id="description"
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     value={formik.values.description}
                 />
             </fieldset>
+            <div className="errorDiv">
+                {formik.touched.description && formik.errors.description}
+            </div>
             <fieldset>
                 <button type="submit">
                     Submit
