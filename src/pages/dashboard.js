@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import { BiCameraMovie } from 'react-icons/bi';
-import { RiMovie2Line, RiMenu5Line } from 'react-icons/ri';
+import { RiMovie2Line, RiMenu5Line, RiSearchLine } from 'react-icons/ri';
 
 import ListTypesContainer from '../components/list-types-container';
 import SearchForMedia from '../components/search';
@@ -102,16 +102,17 @@ export default function Dashboard (props) {
             <div id="appDashboard" className={dashboardStyle.dashboard}>
                 <ListTypesSelector
                     handleOpenSettings={handleOpenSettings}
+                    handleOpenSearch={handleActivityOpen}
                     listCategory={listCategory}
                     handleCategoryChange={handleCategoryChange}
                     categories={categories}
                 />
-                <div className={dashboardStyle.searchButtonContainer}>
-                    <button 
-                        className={dashboardStyle.searchButton}
-                        onClick={handleActivityOpen}
-                    >Search for a {mediaType==='tv'?'Tv Show':'Movie'}</button>
-                </div>
+                {/*<div className={dashboardStyle.searchButtonContainer}>*/}
+                {/*    <button */}
+                {/*        className={dashboardStyle.searchButton}*/}
+                {/*        onClick={handleActivityOpen}*/}
+                {/*    >Search for a {mediaType==='tv'?'Tv Show':'Movie'}</button>*/}
+                {/*</div>*/}
                 {
                     <SearchForMedia
                         isSpecificList={false}
@@ -160,7 +161,7 @@ export default function Dashboard (props) {
 }
 
 function ListTypesSelector (props) {
-    const {listCategory, categories, handleOpenSettings} = props;
+    const {listCategory, categories, handleOpenSettings, handleOpenSearch} = props;
     const handleTypeChange = (listCategory) => {
         return ( () => {props.handleCategoryChange(listCategory)} );
     }
@@ -190,6 +191,14 @@ function ListTypesSelector (props) {
                         </button>
                     )
                 )}
+                <button
+                    onClick={handleOpenSearch}
+                >
+                    <div className={selectorStyle.imageContainer}>
+                        <RiSearchLine />
+                    </div>
+                    <div>Search</div>
+                </button>
                 <button
                     onClick={handleOpenSettings}
                     >

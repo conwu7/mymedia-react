@@ -202,6 +202,9 @@ function CombinedDetails (props) { //temporarily using this to mix the positions
                     <a href={`https://imdb.com/title/${media.imdbID}`} target="_blank" rel="noopener noreferrer">IMDB</a> <span>{media.imdbRating || "-"}</span>/10
                 </p>
                 <p className={userMovieStyle.releaseDate}><span>{media.releaseDate}</span></p>
+                <p className={userMovieStyle.streamingSource}>
+                    {userMedia.streamingSource && userMedia.streamingSource.toUpperCase()}
+                </p>
                 <CollapsibleCard
                     cardHeader="Watch Notes"
                     isCollapsed={true}

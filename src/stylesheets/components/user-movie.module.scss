@@ -105,6 +105,10 @@ $poster-height-desktop: 270px;
     .movieDetails>*, .userMovieDetails>* {
         margin: 5px 0;
     }
+    .streamingSource {
+        color: gray;
+        font-weight: bold;
+    }
 }
 @media only screen and (min-width: 680px) {
     .userMovie {

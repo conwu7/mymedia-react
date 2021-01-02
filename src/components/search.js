@@ -1,12 +1,12 @@
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 
-import { CenteredSearchBar,PopUpActivity, CloseActivityButton, CollapsibleCard } from './common';
+import { CenteredSearchBar,PopUpActivity, CloseActivityButton } from './common';
 import ListSelector from "./list-selector";
 import style from '../stylesheets/components/search.module.scss';
 
 import { fetchOrDeleteFromApi, putOrPostToApi } from '../helpers/common';
-import { SearchSchema, UserMediaSchema } from "../helpers/validation";
+import { SearchSchema, StreamingSchema } from "../helpers/validation";
 
 import { AiOutlineLoading } from 'react-icons/ai';
 import { MdAddCircleOutline } from 'react-icons/md';
@@ -24,11 +24,6 @@ export default function SearchForMedia (props) {
     useEffect(() => {
         return (() => {clearTimeout(focusTimeout)})
     }, [focusTimeout]);
-    useEffect(() => {
-        setSearchResults([]);
-        setSearchComplete(false);
-        setSearchString("");
-    }, [mediaType])
     const handleSearch = async () => {
         if (isSearching) return
         setSearchingStatus(true);
@@ -140,8 +135,10 @@ function SearchResultsContainer (props) {
     )
 }
 function ResultCardOMDB (props) { //using OMDB api properties
-    const {media, mediaType, isSpecificList, list, handleUpdatedList,
+    const {media, isSpecificList, list, handleUpdatedList,
             tvListNames, movieListNames} = props;
+    const mediaTypeResult = media.q === 'TV series' || media.q === 'TV mini-series'?
+                            'tv':'movies';
     return (
         <div className={style.resultCard}>
             <div className={style.posterContainer}>
@@ -152,8 +149,18 @@ function ResultCardOMDB (props) { //using OMDB api properties
             </div>
             <div className={style.movieInfoContainer}>
                 <h1 className={style.movieTitle}>{media.l}</h1>
+                <p className={style.mediaType}>
+                    {
+                        media.q==='feature'?
+                        'Movie'
+                        : (media.q==='TV series' || media.q==='TV mini-series')?
+                        'Tv Show'
+                        : 'Other'
+                    }
+                </p>
                 <p className={style.actors}>{media.s}</p>
                 <p className={style.releaseDate}>{media.y}</p>
+
             </div>
             <div className={style.actionContainer}>
                 {isSpecificList?
@@ -166,7 +173,7 @@ function ResultCardOMDB (props) { //using OMDB api properties
                         tvListNames={tvListNames}
                         movieListNames={movieListNames}
                         handleUpdatedList={handleUpdatedList}
-                        mediaType={mediaType}
+                        mediaType={mediaTypeResult}
                         />
                 }
             </div>
@@ -182,10 +189,10 @@ function NonSpecificListAction (props) {
     const [useActionActivity, setActionActivityStatus] = useState(false);
     const formik = useFormik({
         initialValues: {
-            toWatchNotes: ""
+            streamingSource: ""
         },
-        validationSchema: UserMediaSchema,
-        onSubmit: () => {}
+        onSubmit: () => {},
+        validationSchema: StreamingSchema,
     })
     // Too many server/db calls
     // useEffect(() => {
@@ -196,7 +203,8 @@ function NonSpecificListAction (props) {
     //         .catch(err => null);
     // }, [imdbID]);
     const handleAddToList = async (listCategory, listID) => {
-        if (formik.errors.toWatchNotes) return
+        if (formik.errors.streamingSource) return
+        formik.values.streamingSource = formik.values.streamingSource.toUpperCase();
         const media = mediaType === 'tv' ? 'Tv Show' : 'Movie';
         try {
             await putOrPostToApi(
@@ -233,29 +241,50 @@ function NonSpecificListAction (props) {
                     >
                     <div className={style.allListsContainer}>
                         <div className={style.addToWatchNotes}>
-                            <CollapsibleCard 
-                                isCollapsed={true} 
-                                cardHeader={
-                                    <div className={style.userNotesLabel}>
-                                        <label htmlFor="toWatchNotes">
-                                            Expand to add Watch Notes,
-                                        </label>
-                                        <p>then select a list</p>
-                                    </div>
-                                }
-                                skipStyleHeader={true}
-                            >
-                                <textarea
-                                id="toWatchNotes"
-                                name="toWatchNotes"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                onSubmit={formik.handleSubmit}
-                                value={formik.values.toWatchNotes}
-                                />
-                            </CollapsibleCard>
+                            {/*<CollapsibleCard */}
+                            {/*    isCollapsed={true} */}
+                            {/*    cardHeader={*/}
+                            {/*        <div className={style.userNotesLabel}>*/}
+                            {/*            <label htmlFor="toWatchNotes">*/}
+                            {/*                Expand to add Watch Notes,*/}
+                            {/*            </label>*/}
+                            {/*            <p>then select a list</p>*/}
+                            {/*        </div>*/}
+                            {/*    }*/}
+                            {/*    skipStyleHeader={true}*/}
+                            {/*>*/}
+                            {/*    <textarea*/}
+                            {/*    id="toWatchNotes"*/}
+                            {/*    name="toWatchNotes"*/}
+                            {/*    onChange={formik.handleChange}*/}
+                            {/*    onBlur={formik.handleBlur}*/}
+                            {/*    onSubmit={formik.handleSubmit}*/}
+                            {/*    value={formik.values.toWatchNotes}*/}
+                            {/*    />*/}
+                            {/*</CollapsibleCard>*/}
+                            <div>
+                                <fieldset className={style.streamingSource}>
+                                    <label htmlFor="streamingSource">Streaming Source</label>
+                                    <input
+                                        name="streamingSource"
+                                        id="streamingSource"
+                                        list="streamingSources"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.streamingSource}
+                                    />
+                                    <datalist id="streamingSources">
+                                        <option value="NETFLIX"/>
+                                        <option value="HBO"/>
+                                        <option value="AMAZON"/>
+                                        <option value="DISNEY+"/>
+                                        <option value="HULU"/>
+                                        <option value="PEACOCK"/>
+                                        <option value="BUY/RENT"/>
+                                    </datalist>
+                                </fieldset>
+                            </div>
                             <div className="errorDiv">
-                                {formik.touched.toWatchNotes && formik.errors.toWatchNotes}
+                                {formik.touched.streamingSource && formik.errors.streamingSource}
                             </div>
                         </div>
                         <ListSelector

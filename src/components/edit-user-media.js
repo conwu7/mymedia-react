@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import { putOrPostToApi } from "../helpers/common";
 import style from '../stylesheets/components/edit-user-media.module.scss';
+import searchStyle from '../stylesheets/components/search.module.scss';
 import defaultPoster from '../images/default-poster.png';
 import { CollapsibleCard } from "./common";
 import { FiCheckCircle, FiXCircle, FiStar } from 'react-icons/fi';
@@ -18,6 +19,7 @@ export default function EditUserMedia (props) {
             isWatched: !!userMedia.isWatched,
             userRating: userMedia.userRating || 0,
             reviewNotes: userMedia.reviewNotes || "",
+            streamingSource: userMedia.streamingSource || "",
         },
         validationSchema: UserMediaSchema,
         onSubmit: async values => {
@@ -62,6 +64,25 @@ export default function EditUserMedia (props) {
                     className={style.form}
                     onSubmit={formik.handleSubmit}
                 >
+                    <fieldset className={searchStyle.streamingSource}>
+                        <label htmlFor="streamingSource">Streaming Source</label>
+                        <input
+                            name="streamingSource"
+                            id="streamingSource"
+                            list="streamingSources"
+                            onChange={formik.handleChange}
+                            value={formik.values.streamingSource}
+                        />
+                        <datalist id="streamingSources">
+                            <option value="NETFLIX"/>
+                            <option value="HBO"/>
+                            <option value="AMAZON"/>
+                            <option value="DISNEY+"/>
+                            <option value="HULU"/>
+                            <option value="PEACOCK"/>
+                            <option value="BUY/RENT"/>
+                        </datalist>
+                    </fieldset>
                     <UserMediaTextFields
                         formik={formik}
                         fieldName="toWatchNotes"

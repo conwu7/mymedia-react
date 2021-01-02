@@ -48,3 +48,7 @@ export const SearchSchema = Yup.object().shape({
         .min(4, 'Search with at least 4 characters')
         .required('Required')
 });
+
+export const StreamingSchema = Yup.object().shape({
+    streamingSource: Yup.string().uppercase()
+})

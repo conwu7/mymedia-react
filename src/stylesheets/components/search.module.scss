@@ -38,8 +38,12 @@
             .movieTitle {
                 font-weight: bold;
             }
-            .movieTitle, .actors, .releaseDate {
+            .movieTitle, .actors, .releaseDate, .mediaType {
                 margin: 10px 5px;
+            }
+            .mediaType {
+                text-transform: uppercase;
+                font-size: 0.7em;
             }
         }
         .actionContainer {
@@ -118,4 +122,30 @@
     background-color: white;
     border-radius: 10px;
     padding: 5px 0;
+}
+.streamingSource {
+    display: flex;
+    align-items: center;
+    margin: 10px auto;
+    justify-content: center;
+    label {
+        display: inline-block;
+        padding: 0 10px;
+        font-size: 1em;
+        width: 35%;
+    }
+    select, input {
+        box-sizing: border-box;
+        height: 50px;
+        width: 60%;
+        border: 1px solid gray;
+        border-radius: 10px;
+        font-size: 0.9em;
+        font-family: inherit;
+        padding: 0 5px;
+    }
+    input {
+        max-width: 350px;
+        margin: auto;
+    }
 }
