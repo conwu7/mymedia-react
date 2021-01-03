@@ -198,45 +198,45 @@ function CombinedDetails (props) { //temporarily using this to mix the positions
                     />
             </div>
             <h1 className={userMovieStyle.movieTitle}>{media.title}</h1>
-                <p className={userMovieStyle.imdbRating}>
-                    <a href={`https://imdb.com/title/${media.imdbID}`} target="_blank" rel="noopener noreferrer">IMDB</a> <span>{media.imdbRating || "-"}</span>/10
-                </p>
-                <p className={userMovieStyle.releaseDate}><span>{media.releaseDate}</span></p>
-                <p className={userMovieStyle.streamingSource}>
-                    {userMedia.streamingSource && userMedia.streamingSource.toUpperCase()}
-                </p>
+            <p className={userMovieStyle.streamingSource}>
+                {userMedia.streamingSource && userMedia.streamingSource.toUpperCase()}
+            </p>
+            <p className={userMovieStyle.imdbRating}>
+                <a href={`https://imdb.com/title/${media.imdbID}`} target="_blank" rel="noopener noreferrer">IMDB</a> <span>{media.imdbRating || "-"}</span>/10
+            </p>
+            <p className={userMovieStyle.releaseDate}><span>{media.releaseDate}</span></p>
+            <CollapsibleCard
+                cardHeader="Watch Notes"
+                isCollapsed={true}
+                hideButton={false}
+                collapseButton={<AiOutlineNodeExpand />}
+            >
+                <ToWatchNotes toWatchNotes={toWatchNotes}/>
+            </CollapsibleCard>
+            <CollapsibleCard
+                cardHeader="Plot"
+                isCollapsed={true}
+                hideButton={false}
+                collapseButton={<AiOutlineNodeExpand />}
+            >
+                <p>{media.plot || "-"}</p>
+            </CollapsibleCard>
+            <WatchStatus {...{isWatched}} />
+            {isWatched?
+            (
                 <CollapsibleCard
-                    cardHeader="Watch Notes"
+                    cardHeader="Your Review"
                     isCollapsed={true}
                     hideButton={false}
                     collapseButton={<AiOutlineNodeExpand />}
                 >
-                    <ToWatchNotes toWatchNotes={toWatchNotes}/>
+                    <UserNotesAndRating
+                        userRating={userRating}
+                        reviewNotes={reviewNotes}
+                    />
                 </CollapsibleCard>
-                <CollapsibleCard
-                    cardHeader="Plot"
-                    isCollapsed={true}
-                    hideButton={false}
-                    collapseButton={<AiOutlineNodeExpand />}
-                >
-                    <p>{media.plot || "-"}</p>
-                </CollapsibleCard>
-                <WatchStatus {...{isWatched}} />
-                {isWatched? 
-                (
-                    <CollapsibleCard
-                        cardHeader="Your Review"
-                        isCollapsed={true}
-                        hideButton={false}
-                        collapseButton={<AiOutlineNodeExpand />}
-                    >
-                        <UserNotesAndRating 
-                            userRating={userRating}
-                            reviewNotes={reviewNotes}
-                        />
-                    </CollapsibleCard>
-                )
-                :null}
+            )
+            :null}
         </div>
     </div>
     )
