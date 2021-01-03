@@ -9,12 +9,16 @@ import DeleteList from "../components/settings/delete-list";
 import SortPreferences from "../components/settings/sort-preferences";
 
 export default function Settings (props) {
+    // state for new list popup
     const [creatingNewList, setCreatingNewList] = useState(false);
+    // state for edit list popup
     const [editingList, setEditingList] = useState(false);
+    // state for delete list popup
     const [deletingList, setDeletingList] = useState(false);
+    // state for modify sort preferences popup
     const [modifyingSortPref, setModifyingSortPref] = useState(false);
     const {refreshList, tvListNames, movieListNames, updateUser,
-            listPref, mediaPref, setListPref, setMediaPref} = props;
+            listPref, mediaPref } = props;
     const handleLogout = async () => {
         try {
             if (!window.confirm("Are you sure you want to logout?")) return
@@ -127,8 +131,6 @@ export default function Settings (props) {
                 <SortPreferences
                     listPref={listPref}
                     mediaPref={mediaPref}
-                    setListPref={setListPref}
-                    setMediaPref={setMediaPref}
                     updateUser={updateUser}
                     handleActivityClose={handleCloseModifySortPref}
                 />

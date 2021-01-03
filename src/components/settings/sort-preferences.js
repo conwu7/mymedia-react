@@ -15,7 +15,6 @@ release+ : release date ascending. oldest to newest
 release-
  */
 
-
 export default function SortPreferences (props) {
     const {handleActivityClose, listPref, mediaPref, updateUser} = props;
     const formik = useFormik({

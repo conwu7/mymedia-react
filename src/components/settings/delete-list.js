@@ -15,6 +15,7 @@ export default function DeleteList (props) {
             window.alert('Unsuccessful - ' + err);
         }
     }
+    // after a click from the list selector component
     const handleSelection = (list, listCategory) => {
         handleDeleteList(listCategory, list.name, list._id)
             .catch(err => console.log(err));

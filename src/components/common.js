@@ -9,6 +9,7 @@ import collapsibleCardStyle from '../stylesheets/components/collapsible-card.mod
 import centeredSearchBarStyle from '../stylesheets/components/centered-search-bar.module.scss';
 import popUpActivityStyle from '../stylesheets/components/pop-up-activity.module.scss';
 
+// returns a button that closes an activity. styled by the parent.
 export function CloseActivityButton (props) {
     const {handleActivityClose, className} = props;
     return <button 
@@ -18,6 +19,11 @@ export function CloseActivityButton (props) {
                     <GrClose />
                     </button>
 }
+/*
+    Component that shows the children passed in a pop up window
+    useActivity:  bool value to have the window open or closed
+    optional : close button
+*/
 export function PopUpActivity (props) {
     const {closeButton: cButton, children, useActivity, handleActivityClose} = props;
     const transitions = useTransition(
@@ -53,12 +59,26 @@ export function PopUpActivity (props) {
             </animated.div>
     )))
 }
+/*
+    Component that shows the children passed in a collapsible card
+    cardHeader : the non collapsible section
+    optional :
+         collapse button
+         skipStyleHeader - don't style the header / divs
+         skipAllStyling,
+         buttonSize - largeBtn or undefined (default)
+         disableHeaderButton - cardHeader won't be a button. Must use collapse button to collapse.
+         hideOnFocusLost - collapse if clicked outside this card
+*/
 export function CollapsibleCard (props) {
     let {cardHeader, skipStyleHeader, buttonSize,
         hideButton, collapseButton, skipAllStyling,
         hideOnFocusLost, disableHeaderButton} = props;
+    // calculate collapsible section height. use for spring animation
     const [ref, {height}] = useMeasure();
+    // ref for collapsible section
     const cardRef = React.createRef();
+    // ref for card header - used to ignore click when using hideOnFocusLost
     const cardHeaderRef = React.createRef();
     const [isCollapsed, setCollapsedStatus] = useState(props.isCollapsed);
     const spring = useSpring({
@@ -70,8 +90,10 @@ export function CollapsibleCard (props) {
     const handleCollapse = () => {
         setCollapsedStatus(!isCollapsed);
     }
+    // Add event listeners to App if using hide on focus lost
     useEffect(() => {
-        const handleEventListeners = (e) => {
+        if (!hideOnFocusLost) return
+        function handleEventListeners (e) {
             const el = cardRef.current;
             const btn = cardHeaderRef.current;
             if ((!el.contains(e.target) && !el.isSameNode(e.target))
@@ -79,7 +101,6 @@ export function CollapsibleCard (props) {
                     setCollapsedStatus(true);
                 }
         }
-        if (!hideOnFocusLost) return
         const App = document.getElementById('App');
         App.addEventListener('click', handleEventListeners)
         return () => {
@@ -135,11 +156,14 @@ export function CollapsibleCard (props) {
         </div>
     )
 }
+// return a style input bar component
+// parent provides event handlers, input properties.
 export function CenteredSearchBar (props) {
     const {onChange, handleClick, value,
          inputName, showSearchButton, fullWidth,
          placeholder, disabled, onSubmit} = props;
     const inputRef = React.createRef();
+    // move focus to input on render
     useEffect(() => {
         inputRef.current.focus();
     }, [inputRef])

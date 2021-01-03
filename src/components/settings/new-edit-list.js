@@ -38,15 +38,15 @@ export function EditList (props) {
             tvListNames, movieListNames} = props;
     const [list, setList] = useState({});
     const [listCategory, setListCategory] = useState("");
+    // state. set to false after a list is selected. When false, form is shown
     const [showLists, setShowLists] = useState(true);
-    const [showForm, setShowForm] = useState(false);
+    // after a click from the list selector component
     const handleSelection = (list, listCategory) => {
         setList(list);
         setListCategory(listCategory);
         formik.values.typeOfList = listCategory;
         formik.values.listName = list.name;
         formik.values.description = list.description || "";
-        setShowForm(true);
         setShowLists(false);
     }
     const formik = useFormik({
@@ -84,7 +84,7 @@ export function EditList (props) {
                     />
             }
             {
-                showForm &&
+                !showLists &&
                     <ListForm
                         formik={formik}
                         disableSelectType={true}

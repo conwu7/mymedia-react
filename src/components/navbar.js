@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import React from "react";
 
 import style from '../stylesheets/components/navbar.module.scss';
 

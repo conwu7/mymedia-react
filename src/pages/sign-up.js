@@ -15,16 +15,20 @@ export default function SignUpForm (props) {
             password: '',
         },
         validationSchema: SignUpSchema,
-        onSubmit: async values => {
-            try {
-                if (isFormSubmitted) return;
-                setFormSubmitted(true);
-                await putOrPostToApi(values, 'signup', 'post');
-                window.location.reload();
-            } catch (err) {
-                setServerError(err);
-                setFormSubmitted(false);
-            }
+        onSubmit: values => {
+            if (isFormSubmitted) return;
+            setFormSubmitted(true);
+            setServerError("");
+            setTimeout(async ()=>{
+                try {
+                    await putOrPostToApi(values, 'signup', 'post');
+                    window.location.reload()
+                } catch (err) {
+                    setServerError(err);
+                } finally {
+                    setFormSubmitted(false);
+                }
+            }, 1500);
         }
     });
     if (props.user) return <Redirect to="/" />;
@@ -73,7 +77,12 @@ export default function SignUpForm (props) {
                         {formik.touched.password && formik.errors.password}
                     </div>
                 </fieldset>
-                <button type="submit">Submit</button>
+                <button
+                    type="submit"
+                    disabled={isFormSubmitted}
+                >
+                    {isFormSubmitted? "Creating your account" : "Submit"}
+                </button>
                 <div className="errorDiv">{serverError}</div>
             </form>
         </div>

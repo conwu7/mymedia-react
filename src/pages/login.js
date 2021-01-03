@@ -5,7 +5,6 @@ import style from '../stylesheets/pages/sign-up.module.scss';
 import { putOrPostToApi } from '../helpers/common';
 import { LoginSchema } from '../helpers/validation'
 
-
 export default function LoginForm (props) {
     const [isFormSubmitted, setFormSubmitted] = useState(false);
     const [serverError, setServerError] = useState("");
@@ -15,16 +14,20 @@ export default function LoginForm (props) {
             password: '',
         },
         validationSchema: LoginSchema,
-        onSubmit: async values => {
-            try {
-                if (isFormSubmitted) return;
-                setFormSubmitted(true);
-                await putOrPostToApi(values, "login", 'post');
-                window.location.reload()
-            } catch (err) {
-                setServerError(err);
-                setFormSubmitted(false);
-            }
+        onSubmit: values => {
+            if (isFormSubmitted) return;
+            setFormSubmitted(true);
+            setServerError("");
+            setTimeout(async ()=>{
+                try {
+                    await putOrPostToApi(values, "login", 'post');
+                    window.location.reload()
+                } catch (err) {
+                    setServerError(err);
+                } finally {
+                    setFormSubmitted(false);
+                }
+            }, 1500);
         }
     });
     if (props.user) return <Redirect to="/" />;
@@ -53,8 +56,13 @@ export default function LoginForm (props) {
                         value={formik.values.password}
                     />
                 </fieldset>
-                <button type="submit">Submit</button>
-                <div>{serverError}</div>
+                <button
+                    type="submit"
+                    disabled={isFormSubmitted}
+                >
+                    {isFormSubmitted? "Submitting" : "Submit"}
+                </button>
+                <div className="errorDiv">{serverError}</div>
             </form>
         </div>
     );

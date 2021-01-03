@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useTransition, animated } from 'react-spring';
+import React, { useState } from 'react';
+import { animated, useSpring } from 'react-spring';
 
 import {CollapsibleCard, PopUpActivity} from './common';
 import EditUserMedia from "./edit-user-media";
@@ -15,20 +15,28 @@ import { fetchOrDeleteFromApi, sortLists } from '../helpers/common';
 export default function ListTypesContainer (props) {
     const {allLists, getLists, refreshList, setBlockAppOverflow,
             listPref, mediaPref, listCategory} = props;
-    const transitions = useTransition(
-        listCategory,
-        listCategory,
-        {
-            from: {
-                position: 'absolute',
-                width: '100%',
-                opacity: 0,
-                transform: 'translate(100%,0)'
-            },
-            enter: {opacity: 1, transform: 'translate(0%,0)', position: 'relative'},
-            leave: {opacity: 0, transform: 'translate(0, 100%)', position: 'absolute'},
+    // movieSpring comes in from the left, tv show, from the right.
+    const movieSpring = useSpring({
+        to: {
+            position: listCategory === 'towatch' ? 'relative' : 'absolute',
+            top: listCategory === 'towatch' ? 0: 0,
+            overflow: listCategory === 'towatch' ? 'none' : 'hidden',
+            opacity: listCategory === 'towatch' ? 1 : 0,
+            transform: listCategory === 'towatch' ? 'translate(0%,0)' : 'translate(-100vw,0)',
+            height: listCategory === 'towatch' ? 'fit-content' : 0,
         }
-    );
+    })
+    const tvShowSpring = useSpring({
+        to: {
+            position: listCategory === 'towatchtv' ? 'relative' : 'absolute',
+            top: listCategory === 'towatchtv' ? 0: 0,
+            overflow: listCategory === 'towatchtv' ? 'none' : 'hidden',
+            opacity: listCategory === 'towatchtv' ? 1 : 0,
+            transform: listCategory === 'towatchtv' ? 'translate(0%,0)' : 'translate(100vw,0)',
+            height: listCategory === 'towatchtv' ? 'fit-content' : 0,
+        }
+    })
+    // state for editing user media popup
     const [editingUserMedia, setEditingUserMedia] = useState(false);
     const [userMediaToEdit, setUserMediaToEdit] = useState({});
     const [userMediaListCategory, setUserMediaListCategory] = useState("");
@@ -46,41 +54,31 @@ export default function ListTypesContainer (props) {
     }
 
     return (
-        <React.Fragment>
-            {transitions.map(({item, props, key}) => (
-                item==='towatch' &&
-                <animated.div
-                    key={key}
-                    style={props}
-                >
-                    <AllListsContainer
-                        allLists={allLists}
-                        listPref={listPref}
-                        mediaPref={mediaPref}
-                        getLists={getLists}
-                        listCategory={'towatch'}
-                        refreshList={refreshList}
-                        handleEditUserMedia={handleOpenEditMedia}
-                    />
-                </animated.div>
-            ))}
-            {transitions.map(({item, props, key}) => (
-                item==='towatchtv' &&
-                <animated.div
-                    key={key}
-                    style={props}
-                >
-                    <AllListsContainer
-                        allLists={allLists}
-                        listPref={listPref}
-                        mediaPref={mediaPref}
-                        getLists={getLists}
-                        listCategory={'towatchtv'}
-                        refreshList={refreshList}
-                        handleEditUserMedia={handleOpenEditMedia}
-                    />
-                </animated.div>
-            ))}
+        <div className={listContainerStyle.allListsContainerWrapper}>
+            <animated.div style={movieSpring}>
+                <AllListsContainer
+                    className={listContainerStyle.allListsContainer}
+                    allLists={allLists}
+                    listPref={listPref}
+                    mediaPref={mediaPref}
+                    getLists={getLists}
+                    listCategory={'towatch'}
+                    refreshList={refreshList}
+                    handleEditUserMedia={handleOpenEditMedia}
+                />
+            </animated.div>
+            <animated.div style={tvShowSpring}>
+                <AllListsContainer
+                    className={listContainerStyle.allListsContainer}
+                    allLists={allLists}
+                    listPref={listPref}
+                    mediaPref={mediaPref}
+                    getLists={getLists}
+                    listCategory={'towatchtv'}
+                    refreshList={refreshList}
+                    handleEditUserMedia={handleOpenEditMedia}
+                />
+            </animated.div>
             <PopUpActivity
                 useActivity={editingUserMedia}
                 handleActivityClose={handleCloseEditMedia}
@@ -92,22 +90,23 @@ export default function ListTypesContainer (props) {
                     handleActivityClose={handleCloseEditMedia}
                 />
             </PopUpActivity>
-        </React.Fragment>
+        </div>
     )
 }
 function AllListsContainer (props) {
-    const {listCategory, allLists, getLists, refreshList, handleEditUserMedia,
+    const {listCategory, allLists, refreshList, handleEditUserMedia,
             listPref, mediaPref} = props;
-    useEffect(() => {
-        if (typeof allLists['towatch'] === 'undefined') {
-            getLists('towatch');
-        }
-        if (typeof allLists['towatchtv'] === 'undefined') {
-            getLists('towatchtv');
-        }
-    }, [getLists, allLists]);
     return (
         <div className={listContainerStyle.allListsContainer}>
+            {
+                allLists[listCategory] && allLists[listCategory].length === 0 ?
+                    <div className={listContainerStyle.emptyLists}>
+                        <p>Your {listCategory === 'towatch' ? 'movies' : 'tv shows'} list is empty</p>
+                        <p>To create new lists, click on "Menu" on the bottom tab</p>
+                        <p>then click "Create New List"</p>
+                    </div>
+                    : undefined
+            }
             {allLists[listCategory] &&
             sortLists(allLists[listCategory], listPref, mediaPref).map((list, index) => (
                 <ListContainer 
@@ -133,6 +132,15 @@ function ListContainer (props) {
                     isCollapsed={!expandByDefault}
                     disableHeaderButton={false}
                 >
+                    {
+                        !list.mediaInstants || list.mediaInstants.length === 0 ?
+                            <div className={listContainerStyle.emptyLists}>
+                                <p>This list is empty</p>
+                                <p>To add a {listCategory === 'towatch' ? 'movie' : 'tv show'},</p>
+                                <p>Search for one then click "add to list" on a result</p>
+                            </div>
+                            : undefined
+                    }
                     <AllUserMediaContainer
                         mediaInstants={list.mediaInstants}
                         listCategory={listCategory}

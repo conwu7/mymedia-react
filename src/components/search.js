@@ -80,7 +80,7 @@ function SearchBar (props) {
         },
         validationSchema: SearchSchema,
         validate: (values) => setSearchString(values.searchString),
-        onSubmit: (values) => handleSearch(),
+        onSubmit: () => handleSearch(),
     });
     return (
         <React.Fragment>
@@ -102,34 +102,35 @@ function SearchBar (props) {
 }
 function SearchResultsContainer (props) {
     const resultsRef = React.createRef();
-    const {searchResults, isSpecificList, handleUpdatedList,
-            isSearchComplete, isSearching, mediaType,
-            movieListNames, tvListNames} = props;
+    const {
+        searchResults, isSpecificList, handleUpdatedList,
+        isSearchComplete, isSearching, mediaType,
+        movieListNames, tvListNames
+    } = props;
     let searchError = props.searchError || "No Result";
     return (
         <div
-            className={style.searchResultsContainer}
             tabIndex="1"
             style={{outline: "none"}}
             ref={resultsRef}
         >
-            {isSearching?
-                <div className={style.loading}><AiOutlineLoading /></div>
-                : !isSearchComplete? 
-                "Press Enter or click Search!"
-                : searchResults.length===0? 
-                searchError
-                : searchResults.map(media => (
-                    <ResultCardOMDB 
-                        key={media.id}
-                        media={media}
-                        mediaType={mediaType}
-                        isSpecificList={isSpecificList}
-                        tvListNames={tvListNames}
-                        movieListNames={movieListNames}
-                        handleUpdatedList={handleUpdatedList}
-                        />
-                    ))
+            {isSearching ?
+                <div className={style.loading}><AiOutlineLoading/></div>
+                : !isSearchComplete ?
+                    <p className={style.notSearchedYet}>Press Enter or click Search!</p>
+                    : searchResults.length === 0 ?
+                        <p className={style.notSearchedYet}>{searchError}</p>
+                        : searchResults.map(media => (
+                            <ResultCardOMDB
+                                key={media.id}
+                                media={media}
+                                mediaType={mediaType}
+                                isSpecificList={isSpecificList}
+                                tvListNames={tvListNames}
+                                movieListNames={movieListNames}
+                                handleUpdatedList={handleUpdatedList}
+                            />
+                        ))
             }
         </div>
     )
@@ -241,27 +242,6 @@ function NonSpecificListAction (props) {
                     >
                     <div className={style.allListsContainer}>
                         <div className={style.addToWatchNotes}>
-                            {/*<CollapsibleCard */}
-                            {/*    isCollapsed={true} */}
-                            {/*    cardHeader={*/}
-                            {/*        <div className={style.userNotesLabel}>*/}
-                            {/*            <label htmlFor="toWatchNotes">*/}
-                            {/*                Expand to add Watch Notes,*/}
-                            {/*            </label>*/}
-                            {/*            <p>then select a list</p>*/}
-                            {/*        </div>*/}
-                            {/*    }*/}
-                            {/*    skipStyleHeader={true}*/}
-                            {/*>*/}
-                            {/*    <textarea*/}
-                            {/*    id="toWatchNotes"*/}
-                            {/*    name="toWatchNotes"*/}
-                            {/*    onChange={formik.handleChange}*/}
-                            {/*    onBlur={formik.handleBlur}*/}
-                            {/*    onSubmit={formik.handleSubmit}*/}
-                            {/*    value={formik.values.toWatchNotes}*/}
-                            {/*    />*/}
-                            {/*</CollapsibleCard>*/}
                             <div>
                                 <fieldset className={style.streamingSource}>
                                     <label htmlFor="streamingSource">Streaming Source</label>
@@ -274,11 +254,15 @@ function NonSpecificListAction (props) {
                                     />
                                     <datalist id="streamingSources">
                                         <option value="NETFLIX"/>
-                                        <option value="HBO"/>
+                                        <option value="HBO MAX"/>
                                         <option value="AMAZON"/>
                                         <option value="DISNEY+"/>
+                                        <option value="APPLE TV+"/>
                                         <option value="HULU"/>
                                         <option value="PEACOCK"/>
+                                        <option value="CBS"/>
+                                        <option value="SHOWTIME"/>
+                                        <option value="STARZ"/>
                                         <option value="BUY/RENT"/>
                                     </datalist>
                                 </fieldset>

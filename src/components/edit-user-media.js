@@ -12,6 +12,7 @@ export default function EditUserMedia (props) {
     const {userMedia, listCategory, handleActivityClose, refreshList} = props;
     const userMediaType = listCategory==="towatchtv"?"userTvShows":"userMovies";
     const {media} = userMedia;
+    // state only used for styling. classname won't update if you use formik.values on it
     const [isWatched, setWatchStatus] = useState(userMedia.isWatched);
     const formik = useFormik({
         initialValues: {
@@ -36,12 +37,14 @@ export default function EditUserMedia (props) {
             }
         }
     })
+    // handle clicking yes or no for media watched status
     const handleWatched = (newStatus) => {
         return (() => {
             formik.values.isWatched = newStatus;
             setWatchStatus(newStatus);
         })
     }
+    // handle clicking stars on rating section
     const handleRating = (newRating) => {
         formik.values.userRating = newRating;
     }
@@ -162,6 +165,7 @@ function UserMediaTextFields (props) {
 }
 function RatingStars (props) {
     const {rating, handleRating, maxRating} = props;
+    // using state here cause styling doesn't change when using formik.values.userRating (props.rating)
     const [localRating, setLocalRating] = useState(rating);
     let starMap = [];
     for (let i=1; i<maxRating+1; i++) {

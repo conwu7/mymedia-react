@@ -1,4 +1,5 @@
 // pass a values object and url link e.g values.email or values.isPublic
+// method - string 'put' or 'post'
 export async function putOrPostToApi (values, url, method) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -20,7 +21,7 @@ export async function putOrPostToApi (values, url, method) {
         }
     })
 }
-
+// method - string 'get' or 'delete'
 export function fetchOrDeleteFromApi (link, method) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -36,21 +37,21 @@ export function fetchOrDeleteFromApi (link, method) {
         }
     })
 }
-
+// check for user with cookie and perform several passed functions
 export async function checkForUser (setUser, setUserCheckDone, setListPref, setMediaPref) {
     return fetch('/api/getUserDetails')
         .then(response => response.json())
         .then(apiResponse => {
             if (apiResponse.success) {
                 setUser(apiResponse.result.username);
-                setListPref(apiResponse.result.listSortPreference);
-                setMediaPref(apiResponse.result.mediaSortPreference);
+                setListPref(apiResponse.result.listSortPreference || "default");
+                setMediaPref(apiResponse.result.mediaSortPreference || "default");
             }
             setUserCheckDone(true);
         })
         .catch(err => console.log(err))
 }
-
+// categories to iterate over
 export function getCategories () {
     const categories = [
         {name: 'towatch', text: 'Movies'},
@@ -64,10 +65,7 @@ export function getCategories () {
     // categories.other = 'Other';
     return categories
 }
-export function getPageFromPath (pathname) {
-    // e.g. pathname /some/thing/here. return 'here'
-    return pathname.split('/').slice(-1)[0];
-}
+// Sort Lists and User Media Instants within them
 export function sortLists(allLists, listPref, mediaPref) {
     /*
         alpha+ : alpha ascending. a-z

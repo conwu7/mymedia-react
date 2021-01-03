@@ -1,6 +1,7 @@
 .dashboard {
     position: relative;
-    margin: 15px auto;
+    margin: 15px 0;
+    width: 100vw;
 }
 .searchButtonContainer {
     display: flex;
@@ -30,7 +31,6 @@
 }
 @media only screen and (min-width: 680px) {
     .dashboard {
-        margin: 15px auto;
-        max-width: 85vw;
+        margin: 15px 0;
     }
 }

@@ -1,4 +1,5 @@
 .listContainer {
+    display: flex;
     margin: 0 10px 10px;
     padding: 0 5px;
     box-shadow: 0 0 8px 1px rgba(32,33,36,.15);
@@ -10,8 +11,30 @@
     width: 100%;
     overflow: auto;
 }
+.allListsContainerWrapper {
+    display: block;
+    width: 100vw;
+}
 .allListsContainer {
+    width: 100%;
+    height: fit-content;
 }
 .listDetails {
+    width: 100%;
     padding: 10px 10px;
+}
+.emptyLists {
+    text-align: center;
+    color: grey;
+    padding: 1px 0;
+
+    p {
+        margin: 20px auto;
+    }
+}
+@media only screen and (min-width: 680px) {
+    .listContainer {
+        max-width: 85vw;
+        margin:  10px auto;
+    }
 }

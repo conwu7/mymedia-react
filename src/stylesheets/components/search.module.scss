@@ -13,6 +13,10 @@
             animation: loadingRotate 1s linear infinite normal forwards;
         }
     }
+    .notSearchedYet {
+        margin: 10px auto;
+        width: fit-content;
+    }
     @keyframes loadingRotate {
         from {transform: rotate(0);}
         to {transform: rotate(360deg);}
