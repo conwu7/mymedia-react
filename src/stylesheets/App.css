@@ -24,7 +24,6 @@ strong { font-weight: bold; }
                            pop-ups with z-index
                            this also prevents absolute-position elements being outside
                            the parent element from stretching the view*/
-      width: 100vw;
       /* overflow: hidden; */
     }
   }
