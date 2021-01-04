@@ -19,7 +19,7 @@
     }
   ],
   "start_url": ".",
-  "content_security_policy": "img-src 'self' media-amazon.com",
+  "content_security_policy": "img-src 'self' https://m.media-amazon.com",
   "display": "standalone",
   "theme_color": "#2f4f4f",
   "background_color": "#2f4f4f"
