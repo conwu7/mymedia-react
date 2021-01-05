@@ -101,6 +101,9 @@ $poster-height-desktop: 270px;
         .imdbRating a {
             color: dodgerblue;
         }
+        svg {
+            color: lightgray;
+        }
     }
     .movieDetails>*, .userMovieDetails>* {
         margin: 5px 0;

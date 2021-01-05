@@ -5,6 +5,7 @@ import {CollapsibleCard, PopUpActivity} from './common';
 import EditUserMedia from "./edit-user-media";
 import { HiDotsHorizontal } from 'react-icons/hi';
 import { AiOutlineNodeExpand } from 'react-icons/ai';
+import { CgArrowsExpandUpLeft } from 'react-icons/cg';
 
 import listContainerStyle from '../stylesheets/components/list-container.module.scss';
 import userMovieStyle from '../stylesheets/components/user-movie.module.scss';
@@ -225,7 +226,7 @@ function CombinedDetails (props) { //temporarily using this to mix the positions
                 cardHeader="Watch Notes"
                 isCollapsed={true}
                 hideButton={false}
-                collapseButton={<AiOutlineNodeExpand />}
+                collapseButton={<CgArrowsExpandUpLeft />}
             >
                 <ToWatchNotes toWatchNotes={toWatchNotes}/>
             </CollapsibleCard>
@@ -233,7 +234,7 @@ function CombinedDetails (props) { //temporarily using this to mix the positions
                 cardHeader="Plot"
                 isCollapsed={true}
                 hideButton={false}
-                collapseButton={<AiOutlineNodeExpand />}
+                collapseButton={<CgArrowsExpandUpLeft />}
             >
                 <p>{media.plot || "-"}</p>
             </CollapsibleCard>
@@ -244,7 +245,7 @@ function CombinedDetails (props) { //temporarily using this to mix the positions
                     cardHeader="Your Review"
                     isCollapsed={true}
                     hideButton={false}
-                    collapseButton={<AiOutlineNodeExpand />}
+                    collapseButton={<CgArrowsExpandUpLeft />}
                 >
                     <UserNotesAndRating
                         userRating={userRating}
