@@ -1,6 +1,8 @@
 import style from '../../stylesheets/pages/settings.module.scss';
 import { putOrPostToApi } from "../../helpers/common";
 import { useFormik } from "formik";
+import { useState } from 'react';
+import WaitForServer from "../wait-for-server";
 
 /*
 alpha+ : alpha ascending. a-z
@@ -17,12 +19,20 @@ release-
 
 export default function SortPreferences (props) {
     const {handleActivityClose, listPref, mediaPref, updateUser} = props;
+    const [wait, setWaitForServer] = useState(false);
     const formik = useFormik({
         initialValues: {
             listSortPreference: listPref || 'created+',
             mediaSortPreference: mediaPref || 'added+',
         },
         onSubmit: async values => {
+            if (
+                values.listSortPreference === listPref &&
+                values.mediaSortPreference === mediaPref
+            ) {
+                return handleActivityClose();
+            }
+            setWaitForServer(true);
             try {
                 await putOrPostToApi(
                     formik.values,
@@ -34,6 +44,8 @@ export default function SortPreferences (props) {
             } catch (err) {
                 if (err) alert('Unable to save. Try again');
                 console.log(err);
+            } finally {
+                setWaitForServer(false);
             }
         }
     })
@@ -75,6 +87,10 @@ export default function SortPreferences (props) {
                 </fieldset>
                 <button type="submit">Save</button>
             </form>
+            <WaitForServer
+                wait={wait}
+                waitText="Saving your preferences"
+            />
         </div>
     )
 }

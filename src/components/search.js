@@ -11,6 +11,7 @@ import { SearchSchema, StreamingSchema } from "../helpers/validation";
 import { AiOutlineLoading } from 'react-icons/ai';
 import { MdAddCircleOutline } from 'react-icons/md';
 import defaultPoster from '../images/default-poster.png';
+import WaitForServer from "./wait-for-server";
 
 export default function SearchForMedia (props) {
     const [searchString, setSearchString] = useState("");
@@ -187,6 +188,7 @@ function SpecificListAction () {
 function NonSpecificListAction (props) {
     const {imdbID, handleUpdatedList, mediaType,
             tvListNames, movieListNames} = props;
+    const [wait, setWaitForServer] = useState(false);
     const [useActionActivity, setActionActivityStatus] = useState(false);
     const formik = useFormik({
         initialValues: {
@@ -205,6 +207,7 @@ function NonSpecificListAction (props) {
     // }, [imdbID]);
     const handleAddToList = async (listCategory, listID) => {
         if (formik.errors.streamingSource) return
+        setWaitForServer(true);
         formik.values.streamingSource = formik.values.streamingSource.toUpperCase();
         const media = mediaType === 'tv' ? 'Tv Show' : 'Movie';
         try {
@@ -217,6 +220,8 @@ function NonSpecificListAction (props) {
             handleActivityClose();
         } catch (err) {
             window.alert(`Unable to add ${media} to list. ` + err);
+        } finally {
+            setWaitForServer(false);
         }
     }
     const handleActivityOpen = () => {
@@ -231,6 +236,10 @@ function NonSpecificListAction (props) {
     }
     return (
         <div className={style.nonSpecificAction}>
+            <WaitForServer
+                wait={wait}
+                waitText="Saving to your list"
+            />
             <button onClick={handleActivityOpen}>Add to a list</button>
             {
                 <PopUpActivity 

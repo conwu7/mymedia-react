@@ -7,9 +7,11 @@ import { CollapsibleCard } from "./common";
 import { FiCheckCircle, FiXCircle, FiStar } from 'react-icons/fi';
 import React, { useState } from "react";
 import { UserMediaSchema } from '../helpers/validation';
+import WaitForServer from "./wait-for-server";
 
 export default function EditUserMedia (props) {
     const {userMedia, listCategory, handleActivityClose, refreshList} = props;
+    const [wait, setWaitForServer] = useState(false);
     const userMediaType = listCategory==="towatchtv"?"userTvShows":"userMovies";
     const {media} = userMedia;
     // state only used for styling. classname won't update if you use formik.values on it
@@ -24,6 +26,16 @@ export default function EditUserMedia (props) {
         },
         validationSchema: UserMediaSchema,
         onSubmit: async values => {
+            if (
+                values.toWatchNotes === userMedia.toWatchNotes &&
+                values.isWatched === userMedia.isWatched &&
+                values.userRating === userMedia.userRating &&
+                values.reviewNotes === userMedia.reviewNotes &&
+                values.streamingSource === userMedia.streamingSource
+            ) {
+                return handleActivityClose();
+            }
+            setWaitForServer(true);
             try {
                 await putOrPostToApi(
                     values,
@@ -34,6 +46,8 @@ export default function EditUserMedia (props) {
                 handleActivityClose();
             } catch (err) {
                 window.alert(err);
+            } finally {
+                setWaitForServer(false);
             }
         }
     })
@@ -50,6 +64,10 @@ export default function EditUserMedia (props) {
     }
     return (
         <div className={style.editUserMediaContainer}>
+            <WaitForServer
+                wait={wait}
+                waitText="Saving your changes"
+            />
             <section className={style.posterAndTitleContainer}>
                 <div className={style.mediaPosterContainer}>
                     <img

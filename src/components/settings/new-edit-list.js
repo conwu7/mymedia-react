@@ -5,9 +5,11 @@ import { putOrPostToApi } from "../../helpers/common";
 import ListSelector from "../list-selector";
 import { BiEditAlt } from 'react-icons/bi';
 import { ListSchema } from '../../helpers/validation';
+import WaitForServer from "../wait-for-server";
 
 export function NewList (props) {
     const {handleActivityClose, refreshList} = props;
+    const [wait, setWaitForServer] = useState(false);
     const formik = useFormik({
         initialValues: {
             typeOfList: "towatch",
@@ -16,26 +18,36 @@ export function NewList (props) {
         },
         validationSchema: ListSchema,
         onSubmit: async values => {
+            setWaitForServer(true);
             try {
                 await putOrPostToApi(
                     values,
                     `lists/${formik.values.typeOfList}`,
                     'post');
-                window.alert('Success! New List created.')
-                handleActivityClose();
+                window.alert('Success! New list created');
                 refreshList(values.typeOfList);
+                handleActivityClose();
             } catch (err) {
                 window.alert(err);
+            } finally {
+                setWaitForServer(false);
             }
         }
     });
     return (
-        <ListForm formik={formik}/>
+        <React.Fragment>
+            <ListForm formik={formik}/>
+            <WaitForServer
+                wait={wait}
+                waitText="Saving New List"
+            />
+        </React.Fragment>
     )
 }
 export function EditList (props) {
     const {handleActivityClose, refreshList,
             tvListNames, movieListNames} = props;
+    const [wait, setWaitForServer] = useState(false);
     const [list, setList] = useState({});
     const [listCategory, setListCategory] = useState("");
     // state. set to false after a list is selected. When false, form is shown
@@ -57,6 +69,13 @@ export function EditList (props) {
         },
         validationSchema: ListSchema,
         onSubmit: async values => {
+            if (
+                values.listName === list.name &&
+                values.description === list.description
+            ) {
+                return handleActivityClose();
+            }
+            setWaitForServer(true);
             try {
                 await putOrPostToApi(
                     values,
@@ -67,6 +86,8 @@ export function EditList (props) {
                 refreshList(values.typeOfList);
             } catch (err) {
                 window.alert(err);
+            } finally {
+                setWaitForServer(false);
             }
         }
     });
@@ -90,6 +111,10 @@ export function EditList (props) {
                         disableSelectType={true}
                     />
             }
+            <WaitForServer
+                wait={wait}
+                waitingText={"Saving your changes"}
+            />
         </div>
     )
 

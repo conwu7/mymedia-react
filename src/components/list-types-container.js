@@ -11,6 +11,7 @@ import userMovieStyle from '../stylesheets/components/user-movie.module.scss';
 
 import defaultPoster from '../images/default-poster.png';
 import { fetchOrDeleteFromApi, sortLists } from '../helpers/common';
+import WaitForServer from "./wait-for-server";
 
 export default function ListTypesContainer (props) {
     const {allLists, getLists, refreshList, setBlockAppOverflow,
@@ -181,15 +182,22 @@ function AllUserMediaContainer (props) {
 }
 function CombinedDetails (props) { //temporarily using this to mix the positions of each details collapsible card
     const {listCategory, list, userMedia, refreshList, handleEditUserMedia} = props;
+    const [wait, setWaitForServer] = useState(false);
     const {isWatched, toWatchNotes, reviewNotes,
         userRating, media, imdbID} = userMedia;
     const handleRemoveFromList = () => {
+        setWaitForServer(true);
         fetchOrDeleteFromApi(`lists/${listCategory}/${list._id}/${imdbID}`, 'delete')
             .then(()=>refreshList(listCategory))
-            .catch(err => window.alert(err));
+            .catch(err => window.alert(err))
+            .finally(() => {setWaitForServer(false)});
     };
     return (
     <div className={userMovieStyle.userMovie}>
+        <WaitForServer
+            wait={wait}
+            waitMessage={"Removing movie from list"}
+            />
         <MovieActions
             handleRemoveFromList={handleRemoveFromList}
             handleEditUserMedia={handleEditUserMedia}
