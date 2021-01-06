@@ -22,8 +22,8 @@ export default function SortPreferences (props) {
     const [wait, setWaitForServer] = useState(false);
     const formik = useFormik({
         initialValues: {
-            listSortPreference: listPref || 'created+',
-            mediaSortPreference: mediaPref || 'added+',
+            listSortPreference: (!listPref || listPref === 'default') ? 'created+' : listPref,
+            mediaSortPreference: (!mediaPref || mediaPref === 'default') ? 'added+' : mediaPref,
         },
         onSubmit: async values => {
             if (

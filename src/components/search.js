@@ -19,8 +19,7 @@ export default function SearchForMedia (props) {
     const [isSearchComplete, setSearchComplete] = useState(false);
     const [searchError, setSearchError] = useState("");
     const [searchResults, setSearchResults] = useState([]);
-    const {isSpecificList, closeButton, useActivity,
-        refreshList, mediaType, movieListNames, tvListNames} = props;
+    const {isSpecificList, refreshList, movieListNames, tvListNames} = props;
     let focusTimeout;
     useEffect(() => {
         return (() => {clearTimeout(focusTimeout)})
@@ -32,8 +31,7 @@ export default function SearchForMedia (props) {
             document.querySelector(".takeFocus").focus();
         }, 100);
         try {
-            const path = mediaType==='tv' ? 'tvShows': 'movies';
-            const searchResults = await fetchOrDeleteFromApi(`${path}/search?searchString=${searchString}`, 'get');
+            const searchResults = await fetchOrDeleteFromApi(`movies/search?searchString=${searchString}`, 'get');
             setSearchResults(searchResults);
         } catch (err) {
             setSearchResults([]);
@@ -44,10 +42,7 @@ export default function SearchForMedia (props) {
         
     }
     return (
-        <PopUpActivity
-            closeButton={closeButton}
-            useActivity={useActivity}
-        >
+        <>
             <div tabIndex="2" className="takeFocus" style={{height: 0, overflow: "hidden"}}>Hello there !</div>
             <div className={style.searchFormContainer}> 
                 <div className={style.searchForm}>
@@ -55,7 +50,6 @@ export default function SearchForMedia (props) {
                         searchString={searchString}
                         setSearchString={setSearchString}
                         handleSearch={handleSearch}
-                        useActivity={useActivity}
                     />
                 </div>
                 <SearchResultsContainer 
@@ -67,14 +61,13 @@ export default function SearchForMedia (props) {
                     searchResults={searchResults}
                     isSpecificList={isSpecificList}
                     handleUpdatedList={refreshList}
-                    mediaType={mediaType}
                 />
             </div>
-        </PopUpActivity>
+        </>
     )
 }
 function SearchBar (props) {
-    const {searchString, setSearchString, handleSearch, useActivity} = props;
+    const {searchString, setSearchString, handleSearch} = props;
     const formik = useFormik({
         initialValues: {
             searchString
@@ -93,7 +86,6 @@ function SearchBar (props) {
             value={formik.values.searchString}
             onSubmit={formik.handleSubmit}
             showSearchButton={true}
-            disabled={!useActivity}
             />
             <div className="errorDiv">
                 {formik.touched.searchString && formik.errors.searchString}
@@ -105,8 +97,7 @@ function SearchResultsContainer (props) {
     const resultsRef = React.createRef();
     const {
         searchResults, isSpecificList, handleUpdatedList,
-        isSearchComplete, isSearching, mediaType,
-        movieListNames, tvListNames
+        isSearchComplete, isSearching, movieListNames, tvListNames
     } = props;
     let searchError = props.searchError || "No Result";
     return (
@@ -125,7 +116,6 @@ function SearchResultsContainer (props) {
                             <ResultCardOMDB
                                 key={media.id}
                                 media={media}
-                                mediaType={mediaType}
                                 isSpecificList={isSpecificList}
                                 tvListNames={tvListNames}
                                 movieListNames={movieListNames}
@@ -240,7 +230,10 @@ function NonSpecificListAction (props) {
                 wait={wait}
                 waitText="Saving to your list"
             />
-            <button onClick={handleActivityOpen}>Add to a list</button>
+            <button onClick={handleActivityOpen}>
+                <span className={style.addToListSpan}>Add to</span>
+                <span className={style.addToListSpan}>a list</span>
+            </button>
             {
                 <PopUpActivity 
                     useActivity={useActionActivity}

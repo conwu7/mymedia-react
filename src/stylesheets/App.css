@@ -1,10 +1,13 @@
 body {
     background-color: whitesmoke;
 }
+/** {*/
+/*    border: 1px solid red !important;*/
+/*}*/
 .App {
     box-sizing: border-box;
     min-height: 100vh;
-    width: 100vw;
+    width: 100%;
     font-family: 'Quicksand', sans-serif;
     scroll-behavior: smooth;
     background-color: whitesmoke;
@@ -16,14 +19,3 @@ button, input {
   cursor: pointer;
 }
 strong { font-weight: bold; }
-
-@media screen and (max-device-width: 680px) {
-    .App {
-      display: block;
-      position: absolute; /*for absolute positioning or to get them behind
-                           pop-ups with z-index
-                           this also prevents absolute-position elements being outside
-                           the parent element from stretching the view*/
-      /* overflow: hidden; */
-    }
-  }

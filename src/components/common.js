@@ -146,13 +146,11 @@ export function CollapsibleCard (props) {
                 ref={cardRef}
                 className={collapsibleCardStyle.collapsibleSection}
             >
-                <div ref={ref}>{props.children}</div>
+                <div
+                    className="collapsibleSectionChildren"
+                    ref={ref}>{props.children}
+                </div>
             </animated.div>
-            {/* <div 
-                className={`${collapsibleCardStyle.collapsibleSection} ${isCollapsed ? collapsibleCardStyle.isCollapsed: collapsibleCardStyle.isExpanded}`}
-                >
-                    
-            </div> */}
         </div>
     )
 }

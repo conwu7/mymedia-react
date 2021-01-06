@@ -2,20 +2,20 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { BiCameraMovie } from 'react-icons/bi';
 import { RiMovie2Line, RiMenu5Line, RiSearchLine } from 'react-icons/ri';
 
-import ListTypesContainer from '../components/list-types-container';
+import MediaListsPage from '../components/media-lists-page';
 import SearchForMedia from '../components/search';
-import {CloseActivityButton, PopUpActivity} from '../components/common';
 import Settings from './settings';
 
 import dashboardStyle from '../stylesheets/pages/dashboard.module.scss';
 import selectorStyle from '../stylesheets/components/list-types-selector.module.scss';
 
-import {getCategories, fetchOrDeleteFromApi } from '../helpers/common';
+import { fetchOrDeleteFromApi } from '../helpers/common';
+import { animated, useSpring} from "react-spring";
 
 export default function Dashboard (props) {
     const {user, updateUser, mediaPref, listPref} = props;
-    // state for search popup
-    const [useSearch, setSearchStatus] = useState(false);
+    // state for current page
+    const [currentPage, setCurrentPage] = useState('movies');
     // state to block overflow and background details when there's a popup activity
     const [blockAppOverflow, setBlockAppOverflow] = useState(false);
     // state for storing all lists
@@ -25,16 +25,11 @@ export default function Dashboard (props) {
     // state for list names (no media details)
     const [movieListNames, setMovieListNames] = useState([]);
     const [tvListNames, setTvListNames] = useState([]);
-    // state for settings popup
-    const [showSettings, setShowSettings] = useState(false);
-    // default to towatch aka Movies
-    const [listCategory, setListCategory] = useState('towatch');
-    const categories = getCategories();
     // Set document title to Movie or Tv Show after any change to list category
     useEffect(() => {
         if (!user) return
-        document.title = `MyMedia - ${categories[listCategory]}`
-    }, [listCategory, categories, user]);
+        document.title = `MyMedia - ${currentPage}`
+    }, [currentPage, user]);
     // function to handle blockAppOverflow state change
     useEffect(() => {
         const App = document.getElementsByTagName('body')[0];
@@ -76,10 +71,12 @@ export default function Dashboard (props) {
         refreshListNames()
             .catch(err => console.log(err));
     }, [refreshListNames, user]);
-    // get lists on initial render
-    // different function to the getLists because I was unable to solve an
-    // issue of this component re-rendering too many times and calling the
-    // function multiple times on 1 render
+    /*
+        get lists on initial render
+        different function to the getLists because I was unable to solve an
+        issue of this component re-rendering too many times and calling the
+        function multiple times on 1 render
+    */
     useEffect( () => {
         if (!user) return
         setUpdatingLists(true);
@@ -96,63 +93,107 @@ export default function Dashboard (props) {
         initialGetLists()
             .catch(err => console.log(err));
     }, [user])
+    const movieSpring = useSpring({
+        to: {
+            position: currentPage === 'movies' ? 'relative' : 'absolute',
+            overflow: currentPage === 'movies' ? 'none' : 'hidden',
+            top: currentPage === 'movies' ? 0: 0,
+            opacity: currentPage === 'movies' ? 1 : 0,
+            height: currentPage === 'movies' ? 'fit-content' : 0,
+        }
+    })
+    const tvShowSpring = useSpring({
+        to: {
+            position: currentPage === 'tvShows' ? 'relative' : 'absolute',
+            overflow: currentPage === 'tvShows' ? 'none' : 'hidden',
+            top: currentPage === 'tvShows' ? 0: 0,
+            opacity: currentPage === 'tvShows' ? 1 : 0,
+            height: currentPage === 'tvShows' ? 'fit-content' : 0,
+        }
+    })
+    const searchSpring = useSpring({
+        to: {
+            position: currentPage === 'search' ? 'relative' : 'absolute',
+            overflow: currentPage === 'search' ? 'none' : 'hidden',
+            top: currentPage === 'search' ? 0: 0,
+            opacity: currentPage === 'search' ? 1 : 0,
+            height: currentPage === 'search' ? 'fit-content' : 0,
+        }
+    })
+    const settingsSpring = useSpring({
+        to: {
+            position: currentPage === 'settings' ? 'relative' : 'absolute',
+            overflow: currentPage === 'settings' ? 'none' : 'hidden',
+            top: currentPage === 'settings' ? 0: 0,
+            opacity: currentPage === 'settings' ? 1 : 0,
+            height: currentPage === 'settings' ? 'fit-content' : 0,
+        }
+    })
     // function to change the listCategory state - used by list types selector
-    const handleCategoryChange = (newCategory) => {
-        if (newCategory === listCategory) return
-        setListCategory(newCategory);
-        document.title = ` - ${newCategory}`;
-    }
-    const handleOpenSearch = () => {
-        setBlockAppOverflow(true);
-        setSearchStatus(true);
-    }
-    const handleCloseSearch = () => {
-        setBlockAppOverflow(false);
-        setSearchStatus(false);
-    }
-    const handleOpenSettings = function (e) {
-        setBlockAppOverflow(true);
-        setShowSettings(true);
-    }
-    const handleCloseSettings = function () {
-        setBlockAppOverflow(false);
-        setShowSettings(false);
+    const handlePages = (newPage) => {
+        if (newPage === currentPage) return
+        setCurrentPage(newPage);
+        document.title = ` - ${newPage}`;
     }
     const handleUpdatedList = (listCategory) => {
         getLists(listCategory)
             .then(refreshListNames);
     }
-    const mediaType = listCategory.includes('tv')?'tv':'movies';
     if (!user) return (
         <h1 className={dashboardStyle.noUserMessage}>
             Sign up or login to manage your media lists
         </h1>
     )
     return (
-        <div>
+        <>
             <div id="appDashboard" className={dashboardStyle.dashboard}>
-                <ListTypesSelector
-                    handleOpenSettings={handleOpenSettings}
-                    handleOpenSearch={handleOpenSearch}
-                    listCategory={listCategory}
-                    handleCategoryChange={handleCategoryChange}
-                    categories={categories}
-                />
-                <SearchForMedia
-                    isSpecificList={false}
-                    closeButton={<CloseActivityButton {...{handleActivityClose: handleCloseSearch}} />}
-                    useActivity={useSearch}
-                    refreshList={handleUpdatedList}
-                    tvListNames={tvListNames}
-                    movieListNames={movieListNames}
-                    mediaType={mediaType}
-
-                >
-                </SearchForMedia>
                 {
-                    <PopUpActivity
-                        useActivity={showSettings}
-                        handleActivityClose={handleCloseSettings}
+                    <animated.div
+                        style={movieSpring}
+                    >
+                        <MediaListsPage
+                        listCategory="towatch"
+                        allLists={allLists.towatch}
+                        listPref={listPref}
+                        mediaPref={mediaPref}
+                        getLists={getLists}
+                        refreshList={handleUpdatedList}
+                        setBlockAppOverflow={setBlockAppOverflow}
+                        />
+                    </animated.div>
+
+                }
+                {
+                    <animated.div
+                        style={tvShowSpring}
+                    >
+                        <MediaListsPage
+                            listCategory="towatchtv"
+                            allLists={allLists.towatchtv}
+                            listPref={listPref}
+                            mediaPref={mediaPref}
+                            getLists={getLists}
+                            refreshList={handleUpdatedList}
+                            setBlockAppOverflow={setBlockAppOverflow}
+                        />
+                    </animated.div>
+                }
+                {
+                    <animated.div
+                        style={searchSpring}
+                    >
+                        <SearchForMedia
+                            isSpecificList={false}
+                            refreshList={handleUpdatedList}
+                            tvListNames={tvListNames}
+                            movieListNames={movieListNames}
+                        >
+                        </SearchForMedia>
+                    </animated.div>
+                }
+                {
+                    <animated.div
+                        style={settingsSpring}
                     >
                         <Settings
                             refreshList={handleUpdatedList}
@@ -162,57 +203,47 @@ export default function Dashboard (props) {
                             mediaPref={mediaPref}
                             updateUser={updateUser}
                         />
-                    </PopUpActivity>
+                    </animated.div>
                 }
-                <ListTypesContainer 
-                    listCategory={listCategory}
-                    categories={categories}
-                    allLists={allLists}
-                    listPref={listPref}
-                    mediaPref={mediaPref}
-                    getLists={getLists}
-                    refreshList={handleUpdatedList}
-                    setBlockAppOverflow={setBlockAppOverflow}
-                />
-                {/* <Footer /> */}
             </div>
             <div style={{height: "65px"}}/>
-        </div>
+            <PageSelector
+                currentPage={currentPage}
+                handleCategoryChange={handlePages}
+            />
+        </>
     )
 }
 
-function ListTypesSelector (props) {
-    const {listCategory, categories, handleOpenSettings, handleOpenSearch} = props;
-    const handleTypeChange = (listCategory) => {
-        return ( () => {props.handleCategoryChange(listCategory)} );
+function PageSelector (props) {
+    const {currentPage} = props;
+    const handlePageChange = (newPage) => {
+        return ( () => {props.handleCategoryChange(newPage)} );
     }
     return (
         <div className={selectorStyle.selectorWrapper}>
-            <div
-                className={selectorStyle.selectorContainer}
-            >
-                {categories.map(category => (
-                        <button
-                            key={category.name}
-                            onClick={handleTypeChange(category.name)}
-                            id=''
-                            className={listCategory === category.name ?
-                                `${selectorStyle.activeCategory}` :
-                                ''}
-                        >
-                            <div className={selectorStyle.imageContainer}>
-                                {
-                                    category.name === 'towatch' ?
-                                        <BiCameraMovie />
-                                        : <RiMovie2Line />
-                                }
-                            </div>
-                            <div>{category.text}</div>
-                        </button>
-                    )
-                )}
+            <div className={selectorStyle.selectorContainer}>
                 <button
-                    onClick={handleOpenSearch}
+                    onClick={handlePageChange('movies')}
+                    className={currentPage === 'movies' ? selectorStyle.activeCategory : undefined}
+                >
+                    <div className={selectorStyle.imageContainer}>
+                        <BiCameraMovie />
+                    </div>
+                    <div>Movies</div>
+                </button>
+                <button
+                    onClick={handlePageChange('tvShows')}
+                    className={currentPage === 'tvShows' ? selectorStyle.activeCategory : undefined}
+                >
+                    <div className={selectorStyle.imageContainer}>
+                        <RiMovie2Line />
+                    </div>
+                    <div>Tv Shows</div>
+                </button>
+                <button
+                    onClick={handlePageChange('search')}
+                    className={currentPage === 'search' ? selectorStyle.activeCategory : undefined}
                 >
                     <div className={selectorStyle.imageContainer}>
                         <RiSearchLine />
@@ -220,7 +251,8 @@ function ListTypesSelector (props) {
                     <div>Search</div>
                 </button>
                 <button
-                    onClick={handleOpenSettings}
+                    onClick={handlePageChange('settings')}
+                    className={currentPage === 'settings' ? selectorStyle.activeCategory : undefined}
                     >
                     <div className={selectorStyle.imageContainer}>
                         <RiMenu5Line />

@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { animated, useSpring } from 'react-spring';
 
 import {CollapsibleCard, PopUpActivity} from './common';
 import EditUserMedia from "./edit-user-media";
 import { HiDotsHorizontal } from 'react-icons/hi';
-import { AiOutlineNodeExpand } from 'react-icons/ai';
 import { CgArrowsExpandUpLeft } from 'react-icons/cg';
 
 import listContainerStyle from '../stylesheets/components/list-container.module.scss';
@@ -14,35 +12,14 @@ import defaultPoster from '../images/default-poster.png';
 import { fetchOrDeleteFromApi, sortLists } from '../helpers/common';
 import WaitForServer from "./wait-for-server";
 
-export default function ListTypesContainer (props) {
+export default function MediaListsPage (props) {
     const {allLists, getLists, refreshList, setBlockAppOverflow,
             listPref, mediaPref, listCategory} = props;
-    // movieSpring comes in from the left, tv show, from the right.
-    const movieSpring = useSpring({
-        to: {
-            position: listCategory === 'towatch' ? 'relative' : 'absolute',
-            top: listCategory === 'towatch' ? 0: 0,
-            overflow: listCategory === 'towatch' ? 'none' : 'hidden',
-            opacity: listCategory === 'towatch' ? 1 : 0,
-            transform: listCategory === 'towatch' ? 'translate(0%,0)' : 'translate(-100vw,0)',
-            height: listCategory === 'towatch' ? 'fit-content' : 0,
-        }
-    })
-    const tvShowSpring = useSpring({
-        to: {
-            position: listCategory === 'towatchtv' ? 'relative' : 'absolute',
-            top: listCategory === 'towatchtv' ? 0: 0,
-            overflow: listCategory === 'towatchtv' ? 'none' : 'hidden',
-            opacity: listCategory === 'towatchtv' ? 1 : 0,
-            transform: listCategory === 'towatchtv' ? 'translate(0%,0)' : 'translate(100vw,0)',
-            height: listCategory === 'towatchtv' ? 'fit-content' : 0,
-        }
-    })
     // state for editing user media popup
     const [editingUserMedia, setEditingUserMedia] = useState(false);
     const [userMediaToEdit, setUserMediaToEdit] = useState({});
     const [userMediaListCategory, setUserMediaListCategory] = useState("");
-    const handleOpenEditMedia = (userMedia, listCategory) => {
+    const handleOpenEditMedia = (userMedia) => {
         return (() => {
             setEditingUserMedia(true);
             setBlockAppOverflow(true);
@@ -56,31 +33,17 @@ export default function ListTypesContainer (props) {
     }
 
     return (
-        <div className={listContainerStyle.allListsContainerWrapper}>
-            <animated.div style={movieSpring}>
-                <AllListsContainer
-                    className={listContainerStyle.allListsContainer}
-                    allLists={allLists}
-                    listPref={listPref}
-                    mediaPref={mediaPref}
-                    getLists={getLists}
-                    listCategory={'towatch'}
-                    refreshList={refreshList}
-                    handleEditUserMedia={handleOpenEditMedia}
-                />
-            </animated.div>
-            <animated.div style={tvShowSpring}>
-                <AllListsContainer
-                    className={listContainerStyle.allListsContainer}
-                    allLists={allLists}
-                    listPref={listPref}
-                    mediaPref={mediaPref}
-                    getLists={getLists}
-                    listCategory={'towatchtv'}
-                    refreshList={refreshList}
-                    handleEditUserMedia={handleOpenEditMedia}
-                />
-            </animated.div>
+        <div className={listContainerStyle.mediaListPage}>
+            <AllListsContainer
+                className={listContainerStyle.allListsContainer}
+                allLists={allLists}
+                listPref={listPref}
+                mediaPref={mediaPref}
+                getLists={getLists}
+                listCategory={listCategory}
+                refreshList={refreshList}
+                handleEditUserMedia={handleOpenEditMedia}
+            />
             <PopUpActivity
                 useActivity={editingUserMedia}
                 handleActivityClose={handleCloseEditMedia}
@@ -101,7 +64,7 @@ function AllListsContainer (props) {
     return (
         <div className={listContainerStyle.allListsContainer}>
             {
-                allLists[listCategory] && allLists[listCategory].length === 0 ?
+                allLists && allLists.length === 0 ?
                     <div className={listContainerStyle.emptyLists}>
                         <p>Your {listCategory === 'towatch' ? 'movies' : 'tv shows'} list is empty</p>
                         <p>To create new lists, click on "Menu" on the bottom tab</p>
@@ -109,8 +72,8 @@ function AllListsContainer (props) {
                     </div>
                     : undefined
             }
-            {allLists[listCategory] &&
-            sortLists(allLists[listCategory], listPref, mediaPref).map((list, index) => (
+            {allLists &&
+            sortLists(allLists, listPref, mediaPref).map((list, index) => (
                 <ListContainer 
                     key={list.name} 
                     list={list}
@@ -202,7 +165,6 @@ function CombinedDetails (props) { //temporarily using this to mix the positions
         <MovieActions
             handleRemoveFromList={handleRemoveFromList}
             handleEditUserMedia={handleEditUserMedia}
-            listCategory={listCategory}
             userMedia={userMedia}
         />
         <div className={userMovieStyle.menuSpace}>Hello There</div>
@@ -259,7 +221,7 @@ function CombinedDetails (props) { //temporarily using this to mix the positions
     )
 }
 function MovieActions (props) {
-    const {handleRemoveFromList, handleEditUserMedia, listCategory, userMedia} = props;
+    const {handleRemoveFromList, handleEditUserMedia, userMedia} = props;
     return (
         <div className={userMovieStyle.menuContainer}>
             <CollapsibleCard 
@@ -270,7 +232,7 @@ function MovieActions (props) {
             >
                 <div className={userMovieStyle.buttonContainer}>
                     <button
-                        onClick={handleEditUserMedia(userMedia, listCategory)}
+                        onClick={handleEditUserMedia(userMedia)}
                     >
                         Edit
                     </button>
