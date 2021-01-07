@@ -14,7 +14,6 @@ $poster-height-desktop: 270px;
     }
     span, p {
         text-decoration: none;
-        //font-style: italic;
         color: black;
     }
     p {
@@ -49,7 +48,7 @@ $poster-height-desktop: 270px;
             button {
                 width: 100%;
                 margin: 5px auto;
-                padding: 5px 10px;
+                padding: 10px 10px;
                 border: none;
                 border-radius: 10px;
                 background-color: whitesmoke;
@@ -83,8 +82,8 @@ $poster-height-desktop: 270px;
         overflow: auto;
     }
     .movieDetails, .userMovieDetails {
-        font-size: 0.9em;
         color: darkslategray;
+        font-size: 0.95em;
 
         h1 {
             font-weight: bold;
@@ -103,6 +102,10 @@ $poster-height-desktop: 270px;
         }
         svg {
             color: lightgray;
+        }
+        .plot, .toWatchNotes, .reviewNotes {
+            color: dimgrey;
+
         }
     }
     .movieDetails>*, .userMovieDetails>* {

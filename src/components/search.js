@@ -21,7 +21,7 @@ export default function SearchForMedia (props) {
     const [searchError, setSearchError] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const {isSpecificList, refreshList, movieListNames, tvListNames, currentPage} = props;
-    let focusTimeout;
+    let focusTimeout = "";
     useEffect(() => {
         return (() => {clearTimeout(focusTimeout)})
     }, [focusTimeout]);
@@ -48,7 +48,7 @@ export default function SearchForMedia (props) {
         <>
             <div tabIndex="2" className="takeFocus" style={{height: 0, overflow: "hidden"}}>Hello there !</div>
             <div className={style.searchFormContainer}> 
-                <div className={style.searchForm}>
+                <div>
                     <SearchBar
                         searchString={searchString}
                         setSearchString={setSearchString}
@@ -136,12 +136,14 @@ function ResultCardOMDB (props) { //using OMDB api properties
             tvListNames, movieListNames} = props;
     const mediaTypeResult = media.q === 'TV series' || media.q === 'TV mini-series'?
                             'tv':'movies';
+    const {posterUrl, title} = media;
+    const {imageUrl} = media.i;
     return (
         <div className={style.resultCard}>
             <div className={style.posterContainer}>
                 {media.i?
-                <div><img src={media.i.imageUrl} alt="movie poster"/></div>
-                : <img src={media.posterUrl || defaultPoster} alt={media.title+" poster"} />
+                <div><img src={imageUrl} alt="movie poster"/></div>
+                : <img src={posterUrl || defaultPoster} alt={title+" poster"} />
                 }
             </div>
             <div className={style.movieInfoContainer}>
@@ -183,6 +185,8 @@ function SpecificListAction () {
 function NonSpecificListAction (props) {
     const {imdbID, handleUpdatedList, mediaType,
             tvListNames, movieListNames} = props;
+    const {toWatchListsTv} = tvListNames;
+    const {toWatchLists} = movieListNames;
     const [wait, setWaitForServer] = useState(false);
     const [useActionActivity, setActionActivityStatus] = useState(false);
     const formik = useFormik({
@@ -204,7 +208,6 @@ function NonSpecificListAction (props) {
         if (formik.errors.streamingSource) return
         setWaitForServer(true);
         formik.values.streamingSource = formik.values.streamingSource.toUpperCase();
-        const media = mediaType === 'tv' ? 'Tv Show' : 'Movie';
         try {
             await putOrPostToApi(
                 formik.values,
@@ -213,7 +216,8 @@ function NonSpecificListAction (props) {
             handleUpdatedList(listCategory);
             handleActivityClose();
         } catch (err) {
-            window.alert(`Unable to add ${media} to list. ` + err);
+            if (err === 'not-found') handleUpdatedList(listCategory);
+            window.alert(`Unsuccessful ${err}`);
         } finally {
             setWaitForServer(false);
         }
@@ -234,18 +238,18 @@ function NonSpecificListAction (props) {
                 wait={wait}
                 waitText="Saving to your list"
             />
-            <button onClick={handleActivityOpen}>
+            <button
+                onClick={handleActivityOpen}
+                className={style.addToListButton}
+            >
                 <span className={style.addToListSpan}>Add to</span>
                 <span className={style.addToListSpan}>a list</span>
             </button>
             {
                 <PopUpActivity 
                     useActivity={useActionActivity}
-                    closeButton={<CloseActivityButton
-                        className={style.actionButton}
-                        handleActivityClose={handleActivityClose}
-                        />}
-                    >
+                    closeButton={<CloseActivityButton handleActivityClose={handleActivityClose} />}
+                >
                     <div className={style.allListsContainer}>
                         <div className={style.addToWatchNotes}>
                             <div>
@@ -282,8 +286,8 @@ function NonSpecificListAction (props) {
                             showMovies={mediaType === 'movies'}
                             actionIcon={<MdAddCircleOutline />}
                             handleSelection={handleSelection}
-                            tvListNames={tvListNames.toWatchListsTv}
-                            movieListNames={movieListNames.toWatchLists}
+                            tvListNames={toWatchListsTv}
+                            movieListNames={toWatchLists}
                         />
                     </div>
             </PopUpActivity>

@@ -1,4 +1,6 @@
 .searchFormContainer {
+    width: 95%;
+    margin: auto;
     .loading {
         display: flex;
         padding: 20px;
@@ -37,7 +39,6 @@
         }
         .movieInfoContainer {
             width: 50%;
-            font-size: 0.8em;
 
             .movieTitle {
                 font-weight: bold;
@@ -52,6 +53,7 @@
         }
         .actionContainer {
             width: 15%;
+            align-self: stretch;
             text-align: right;
         }
         .addToListSpan {
@@ -72,14 +74,16 @@
         }
     }    
     .nonSpecificAction {
+        display: flex;
+        align-items: stretch;
         font-size: 0.7em;
         overflow: hidden;
-        height: 50px;
+        height: 100%;
 
-        button:not(.actionButton) {
+        button.addToListButton {
             border: none;
-            padding: 2px;
-            border-radius: 7px;
+            border-radius: 10px;
+            padding: 10px;
             background: whitesmoke;
             cursor: pointer;
         }

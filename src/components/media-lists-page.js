@@ -122,7 +122,7 @@ function ListDetails (props) {
     return (
         <div className={listContainerStyle.listDetails}>
             <h1>{list.name.toLocaleUpperCase()}</h1>
-            <h2>{list.description}</h2>
+            <h2 className={listContainerStyle.listDescription}>{list.description}</h2>
         </div>
     )
 }
@@ -198,7 +198,7 @@ function CombinedDetails (props) { //temporarily using this to mix the positions
                 hideButton={false}
                 collapseButton={<CgArrowsExpandUpLeft />}
             >
-                <p>{media.plot || "-"}</p>
+                <p className={userMovieStyle.plot}>{media.plot || "-"}</p>
             </CollapsibleCard>
             <WatchStatus {...{isWatched}} />
             {isWatched?
@@ -249,7 +249,7 @@ function MovieActions (props) {
 }
 function ToWatchNotes (props) {
     return (
-        <p>{props.toWatchNotes || "-"}</p>
+        <p className={userMovieStyle.toWatchNotes}>{props.toWatchNotes || "-"}</p>
     )
 }
 function WatchStatus (props) {
@@ -259,7 +259,7 @@ function UserNotesAndRating (props) {
     return (
         <div>
             <p>{props.userRating===0?"-":props.userRating}/10</p>
-            <p>{props.reviewNotes || "-"}</p>
+            <p className={userMovieStyle.reviewNotes}>{props.reviewNotes || "-"}</p>
         </div>
     )
 }

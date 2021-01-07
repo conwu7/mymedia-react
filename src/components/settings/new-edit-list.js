@@ -28,7 +28,8 @@ export function NewList (props) {
                 refreshList(values.typeOfList);
                 handleActivityClose();
             } catch (err) {
-                window.alert(err);
+                if (err === 'not-found') refreshList(values.typeOfList);
+                window.alert('Unsuccessful - List could have been deleted on a different device');
             } finally {
                 setWaitForServer(false);
             }
@@ -45,13 +46,15 @@ export function NewList (props) {
     )
 }
 export function EditList (props) {
-    const {handleActivityClose, refreshList,
-            tvListNames, movieListNames} = props;
     const [wait, setWaitForServer] = useState(false);
     const [list, setList] = useState({});
     const [listCategory, setListCategory] = useState("");
     // state. set to false after a list is selected. When false, form is shown
     const [showLists, setShowLists] = useState(true);
+    const {handleActivityClose, refreshList,
+        tvListNames, movieListNames} = props;
+    const {toWatchListsTv} = tvListNames;
+    const {toWatchLists} = movieListNames;
     // after a click from the list selector component
     const handleSelection = (list, listCategory) => {
         setList(list);
@@ -84,7 +87,8 @@ export function EditList (props) {
                 handleActivityClose();
                 refreshList(values.typeOfList);
             } catch (err) {
-                window.alert(err);
+                if (err === 'not-found') refreshList(values.typeOfList);
+                window.alert('Unsuccessful - List could have been deleted on a different device');
             } finally {
                 setWaitForServer(false);
             }
@@ -99,8 +103,8 @@ export function EditList (props) {
                        showMovies={true}
                        actionIcon={<BiEditAlt />}
                        handleSelection={handleSelection}
-                       tvListNames={tvListNames.toWatchListsTv}
-                       movieListNames={movieListNames.toWatchLists}
+                       tvListNames={toWatchListsTv}
+                       movieListNames={toWatchLists}
                     />
             }
             {

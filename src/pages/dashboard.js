@@ -25,11 +25,6 @@ export default function Dashboard (props) {
     // state for list names (no media details)
     const [movieListNames, setMovieListNames] = useState([]);
     const [tvListNames, setTvListNames] = useState([]);
-    // Set document title to Movie or Tv Show after any change to list category
-    useEffect(() => {
-        if (!user) return
-        document.title = `MyMediaLists - ${currentPage}`
-    }, [currentPage, user]);
     // function to handle blockAppOverflow state change
     useEffect(() => {
         const App = document.getElementsByTagName('body')[0];
@@ -130,12 +125,10 @@ export default function Dashboard (props) {
         }
     })
     // function to change the listCategory state - used by list types selector
-    const handlePages = (newPage) => {
+    const handlePages = (newPage, title) => {
         if (newPage === currentPage) return
         setCurrentPage(newPage);
-        document.title = ` - ${newPage}`;
-        // Don't hide some settings items
-        if (newPage === 'settings') window.scrollTo(0, 0);
+        document.title = `MyMediaLists - ${title}`;
     }
     const handleUpdatedList = (listCategory) => {
         getLists(listCategory)
@@ -212,7 +205,7 @@ export default function Dashboard (props) {
             <div style={{height: "65px"}}/>
             <PageSelector
                 currentPage={currentPage}
-                handleCategoryChange={handlePages}
+                handlePages={handlePages}
             />
         </>
     )
@@ -220,14 +213,14 @@ export default function Dashboard (props) {
 
 function PageSelector (props) {
     const {currentPage} = props;
-    const handlePageChange = (newPage) => {
-        return ( () => {props.handleCategoryChange(newPage)} );
+    const handlePageChange = (newPage, title) => {
+        return ( () => {props.handlePages(newPage, title)} );
     }
     return (
         <div className={selectorStyle.selectorWrapper}>
             <div className={selectorStyle.selectorContainer}>
                 <button
-                    onClick={handlePageChange('movies')}
+                    onClick={handlePageChange('movies', 'Movies')}
                     className={currentPage === 'movies' ? selectorStyle.activeCategory : undefined}
                 >
                     <div className={selectorStyle.imageContainer}>
@@ -236,7 +229,7 @@ function PageSelector (props) {
                     <div>Movies</div>
                 </button>
                 <button
-                    onClick={handlePageChange('tvShows')}
+                    onClick={handlePageChange('tvShows', 'Tv Shows')}
                     className={currentPage === 'tvShows' ? selectorStyle.activeCategory : undefined}
                 >
                     <div className={selectorStyle.imageContainer}>
@@ -245,7 +238,7 @@ function PageSelector (props) {
                     <div>Tv Shows</div>
                 </button>
                 <button
-                    onClick={handlePageChange('search')}
+                    onClick={handlePageChange('search', 'Search')}
                     className={currentPage === 'search' ? selectorStyle.activeCategory : undefined}
                 >
                     <div className={selectorStyle.imageContainer}>
@@ -254,7 +247,7 @@ function PageSelector (props) {
                     <div>Search</div>
                 </button>
                 <button
-                    onClick={handlePageChange('settings')}
+                    onClick={handlePageChange('settings', 'Menu')}
                     className={currentPage === 'settings' ? selectorStyle.activeCategory : undefined}
                     >
                     <div className={selectorStyle.imageContainer}>

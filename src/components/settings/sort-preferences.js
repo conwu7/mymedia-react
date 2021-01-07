@@ -1,9 +1,8 @@
 import style from '../../stylesheets/pages/settings.module.scss';
 import { putOrPostToApi } from "../../helpers/common";
-import { useFormik } from "formik";
 import { useState } from 'react';
 import WaitForServer from "../wait-for-server";
-import {CollapsibleCard, SubmitButton} from "../common";
+import { SubmitButton } from "../common";
 
 /*
 alpha+ : alpha ascending. a-z

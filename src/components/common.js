@@ -185,6 +185,7 @@ export function CenteredSearchBar (props) {
                 />
                 {showSearchButton?(
                     <button
+                        className={centeredSearchBarStyle.searchButton}
                         type="submit"
                         tabIndex={0}
                         disabled={disabled}

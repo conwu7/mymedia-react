@@ -3,6 +3,7 @@ html {
 
 }
 body {
+    -webkit-text-size-adjust: none;
     background-color: whitesmoke;
 }
 /** {*/

@@ -15,7 +15,6 @@
         margin: $inputAndButtonMargin;
         margin-right: 0;
         border: 1px solid transparent;
-        box-shadow: 0 1px 6px rgba(32,33,36,.28);
         outline: none;
         font-size: 1.05em;
         text-align: center;
@@ -28,25 +27,20 @@
         width: 100%;
         margin: 0;
     }
-    button {
+    button.searchButton {
         background: darkslategray;
         width: fit-content;
         color: white;
-        margin: $inputAndButtonMargin;
-        margin-left: 0;
+        margin: $inputAndButtonMargin $inputAndButtonMargin $inputAndButtonMargin 0;
         border: none;
         border-top-right-radius: $borderRadius;
         border-bottom-right-radius: $borderRadius;
-        box-shadow: 0 1px 2px rgba(32,33,36,.28);
         text-align: center;
         font-size: 1.2em;
     }
     .useSearchButton {
         input {
-            border-top-left-radius: $borderRadius;
-            border-bottom-left-radius: $borderRadius;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
+            border-radius: $borderRadius 0 0 $borderRadius;
         }
         input, button {
             box-sizing: border-box;

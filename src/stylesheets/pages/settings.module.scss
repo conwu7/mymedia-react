@@ -1,12 +1,18 @@
 $buttonBorder: 2px solid rgba(208, 208, 208, 0.2);
 
 .settingsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
   padding: 10px;
   border-radius: 10px;
   background-color: white;
+  max-height: 65vh;
+  overflow: auto;
 
   button.mainLinks {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     width: 100%;
     margin: 10px auto;
@@ -90,7 +96,7 @@ $buttonBorder: 2px solid rgba(208, 208, 208, 0.2);
     width: 60%;
     border: 1px solid gray;
     border-radius: 10px;
-    font-size: 0.8em;
+    font-size: 16px;
     font-family: inherit;
     padding: 0 5px;
   }

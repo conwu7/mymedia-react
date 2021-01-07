@@ -6,8 +6,10 @@ import { useState } from 'react';
 import WaitForServer from "../wait-for-server";
 
 export default function DeleteList (props) {
-    const {refreshList, tvListNames, movieListNames} = props;
     const [wait, setWaitForServer] = useState(false);
+    const {refreshList, tvListNames, movieListNames} = props;
+    const {toWatchListsTv} = tvListNames;
+    const {toWatchLists} = movieListNames;
     const handleDeleteList = async (listCategory, listName, listID) => {
         if (!window.confirm(`Are you sure you want to delete '${listName}' list?`)) return
         setWaitForServer(true);
@@ -16,10 +18,12 @@ export default function DeleteList (props) {
             // handleActivityClose();
             refreshList(listCategory)
         } catch (err) {
-            window.alert('Unsuccessful - ' + err);
+            if (err === 'not-found') refreshList(listCategory);
+            window.alert('Unsuccessful - List could have been deleted on a different device');
         } finally {
             setWaitForServer(false);
         }
+
     }
     // after a click from the list selector component
     const handleSelection = (list, listCategory) => {
@@ -35,8 +39,8 @@ export default function DeleteList (props) {
                 showMovies={true}
                 actionIcon={<RiDeleteBin2Line />}
                 handleSelection={handleSelection}
-                tvListNames={tvListNames.toWatchListsTv}
-                movieListNames={movieListNames.toWatchLists}
+                tvListNames={toWatchListsTv}
+                movieListNames={toWatchLists}
             />
             <WaitForServer
                 wait={wait}
