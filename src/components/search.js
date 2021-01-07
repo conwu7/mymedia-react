@@ -136,12 +136,12 @@ function ResultCardOMDB (props) { //using OMDB api properties
             tvListNames, movieListNames} = props;
     const mediaTypeResult = media.q === 'TV series' || media.q === 'TV mini-series'?
                             'tv':'movies';
-    const {posterUrl, title} = media;
-    const {imageUrl} = media.i;
+    const {posterUrl, title, i} = media;
+    const {imageUrl} = typeof i === "undefined" ? {} : i;
     return (
         <div className={style.resultCard}>
             <div className={style.posterContainer}>
-                {media.i?
+                {typeof i !== 'undefined'?
                 <div><img src={imageUrl} alt="movie poster"/></div>
                 : <img src={posterUrl || defaultPoster} alt={title+" poster"} />
                 }
