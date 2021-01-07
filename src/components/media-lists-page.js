@@ -160,7 +160,7 @@ function CombinedDetails (props) { //temporarily using this to mix the positions
     <div className={userMovieStyle.userMovie}>
         <WaitForServer
             wait={wait}
-            waitMessage={"Removing movie from list"}
+            waitText={"Removing movie from list"}
             />
         <MovieActions
             handleRemoveFromList={handleRemoveFromList}
