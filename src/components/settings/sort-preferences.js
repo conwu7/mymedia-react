@@ -3,6 +3,7 @@ import { putOrPostToApi } from "../../helpers/common";
 import { useFormik } from "formik";
 import { useState } from 'react';
 import WaitForServer from "../wait-for-server";
+import {SubmitButton} from "../common";
 
 /*
 alpha+ : alpha ascending. a-z
@@ -85,7 +86,7 @@ export default function SortPreferences (props) {
                         <option value="release-">Release Year - New to Old</option>
                     </select>
                 </fieldset>
-                <button type="submit">Save</button>
+                <SubmitButton text="Save" />
             </form>
             <WaitForServer
                 wait={wait}

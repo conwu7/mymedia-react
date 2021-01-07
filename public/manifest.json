@@ -1,6 +1,6 @@
 {
-  "short_name": "MyMedia",
-  "name": "MyMedia.App",
+  "short_name": "MyMediaLists",
+  "name": "MyMediaLists.App",
   "icons": [
     {
       "src": "favicon.ico",

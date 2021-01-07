@@ -6,7 +6,7 @@ export function NavBar () {
     return (
         <div className={style.navbar}>
             <ul>
-                <li className={style.appName}><Link to="/">MyMedia.App</Link></li>
+                <li className={style.appName}><Link to="/">MyMediaLists.App</Link></li>
             </ul>
         </div>
     )

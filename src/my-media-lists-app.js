@@ -13,7 +13,7 @@ import { NavBar, NavBarNoUser } from './components/navbar';
 
 import { checkForUser } from './helpers/common';
 
-function MyMediaApp() {
+function MyMediaListsApp() {
   const [user, setUser] = useState('');
   const [listPref, setListPref] = useState('');
   const [mediaPref, setMediaPref] = useState('');
@@ -62,4 +62,4 @@ function MyMediaApp() {
   );
 }
 
-export default MyMediaApp;
+export default MyMediaListsApp;

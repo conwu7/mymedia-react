@@ -39,7 +39,7 @@ export default function ListSelector (props) {
                                 key={list._id}
                                 type="button"
                                 onClick={handleClick(list, 'towatchtv')}
-                                // className={style.listButton}
+                                className={style.listButton}
                             >
                                 <span>{list.name}</span>
                                 {icon}

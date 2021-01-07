@@ -8,6 +8,7 @@ import { MdExpandLess } from 'react-icons/md';
 import collapsibleCardStyle from '../stylesheets/components/collapsible-card.module.scss';
 import centeredSearchBarStyle from '../stylesheets/components/centered-search-bar.module.scss';
 import popUpActivityStyle from '../stylesheets/components/pop-up-activity.module.scss';
+import submitButtonStyle from '../stylesheets/components/submit-button.module.scss';
 
 // returns a button that closes an activity. styled by the parent.
 export function CloseActivityButton (props) {
@@ -193,5 +194,19 @@ export function CenteredSearchBar (props) {
                     :null}
             </form>
         </div>
+    )
+}
+// styled submit button
+export function SubmitButton (props) {
+    const {type, onClick, text, disabled} = props;
+    return (
+        <button
+            onClick={onClick}
+            className={submitButtonStyle.submitButton}
+            type={type || "submit"}
+            disabled={disabled}
+        >
+            {text || "Submit"}
+        </button>
     )
 }

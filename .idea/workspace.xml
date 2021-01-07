@@ -3,8 +3,27 @@
   <component name="ChangeListManager">
     <list default="true" id="61045a8d-98bd-46ad-9754-be3e04fc9a47" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helpers/validation.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/validation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/edit-user-media.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/edit-user-media.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/list-selector.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/list-selector.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/navbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navbar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/search.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/search.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/settings/new-edit-list.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/settings/new-edit-list.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/settings/sort-preferences.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/settings/sort-preferences.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/my-media-app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/my-media-lists-app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/other/App.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/other/App.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/sign-up.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/sign-up.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stylesheets/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/stylesheets/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stylesheets/components/edit-user-media.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/stylesheets/components/edit-user-media.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stylesheets/components/list-container.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/stylesheets/components/list-container.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stylesheets/components/list-selector.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/stylesheets/components/list-selector.module.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/stylesheets/pages/settings.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/stylesheets/pages/settings.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stylesheets/pages/sign-up.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/stylesheets/pages/sign-up.module.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +91,8 @@
       <workItem from="1609689240310" duration="10704000" />
       <workItem from="1609801247993" duration="225000" />
       <workItem from="1609801826660" duration="10172000" />
-      <workItem from="1609883128787" duration="10381000" />
+      <workItem from="1609883128787" duration="10977000" />
+      <workItem from="1609976366808" duration="4524000" />
     </task>
     <servers />
   </component>
@@ -90,5 +110,9 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

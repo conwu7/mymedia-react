@@ -28,7 +28,7 @@ export default function Dashboard (props) {
     // Set document title to Movie or Tv Show after any change to list category
     useEffect(() => {
         if (!user) return
-        document.title = `MyMedia - ${currentPage}`
+        document.title = `MyMediaLists - ${currentPage}`
     }, [currentPage, user]);
     // function to handle blockAppOverflow state change
     useEffect(() => {
@@ -183,6 +183,7 @@ export default function Dashboard (props) {
                         style={searchSpring}
                     >
                         <SearchForMedia
+                            currentPage={currentPage}
                             isSpecificList={false}
                             refreshList={handleUpdatedList}
                             tvListNames={tvListNames}

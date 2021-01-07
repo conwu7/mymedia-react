@@ -6,6 +6,7 @@ import ListSelector from "../list-selector";
 import { BiEditAlt } from 'react-icons/bi';
 import { ListSchema } from '../../helpers/validation';
 import WaitForServer from "../wait-for-server";
+import {SubmitButton} from "../common";
 
 export function NewList (props) {
     const {handleActivityClose, refreshList} = props;
@@ -24,7 +25,6 @@ export function NewList (props) {
                     values,
                     `lists/${formik.values.typeOfList}`,
                     'post');
-                window.alert('Success! New list created');
                 refreshList(values.typeOfList);
                 handleActivityClose();
             } catch (err) {
@@ -39,7 +39,7 @@ export function NewList (props) {
             <ListForm formik={formik}/>
             <WaitForServer
                 wait={wait}
-                waitText="Saving New List"
+                waitText="Creating New List"
             />
         </React.Fragment>
     )
@@ -81,7 +81,6 @@ export function EditList (props) {
                     values,
                     `lists/${listCategory}/${list._id}`,
                     'put');
-                window.alert('Success! List Updated.')
                 handleActivityClose();
                 refreshList(values.typeOfList);
             } catch (err) {
@@ -113,7 +112,7 @@ export function EditList (props) {
             }
             <WaitForServer
                 wait={wait}
-                waitingText={"Saving your changes"}
+                waitText={"Saving your changes"}
             />
         </div>
     )
@@ -162,12 +161,13 @@ function ListForm (props) {
                 />
             </fieldset>
             <div className="errorDiv">
-                {formik.touched.description && formik.errors.description}
+                {
+                    formik.errors.description &&
+                    `${formik.errors.description} (Currently ${formik.values.description.length})`
+                }
             </div>
             <fieldset>
-                <button type="submit">
-                    Submit
-                </button>
+                <SubmitButton />
             </fieldset>
         </form>
     )

@@ -40,13 +40,6 @@ $buttonBorder: 2px solid rgba(208, 208, 208, 0.2);
   padding: 10px;
   text-align: center;
   color: darkslategray;
-
-  button {
-    padding: 10px 15px;
-    margin: 5px auto;
-    font-size: 0.7em;
-    color: inherit;
-  }
 }
 .deleteContainer {
   svg {
@@ -108,19 +101,5 @@ $buttonBorder: 2px solid rgba(208, 208, 208, 0.2);
   option {
     font-size: 0.9em;
     font-family: inherit;
-  }
-  button {
-    display: block;
-    width: fit-content;
-    text-align: center;
-    border: 2px solid gray;
-    border-radius: 10px;
-    padding: 10px 30px;
-    margin: 20px auto 10px;
-    background-color: darkslategrey;
-    font-size: 1em;
-    font-weight: bold;
-    text-decoration: none;
-    color: white;
   }
 }

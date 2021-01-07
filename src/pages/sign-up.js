@@ -4,9 +4,11 @@ import { useFormik } from 'formik';
 import style from '../stylesheets/pages/sign-up.module.scss';
 import { putOrPostToApi } from '../helpers/common';
 import { SignUpSchema } from "../helpers/validation";
+import WaitForServer from "../components/wait-for-server";
+import {SubmitButton} from "../components/common";
 
 export default function SignUpForm (props) {
-    const [isFormSubmitted, setFormSubmitted] = useState(false);
+    const [wait, setWaitForServer] = useState(false);
     const [serverError, setServerError] = useState("");
     const formik = useFormik({
         initialValues: {
@@ -16,8 +18,7 @@ export default function SignUpForm (props) {
         },
         validationSchema: SignUpSchema,
         onSubmit: values => {
-            if (isFormSubmitted) return;
-            setFormSubmitted(true);
+            setWaitForServer(true);
             setServerError("");
             setTimeout(async ()=>{
                 try {
@@ -26,7 +27,7 @@ export default function SignUpForm (props) {
                 } catch (err) {
                     setServerError(err);
                 } finally {
-                    setFormSubmitted(false);
+                    setWaitForServer(false);
                 }
             }, 1500);
         }
@@ -34,6 +35,10 @@ export default function SignUpForm (props) {
     if (props.user) return <Redirect to="/" />;
     return (
         <div className={style.signUpPage}>
+            <WaitForServer
+                wait={wait}
+                waitText="Creating your new account"
+            />
             <form onSubmit={formik.handleSubmit} className={style.signUpForm}>
                 <fieldset>
                     <label htmlFor="username">Username</label>
@@ -77,12 +82,10 @@ export default function SignUpForm (props) {
                         {formik.touched.password && formik.errors.password}
                     </div>
                 </fieldset>
-                <button
-                    type="submit"
-                    disabled={isFormSubmitted}
-                >
-                    {isFormSubmitted? "Creating your account" : "Submit"}
-                </button>
+                <SubmitButton
+                    text={wait? "Creating your account" : "Submit"}
+                    disabled={wait}
+                />
                 <div className="errorDiv">{serverError}</div>
             </form>
         </div>

@@ -3,7 +3,7 @@ import { putOrPostToApi } from "../helpers/common";
 import style from '../stylesheets/components/edit-user-media.module.scss';
 import searchStyle from '../stylesheets/components/search.module.scss';
 import defaultPoster from '../images/default-poster.png';
-import { CollapsibleCard } from "./common";
+import {CollapsibleCard, SubmitButton} from "./common";
 import { FiCheckCircle, FiXCircle, FiStar } from 'react-icons/fi';
 import React, { useState } from "react";
 import { UserMediaSchema } from '../helpers/validation';
@@ -141,11 +141,7 @@ export default function EditUserMedia (props) {
                         fieldName="reviewNotes"
                         fieldText="Review Notes"
                     />
-                    <button
-                        className={style.saveChanges}
-                        type={"submit"}>
-                        Save
-                    </button>
+                    <SubmitButton text="Save" />
                 </form>
             </section>
         </div>
@@ -176,7 +172,10 @@ function UserMediaTextFields (props) {
                                 />
             </CollapsibleCard>
             <div className="errorDiv">
-                {formik.touched[fieldName] && formik.errors[fieldName]}
+                {
+                    formik.errors[fieldName] &&
+                    `${formik.errors[fieldName]} (Currently ${formik.values[fieldName].length})`
+                }
             </div>
         </div>
     )

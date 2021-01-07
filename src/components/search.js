@@ -17,15 +17,18 @@ export default function SearchForMedia (props) {
     const [searchString, setSearchString] = useState("");
     const [isSearching, setSearchingStatus] = useState(false);
     const [isSearchComplete, setSearchComplete] = useState(false);
+    const [previousSearch, setPreviousSearch] = useState("");
     const [searchError, setSearchError] = useState("");
     const [searchResults, setSearchResults] = useState([]);
-    const {isSpecificList, refreshList, movieListNames, tvListNames} = props;
+    const {isSpecificList, refreshList, movieListNames, tvListNames, currentPage} = props;
     let focusTimeout;
     useEffect(() => {
         return (() => {clearTimeout(focusTimeout)})
     }, [focusTimeout]);
     const handleSearch = async () => {
         if (isSearching) return
+        if (searchString === previousSearch) return
+        setPreviousSearch(searchString);
         setSearchingStatus(true);
         focusTimeout = setTimeout(() => {
             document.querySelector(".takeFocus").focus();
@@ -50,6 +53,7 @@ export default function SearchForMedia (props) {
                         searchString={searchString}
                         setSearchString={setSearchString}
                         handleSearch={handleSearch}
+                        disabled={currentPage !== 'search'}
                     />
                 </div>
                 <SearchResultsContainer 
@@ -67,7 +71,7 @@ export default function SearchForMedia (props) {
     )
 }
 function SearchBar (props) {
-    const {searchString, setSearchString, handleSearch} = props;
+    const {searchString, setSearchString, handleSearch, disabled} = props;
     const formik = useFormik({
         initialValues: {
             searchString
@@ -86,6 +90,7 @@ function SearchBar (props) {
             value={formik.values.searchString}
             onSubmit={formik.handleSubmit}
             showSearchButton={true}
+            disabled={disabled}
             />
             <div className="errorDiv">
                 {formik.touched.searchString && formik.errors.searchString}
@@ -205,7 +210,6 @@ function NonSpecificListAction (props) {
                 formik.values,
                 `lists/${listCategory}/${listID}/${imdbID}`,
                 'post');
-            window.alert(`${media} added to list`);
             handleUpdatedList(listCategory);
             handleActivityClose();
         } catch (err) {
