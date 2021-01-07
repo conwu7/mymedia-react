@@ -134,6 +134,8 @@ export default function Dashboard (props) {
         if (newPage === currentPage) return
         setCurrentPage(newPage);
         document.title = ` - ${newPage}`;
+        // Don't hide some settings items
+        if (newPage === 'settings') window.scrollTo(0, 0);
     }
     const handleUpdatedList = (listCategory) => {
         getLists(listCategory)
