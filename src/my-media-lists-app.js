@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 
 import './stylesheets/reset.css';
@@ -45,16 +45,13 @@ function MyMediaListsApp() {
           <Route path="/signup">
             <SignUpForm user={user}/>
           </Route>
-          <Route path="/dashboard">
+          <Route path="/">
             <Dashboard
                 user={user}
                 updateUser={updateUser}
                 listPref={listPref}
                 mediaPref={mediaPref}
             />
-          </Route>
-          <Route path="/">
-            <Redirect to="/dashboard" />
           </Route>
         </Switch>
       </Router>
