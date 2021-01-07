@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && cp -R ./build/* ../public",
+    "build": "react-scripts build && xcopy .\\build\\ ..\\public\\ /h /i /c /k /e /r /y",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
