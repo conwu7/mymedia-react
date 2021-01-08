@@ -53,7 +53,6 @@
         }
         .actionContainer {
             width: 15%;
-            align-self: stretch;
             text-align: right;
         }
         .addToListSpan {
@@ -75,7 +74,6 @@
     }    
     .nonSpecificAction {
         display: flex;
-        align-items: stretch;
         font-size: 0.7em;
         overflow: hidden;
         height: 100%;
@@ -142,7 +140,7 @@
     label {
         display: inline-block;
         padding: 0 10px;
-        font-size: 1em;
+        font-size: 16px;
         width: 35%;
     }
     select, input {
@@ -151,7 +149,7 @@
         width: 60%;
         border: 1px solid gray;
         border-radius: 10px;
-        font-size: 0.9em;
+        font-size: 16px;
         font-family: inherit;
         padding: 0 5px;
     }

@@ -6,17 +6,20 @@ import ListSelector from "../list-selector";
 import { BiEditAlt } from 'react-icons/bi';
 import { ListSchema } from '../../helpers/validation';
 import WaitForServer from "../wait-for-server";
-import {SubmitButton} from "../common";
+import { SubmitButton } from "../common";
 
 export function NewList (props) {
     const {handleActivityClose, refreshList} = props;
     const [wait, setWaitForServer] = useState(false);
     const formik = useFormik({
         initialValues: {
-            typeOfList: "towatch",
+            typeOfList: "selectOne",
             listName: "",
             description: "",
         },
+        validate: (values) => (
+            (values.typeOfList === "selectOne") ? {typeOfList: 'Required'} : undefined
+        ),
         validationSchema: ListSchema,
         onSubmit: async values => {
             setWaitForServer(true);
@@ -137,9 +140,14 @@ function ListForm (props) {
                     value={formik.values.typeOfList}
                     disabled={disableSelectType}
                 >
+                    <option value="selectOne" disabled={true}>Select One</option>
                     <option value="towatch">Movies</option>
                     <option value="towatchtv">Tv Shows</option>
-                </select></fieldset>
+                </select>
+            </fieldset>
+            <div className="errorDiv">
+                {formik.touched.typeOfList && formik.errors.typeOfList}
+            </div>
             <fieldset>
                 <label htmlFor="listName">List Name</label>
                 <input

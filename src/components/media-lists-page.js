@@ -181,7 +181,8 @@ function CombinedDetails (props) { //temporarily using this to mix the positions
                 {userMedia.streamingSource && userMedia.streamingSource.toUpperCase()}
             </p>
             <p className={userMovieStyle.imdbRating}>
-                <a href={`https://imdb.com/title/${media.imdbID}`} target="_blank" rel="noopener noreferrer">IMDB</a> <span>{media.imdbRating || "-"}</span>/10
+                <a href={`https://imdb.com/title/${media.imdbID}`} target="_blank" rel="noopener noreferrer">IMDB</a>
+                <span className={userMovieStyle.imdbRatingSpan}>{media.imdbRating || "-"}</span>/10
             </p>
             <p className={userMovieStyle.releaseDate}><span>{media.releaseDate}</span></p>
             <CollapsibleCard
@@ -201,21 +202,22 @@ function CombinedDetails (props) { //temporarily using this to mix the positions
                 <p className={userMovieStyle.plot}>{media.plot || "-"}</p>
             </CollapsibleCard>
             <WatchStatus {...{isWatched}} />
-            {isWatched?
-            (
-                <CollapsibleCard
-                    cardHeader="Your Review"
-                    isCollapsed={true}
-                    hideButton={false}
-                    collapseButton={<CgArrowsExpandUpLeft />}
-                >
-                    <UserNotesAndRating
-                        userRating={userRating}
-                        reviewNotes={reviewNotes}
-                    />
-                </CollapsibleCard>
-            )
-            :null}
+            {
+                isWatched &&
+                (
+                    <CollapsibleCard
+                        cardHeader="Your Review"
+                        isCollapsed={true}
+                        hideButton={false}
+                        collapseButton={<CgArrowsExpandUpLeft />}
+                    >
+                        <UserNotesAndRating
+                            userRating={userRating}
+                            reviewNotes={reviewNotes}
+                        />
+                    </CollapsibleCard>
+                )
+            }
         </div>
     </div>
     )
@@ -231,11 +233,7 @@ function MovieActions (props) {
                 hideOnFocusLost={true}
             >
                 <div className={userMovieStyle.buttonContainer}>
-                    <button
-                        onClick={handleEditUserMedia(userMedia)}
-                    >
-                        Edit
-                    </button>
+                    <button onClick={handleEditUserMedia(userMedia)}>Edit</button>
                     <button 
                         className={userMovieStyle.remove}
                         onClick={handleRemoveFromList}
@@ -258,7 +256,9 @@ function WatchStatus (props) {
 function UserNotesAndRating (props) {
     return (
         <div>
-            <p>{props.userRating===0?"-":props.userRating}/10</p>
+            <p>
+                <span className={userMovieStyle.userRating}>{props.userRating===0?"-":props.userRating}</span>/10
+            </p>
             <p className={userMovieStyle.reviewNotes}>{props.reviewNotes || "-"}</p>
         </div>
     )

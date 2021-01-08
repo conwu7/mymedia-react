@@ -10,7 +10,7 @@ import dashboardStyle from '../stylesheets/pages/dashboard.module.scss';
 import selectorStyle from '../stylesheets/components/list-types-selector.module.scss';
 
 import { fetchOrDeleteFromApi } from '../helpers/common';
-import { animated, useSpring} from "react-spring";
+import { animated, useSpring } from "react-spring";
 
 export default function Dashboard (props) {
     const {user, updateUser, mediaPref, listPref} = props;
@@ -28,10 +28,10 @@ export default function Dashboard (props) {
     // function to handle blockAppOverflow state change
     useEffect(() => {
         const App = document.getElementsByTagName('body')[0];
-        if (blockAppOverflow) { 
-            App.style.overflow="hidden";
+        if (blockAppOverflow) {
+            App.style.overflow = "hidden";
         } else {
-            App.style.overflow="auto";
+            App.style.overflow = "auto";
         }
     }, [blockAppOverflow]);
     // function to update lists. Not used for initial render
@@ -49,7 +49,7 @@ export default function Dashboard (props) {
     }
     // function to update list names
     const refreshListNames = useCallback(
-        async function refreshListNames () {
+        async function refreshListNames() {
             if (!user) return
             fetchOrDeleteFromApi('lists/getAllTvListNames', 'get')
                 .then(result => setTvListNames(result))
@@ -72,10 +72,10 @@ export default function Dashboard (props) {
         issue of this component re-rendering too many times and calling the
         function multiple times on 1 render
     */
-    useEffect( () => {
+    useEffect(() => {
         if (!user) return
         setUpdatingLists(true);
-        async function initialGetLists () {
+        async function initialGetLists() {
             const movieLists =
                 await fetchOrDeleteFromApi(`lists/towatch`, 'get')
                     .catch(err => console.log(err))
@@ -85,46 +85,11 @@ export default function Dashboard (props) {
             setAllLists({towatch: movieLists, towatchtv: tvLists});
             setUpdatingLists(false);
         }
+
         initialGetLists()
             .catch(err => console.log(err));
     }, [user])
-    const movieSpring = useSpring({
-        to: {
-            position: currentPage === 'movies' ? 'relative' : 'absolute',
-            overflow: currentPage === 'movies' ? 'none' : 'hidden',
-            top: currentPage === 'movies' ? 0: 0,
-            opacity: currentPage === 'movies' ? 1 : 0,
-            height: currentPage === 'movies' ? 'fit-content' : 0,
-        }
-    })
-    const tvShowSpring = useSpring({
-        to: {
-            position: currentPage === 'tvShows' ? 'relative' : 'absolute',
-            overflow: currentPage === 'tvShows' ? 'none' : 'hidden',
-            top: currentPage === 'tvShows' ? 0: 0,
-            opacity: currentPage === 'tvShows' ? 1 : 0,
-            height: currentPage === 'tvShows' ? 'fit-content' : 0,
-        }
-    })
-    const searchSpring = useSpring({
-        to: {
-            position: currentPage === 'search' ? 'relative' : 'absolute',
-            overflow: currentPage === 'search' ? 'none' : 'hidden',
-            top: currentPage === 'search' ? 0: 0,
-            opacity: currentPage === 'search' ? 1 : 0,
-            height: currentPage === 'search' ? 'fit-content' : 0,
-        }
-    })
-    const settingsSpring = useSpring({
-        to: {
-            position: currentPage === 'settings' ? 'relative' : 'absolute',
-            overflow: currentPage === 'settings' ? 'none' : 'hidden',
-            top: currentPage === 'settings' ? 0: 0,
-            opacity: currentPage === 'settings' ? 1 : 0,
-            height: currentPage === 'settings' ? 'fit-content' : 0,
-        }
-    })
-    // function to change the listCategory state - used by list types selector
+    // function to change the current pages state - used by page selector
     const handlePages = (newPage, title) => {
         if (newPage === currentPage) return
         setCurrentPage(newPage);
@@ -142,11 +107,8 @@ export default function Dashboard (props) {
     return (
         <>
             <div id="appDashboard" className={dashboardStyle.dashboard}>
-                {
-                    <animated.div
-                        style={movieSpring}
-                    >
-                        <MediaListsPage
+                <PageTransition isCurrentPage={currentPage === 'movies'}>
+                    <MediaListsPage
                         listCategory="towatch"
                         allLists={allLists.towatch}
                         listPref={listPref}
@@ -154,53 +116,38 @@ export default function Dashboard (props) {
                         getLists={getLists}
                         refreshList={handleUpdatedList}
                         setBlockAppOverflow={setBlockAppOverflow}
-                        />
-                    </animated.div>
-
-                }
-                {
-                    <animated.div
-                        style={tvShowSpring}
-                    >
-                        <MediaListsPage
-                            listCategory="towatchtv"
-                            allLists={allLists.towatchtv}
-                            listPref={listPref}
-                            mediaPref={mediaPref}
-                            getLists={getLists}
-                            refreshList={handleUpdatedList}
-                            setBlockAppOverflow={setBlockAppOverflow}
-                        />
-                    </animated.div>
-                }
-                {
-                    <animated.div
-                        style={searchSpring}
-                    >
-                        <SearchForMedia
-                            currentPage={currentPage}
-                            isSpecificList={false}
-                            refreshList={handleUpdatedList}
-                            tvListNames={tvListNames}
-                            movieListNames={movieListNames}
-                        >
-                        </SearchForMedia>
-                    </animated.div>
-                }
-                {
-                    <animated.div
-                        style={settingsSpring}
-                    >
-                        <Settings
-                            refreshList={handleUpdatedList}
-                            tvListNames={tvListNames}
-                            movieListNames={movieListNames}
-                            listPref={listPref}
-                            mediaPref={mediaPref}
-                            updateUser={updateUser}
-                        />
-                    </animated.div>
-                }
+                    />
+                </PageTransition>
+                <PageTransition isCurrentPage={currentPage === 'tvShows'}>
+                    <MediaListsPage
+                        listCategory="towatchtv"
+                        allLists={allLists.towatchtv}
+                        listPref={listPref}
+                        mediaPref={mediaPref}
+                        getLists={getLists}
+                        refreshList={handleUpdatedList}
+                        setBlockAppOverflow={setBlockAppOverflow}
+                    />
+                </PageTransition>
+                <PageTransition isCurrentPage={currentPage === 'search'}>
+                    <SearchForMedia
+                        currentPage={currentPage}
+                        isSpecificList={false}
+                        refreshList={handleUpdatedList}
+                        tvListNames={tvListNames}
+                        movieListNames={movieListNames}
+                    />
+                </PageTransition>
+                <PageTransition isCurrentPage={currentPage === 'settings'}>
+                    <Settings
+                        refreshList={handleUpdatedList}
+                        tvListNames={tvListNames}
+                        movieListNames={movieListNames}
+                        listPref={listPref}
+                        mediaPref={mediaPref}
+                        updateUser={updateUser}
+                    />
+                </PageTransition>
             </div>
             <div style={{height: "65px"}}/>
             <PageSelector
@@ -211,51 +158,70 @@ export default function Dashboard (props) {
     )
 }
 
+function PageTransition (props) {
+    const {isCurrentPage, children} = props;
+    const spring = useSpring({
+        to: {
+            position: isCurrentPage ? 'relative' : 'absolute',
+            overflow: isCurrentPage ? 'none' : 'hidden',
+            top: isCurrentPage ? 0: 0,
+            opacity: isCurrentPage ? 1 : 0,
+            height: isCurrentPage ? 'fit-content' : 0,
+        }
+    });
+    return (
+        <animated.div style={spring}>
+            {children}
+        </animated.div>
+    )
+}
+
 function PageSelector (props) {
     const {currentPage} = props;
     const handlePageChange = (newPage, title) => {
         return ( () => {props.handlePages(newPage, title)} );
     }
+    const pages = [
+        {
+            value: 'movies',
+            text: 'Movies',
+            icon: <BiCameraMovie />
+        },
+        {
+            value: 'tvShows',
+            text: 'Tv Shows',
+            icon: <RiMovie2Line />
+        },
+        {
+            value: 'search',
+            text: 'Search',
+            icon: <RiSearchLine />
+        },
+        {
+            value: 'settings',
+            text: 'Menu',
+            icon: <RiMenu5Line />
+        }
+    ]
     return (
         <div className={selectorStyle.selectorWrapper}>
             <div className={selectorStyle.selectorContainer}>
-                <button
-                    onClick={handlePageChange('movies', 'Movies')}
-                    className={currentPage === 'movies' ? selectorStyle.activeCategory : undefined}
-                >
-                    <div className={selectorStyle.imageContainer}>
-                        <BiCameraMovie />
-                    </div>
-                    <div>Movies</div>
-                </button>
-                <button
-                    onClick={handlePageChange('tvShows', 'Tv Shows')}
-                    className={currentPage === 'tvShows' ? selectorStyle.activeCategory : undefined}
-                >
-                    <div className={selectorStyle.imageContainer}>
-                        <RiMovie2Line />
-                    </div>
-                    <div>Tv Shows</div>
-                </button>
-                <button
-                    onClick={handlePageChange('search', 'Search')}
-                    className={currentPage === 'search' ? selectorStyle.activeCategory : undefined}
-                >
-                    <div className={selectorStyle.imageContainer}>
-                        <RiSearchLine />
-                    </div>
-                    <div>Search</div>
-                </button>
-                <button
-                    onClick={handlePageChange('settings', 'Menu')}
-                    className={currentPage === 'settings' ? selectorStyle.activeCategory : undefined}
-                    >
-                    <div className={selectorStyle.imageContainer}>
-                        <RiMenu5Line />
-                    </div>
-                    <div>Menu</div>
-                </button>
+                {
+                    pages.map(page => (
+                        <button
+                            key={page.value}
+                            onClick={handlePageChange(page.value, page.text)}
+                            className={currentPage === page.value ? selectorStyle.activeCategory : undefined}
+                        >
+                            <div className={selectorStyle.imageContainer}>
+                                {page.icon}
+                            </div>
+                            <div>{page.text}</div>
+                        </button>
+                    ))
+                }
             </div>
+            {/*Raise on fullscreen to compensate for ios/android non removable nav gesture ui bar*/}
             <div className={selectorStyle.raiseOnFullscreen} />
         </div>
     )

@@ -37,7 +37,9 @@ export const ListSchema = Yup.object().shape({
         .max(20, 'Too Long - Max 20 characters')
         .required('Required'),
     description: Yup.string()
-        .max(140, 'Too Long - Max 140 characters')
+        .max(140, 'Too Long - Max 140 characters'),
+    typeOfList: Yup.string()
+        .required('Required')
 });
 
 export const UserMediaSchema = Yup.object().shape({

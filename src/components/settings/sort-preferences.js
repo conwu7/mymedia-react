@@ -20,16 +20,17 @@ release-
 export default function SortPreferences (props) {
     const {handleActivityClose, listPref, mediaPref, updateUser} = props;
     const [wait, setWaitForServer] = useState(false);
-    const [sortPreferences, setSortPreferences] = useState({
-        listSortPreference: (!listPref || listPref === 'default') ? 'created+' : listPref,
-        mediaSortPreference: (!mediaPref || mediaPref === 'default') ? 'added+' : mediaPref,
-    })
+    const [sortPreferences, setSortPreferences] =
+        useState({
+            listSortPreference: (!listPref || listPref === 'default') ? 'created+' : listPref,
+            mediaSortPreference: (!mediaPref || mediaPref === 'default') ? 'added+' : mediaPref,
+        });
     const handleChange = (e) => {
         setSortPreferences({
             ...sortPreferences,
             [e.target.name]: e.target.value,
         })
-    }
+    };
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (

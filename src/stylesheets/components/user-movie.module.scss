@@ -1,5 +1,5 @@
-$poster-width: 120px;
-$poster-height: 180px;
+$poster-width: 130px;
+$poster-height: 195px;
 $poster-width-desktop: 180px;
 $poster-height-desktop: 270px;
 
@@ -9,9 +9,6 @@ $poster-height-desktop: 270px;
     max-width: $poster-width;
     padding: 5px 0;
 
-    * {
-        box-sizing: border-box;
-    }
     span, p {
         text-decoration: none;
         color: black;
@@ -93,7 +90,8 @@ $poster-height-desktop: 270px;
             font-size: 0.9em;
             color: rgb(73, 99, 90);
         }
-        .imdbRating span {
+        .imdbRatingSpan, .userRating {
+            padding: 0 0 0 7px;
             font-style: normal;
             font-size: 1.2em;
         }

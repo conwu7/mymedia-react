@@ -4,7 +4,7 @@ import { HiOutlineSortAscending } from 'react-icons/hi';
 import { RiEditLine, RiLogoutCircleLine, RiDeleteBin2Line, RiEditBoxLine } from 'react-icons/ri';
 import style from "../stylesheets/pages/settings.module.scss";
 import { PopUpActivity } from "../components/common";
-import {EditList, NewList} from "../components/settings/new-edit-list";
+import { EditList, NewList } from "../components/settings/new-edit-list";
 import DeleteList from "../components/settings/delete-list";
 import SortPreferences from "../components/settings/sort-preferences";
 
@@ -70,7 +70,7 @@ export default function Settings (props) {
             </button>
             <button
                 onClick={handleOpenDeleteList}
-                className={style.deleteList + " " + style.mainLinks}
+                className={`${style.deleteList} ${style.mainLinks}`}
             >
                 <span>Delete Lists</span>
                 <RiDeleteBin2Line />
@@ -84,7 +84,7 @@ export default function Settings (props) {
             </button>
             <button
                 onClick={handleLogout}
-                className={style.logout + " " + style.mainLinks}
+                className={`${style.logout} ${style.mainLinks}`}
             >
                 <span>Logout</span>
                 <RiLogoutCircleLine />

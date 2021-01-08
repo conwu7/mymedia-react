@@ -3,7 +3,7 @@ import { putOrPostToApi } from "../helpers/common";
 import style from '../stylesheets/components/edit-user-media.module.scss';
 import searchStyle from '../stylesheets/components/search.module.scss';
 import defaultPoster from '../images/default-poster.png';
-import {CollapsibleCard, SubmitButton} from "./common";
+import { CollapsibleCard, SubmitButton } from "./common";
 import { FiCheckCircle, FiXCircle, FiStar } from 'react-icons/fi';
 import React, { useState } from "react";
 import { UserMediaSchema } from '../helpers/validation';

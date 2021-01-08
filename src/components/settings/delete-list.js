@@ -23,7 +23,6 @@ export default function DeleteList (props) {
         } finally {
             setWaitForServer(false);
         }
-
     }
     // after a click from the list selector component
     const handleSelection = (list, listCategory) => {
