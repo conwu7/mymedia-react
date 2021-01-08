@@ -115,6 +115,8 @@ export default function Dashboard (props) {
                         mediaPref={mediaPref}
                         getLists={getLists}
                         refreshList={handleUpdatedList}
+                        tvListNames={tvListNames}
+                        movieListNames={movieListNames}
                         setBlockAppOverflow={setBlockAppOverflow}
                     />
                 </PageTransition>
@@ -126,6 +128,8 @@ export default function Dashboard (props) {
                         mediaPref={mediaPref}
                         getLists={getLists}
                         refreshList={handleUpdatedList}
+                        tvListNames={tvListNames}
+                        movieListNames={movieListNames}
                         setBlockAppOverflow={setBlockAppOverflow}
                     />
                 </PageTransition>
@@ -149,7 +153,9 @@ export default function Dashboard (props) {
                     />
                 </PageTransition>
             </div>
-            <div style={{height: "65px"}}/>
+            <div
+                style={{height: "65px"}}
+                className={currentPage === 'settings' ? dashboardStyle.compensateMobileBottom : undefined}/>
             <PageSelector
                 currentPage={currentPage}
                 handlePages={handlePages}

@@ -20,7 +20,6 @@ function MyMediaListsApp() {
   const [isUserCheckDone, setUserCheckDone] = useState(false);
   // Get username, list and media sort preferences
   const updateUser = useCallback(
-
        () => {
         return checkForUser(setUser, setUserCheckDone, setListPref, setMediaPref)
             .catch(err => console.log(err));

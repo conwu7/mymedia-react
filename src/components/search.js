@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 
-import { CenteredSearchBar,PopUpActivity, CloseActivityButton } from './common';
+import { CenteredSearchBar,PopUpActivity } from './common';
 import ListSelector from "./list-selector";
 import style from '../stylesheets/components/search.module.scss';
 
@@ -64,7 +64,7 @@ export default function SearchForMedia (props) {
                     movieListNames={movieListNames}
                     searchResults={searchResults}
                     isSpecificList={isSpecificList}
-                    handleUpdatedList={refreshList}
+                    refreshList={refreshList}
                 />
             </div>
         </>
@@ -101,7 +101,7 @@ function SearchBar (props) {
 function SearchResultsContainer (props) {
     const resultsRef = React.createRef();
     const {
-        searchResults, isSpecificList, handleUpdatedList,
+        searchResults, isSpecificList, refreshList,
         isSearchComplete, isSearching, movieListNames, tvListNames
     } = props;
     let searchError = props.searchError || "No Result";
@@ -124,7 +124,7 @@ function SearchResultsContainer (props) {
                                 isSpecificList={isSpecificList}
                                 tvListNames={tvListNames}
                                 movieListNames={movieListNames}
-                                handleUpdatedList={handleUpdatedList}
+                                refreshList={refreshList}
                             />
                         ))
             }
@@ -132,7 +132,7 @@ function SearchResultsContainer (props) {
     )
 }
 function ResultCardOMDB (props) { //using OMDB api properties
-    const {media, isSpecificList, list, handleUpdatedList,
+    const {media, isSpecificList, list, refreshList,
             tvListNames, movieListNames} = props;
     const mediaTypeResult = media.q === 'TV series' || media.q === 'TV mini-series'?
                             'tv':'movies';
@@ -171,7 +171,7 @@ function ResultCardOMDB (props) { //using OMDB api properties
                         imdbID={media.id}
                         tvListNames={tvListNames}
                         movieListNames={movieListNames}
-                        handleUpdatedList={handleUpdatedList}
+                        refreshList={refreshList}
                         mediaType={mediaTypeResult}
                         />
                 }
@@ -183,27 +183,56 @@ function SpecificListAction () {
     return null
 }
 function NonSpecificListAction (props) {
-    const {imdbID, handleUpdatedList, mediaType,
+    const {imdbID, refreshList, mediaType,
             tvListNames, movieListNames} = props;
     const {toWatchListsTv} = tvListNames;
     const {toWatchLists} = movieListNames;
-    const [wait, setWaitForServer] = useState(false);
-    const [useActionActivity, setActionActivityStatus] = useState(false);
+    const [addToListPopUp, setAddToListPopUp] = useState(false);
+    const handleActivityOpen = () => {
+        setAddToListPopUp(true);
+    }
+    const handleActivityClose = () => {
+        setAddToListPopUp(false);
+    }
+
+    return (
+        <div className={style.nonSpecificAction}>
+            <button
+                onClick={handleActivityOpen}
+                className={style.addToListButton}
+            >
+                <span className={style.addToListSpan}>Add to</span>
+                <span className={style.addToListSpan}>a list</span>
+            </button>
+            <PopUpActivity
+                useActivity={addToListPopUp}
+                handleActivityClose={handleActivityClose}
+            >
+               <AddToList
+                    imdbID={imdbID}
+                    refreshList={refreshList}
+                    handleActivityClose={handleActivityClose}
+                    showTv={mediaType === 'tv'}
+                    showMovies={mediaType === 'movies'}
+                    toWatchListsTv={toWatchListsTv}
+                    toWatchLists={toWatchLists}
+               />
+            </PopUpActivity>
+
+        </div>
+    )
+}
+export function AddToList (props) {
+    const {imdbID, refreshList, handleActivityClose, toWatchLists, toWatchListsTv,
+            showTv, showMovies, streamingSource} = props;
     const formik = useFormik({
         initialValues: {
-            streamingSource: ""
+            streamingSource: streamingSource || ""
         },
         onSubmit: () => {},
         validationSchema: StreamingSchema,
-    })
-    // Too many server/db calls
-    // useEffect(() => {
-    //     fetchFromApi(`userMovies/${imdbID}`)
-    //         .then(userMedia => {
-    //             formik.values.toWatchNotes = userMedia.toWatchNotes;
-    //         })
-    //         .catch(err => null);
-    // }, [imdbID]);
+    });
+    const [wait, setWaitForServer] = useState(false);
     const handleAddToList = async (listCategory, listID) => {
         if (formik.errors.streamingSource) return
         setWaitForServer(true);
@@ -213,85 +242,63 @@ function NonSpecificListAction (props) {
                 formik.values,
                 `lists/${listCategory}/${listID}/${imdbID}`,
                 'post');
-            handleUpdatedList(listCategory);
+            refreshList(listCategory);
             handleActivityClose();
         } catch (err) {
-            if (err === 'not-found') handleUpdatedList(listCategory);
-            window.alert(`Unsuccessful ${err}`);
+            if (err === 'not-found') refreshList(listCategory);
+            window.alert(`Unsuccessful -  ${err}`);
         } finally {
             setWaitForServer(false);
         }
     }
-    const handleActivityOpen = () => {
-        setActionActivityStatus(true);
-    }
-    const handleActivityClose = () => {
-        setActionActivityStatus(false);
-    }
     const handleSelection = (list, listCategory) => {
         handleAddToList(listCategory, list._id)
             .catch(err => console.log(err));
-    }
+    };
     return (
-        <div className={style.nonSpecificAction}>
+        <div className={style.allListsContainer}>
             <WaitForServer
                 wait={wait}
                 waitText="Saving to your list"
             />
-            <button
-                onClick={handleActivityOpen}
-                className={style.addToListButton}
-            >
-                <span className={style.addToListSpan}>Add to</span>
-                <span className={style.addToListSpan}>a list</span>
-            </button>
-            {
-                <PopUpActivity 
-                    useActivity={useActionActivity}
-                    closeButton={<CloseActivityButton handleActivityClose={handleActivityClose} />}
-                >
-                    <div className={style.allListsContainer}>
-                        <div className={style.addToWatchNotes}>
-                            <div>
-                                <fieldset className={style.streamingSource}>
-                                    <label htmlFor="streamingSource">Streaming Source</label>
-                                    <input
-                                        name="streamingSource"
-                                        id="streamingSource"
-                                        list="streamingSources"
-                                        onChange={formik.handleChange}
-                                        value={formik.values.streamingSource}
-                                    />
-                                    <datalist id="streamingSources">
-                                        <option value="NETFLIX"/>
-                                        <option value="HBO MAX"/>
-                                        <option value="AMAZON"/>
-                                        <option value="DISNEY+"/>
-                                        <option value="APPLE TV+"/>
-                                        <option value="HULU"/>
-                                        <option value="PEACOCK"/>
-                                        <option value="CBS"/>
-                                        <option value="SHOWTIME"/>
-                                        <option value="STARZ"/>
-                                        <option value="BUY/RENT"/>
-                                    </datalist>
-                                </fieldset>
-                            </div>
-                            <div className="errorDiv">
-                                {formik.touched.streamingSource && formik.errors.streamingSource}
-                            </div>
-                        </div>
-                        <ListSelector
-                            showTv={mediaType === 'tv'}
-                            showMovies={mediaType === 'movies'}
-                            actionIcon={<MdAddCircleOutline />}
-                            handleSelection={handleSelection}
-                            tvListNames={toWatchListsTv}
-                            movieListNames={toWatchLists}
+            <div className={style.addToWatchNotes}>
+                <div>
+                    <fieldset className={style.streamingSource}>
+                        <label htmlFor="streamingSource">Streaming Source</label>
+                        <input
+                            name="streamingSource"
+                            id="streamingSource"
+                            list="streamingSources"
+                            onChange={formik.handleChange}
+                            value={formik.values.streamingSource}
                         />
-                    </div>
-            </PopUpActivity>
-            }
+                        <datalist id="streamingSources">
+                            <option value="NETFLIX"/>
+                            <option value="HBO MAX"/>
+                            <option value="AMAZON"/>
+                            <option value="DISNEY+"/>
+                            <option value="APPLE TV+"/>
+                            <option value="HULU"/>
+                            <option value="PEACOCK"/>
+                            <option value="CBS"/>
+                            <option value="SHOWTIME"/>
+                            <option value="STARZ"/>
+                            <option value="BUY/RENT"/>
+                        </datalist>
+                    </fieldset>
+                </div>
+                <div className="errorDiv">
+                    {formik.touched.streamingSource && formik.errors.streamingSource}
+                </div>
+            </div>
+            <ListSelector
+                showTv={showTv}
+                showMovies={showMovies}
+                actionIcon={<MdAddCircleOutline/>}
+                handleSelection={handleSelection}
+                tvListNames={toWatchListsTv}
+                movieListNames={toWatchLists}
+            />
         </div>
     )
 }

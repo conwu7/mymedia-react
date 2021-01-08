@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import {CollapsibleCard, PopUpActivity} from './common';
+import { CollapsibleCard, PopUpActivity } from './common';
 import EditUserMedia from "./edit-user-media";
 import { HiDotsHorizontal } from 'react-icons/hi';
 import { CgArrowsExpandUpLeft } from 'react-icons/cg';
@@ -11,83 +11,42 @@ import userMovieStyle from '../stylesheets/components/user-movie.module.scss';
 import defaultPoster from '../images/default-poster.png';
 import { fetchOrDeleteFromApi, sortLists } from '../helpers/common';
 import WaitForServer from "./wait-for-server";
+import { AddToList } from "./search";
 
 export default function MediaListsPage (props) {
-    const {allLists, getLists, refreshList, setBlockAppOverflow,
-            listPref, mediaPref, listCategory} = props;
-    // state for editing user media popup
-    const [editingUserMedia, setEditingUserMedia] = useState(false);
-    const [userMediaToEdit, setUserMediaToEdit] = useState({});
-    const [userMediaListCategory, setUserMediaListCategory] = useState("");
-    const handleOpenEditMedia = (userMedia) => {
-        return (() => {
-            setEditingUserMedia(true);
-            setBlockAppOverflow(true);
-            setUserMediaToEdit(userMedia);
-            setUserMediaListCategory(listCategory);
-        })
-    }
-    const handleCloseEditMedia = () => {
-        setBlockAppOverflow(false);
-        setEditingUserMedia(false);
-    }
-
+    const {allLists, refreshList, listPref, mediaPref,
+            listCategory, tvListNames, movieListNames} = props;
     return (
         <div className={listContainerStyle.mediaListPage}>
-            <AllListsContainer
-                className={listContainerStyle.allListsContainer}
-                allLists={allLists}
-                listPref={listPref}
-                mediaPref={mediaPref}
-                getLists={getLists}
-                listCategory={listCategory}
-                refreshList={refreshList}
-                handleEditUserMedia={handleOpenEditMedia}
-            />
-            <PopUpActivity
-                useActivity={editingUserMedia}
-                handleActivityClose={handleCloseEditMedia}
-            >
-                <EditUserMedia
-                    userMedia={userMediaToEdit}
-                    listCategory={userMediaListCategory}
-                    refreshList={refreshList}
-                    handleActivityClose={handleCloseEditMedia}
-                />
-            </PopUpActivity>
-        </div>
-    )
-}
-function AllListsContainer (props) {
-    const {listCategory, allLists, refreshList, handleEditUserMedia,
-            listPref, mediaPref} = props;
-    return (
-        <div className={listContainerStyle.allListsContainer}>
-            {
-                allLists && allLists.length === 0 ?
-                    <div className={listContainerStyle.emptyLists}>
-                        <p>Your {listCategory === 'towatch' ? 'movies' : 'tv shows'} list is empty</p>
-                        <p>To create new lists, click on "Menu" on the bottom tab</p>
-                        <p>then click "Create New List"</p>
-                    </div>
-                    : undefined
-            }
-            {allLists &&
-            sortLists(allLists, listPref, mediaPref).map((list, index) => (
-                <ListContainer 
-                    key={list.name} 
-                    list={list}
-                    listCategory={listCategory}
-                    refreshList={refreshList}
-                    expandByDefault={index===0}
-                    handleEditUserMedia={handleEditUserMedia}
-                />
-            ))}
+            <div className={listContainerStyle.allListsContainer}>
+                {
+                    allLists && allLists.length === 0 ?
+                        <div className={listContainerStyle.emptyLists}>
+                            <p>Your {listCategory === 'towatch' ? 'movies' : 'tv shows'} list is empty</p>
+                            <p>To create new lists, click on "Menu" on the bottom tab</p>
+                            <p>then click "Create New List"</p>
+                        </div>
+                        : undefined
+                }
+                {allLists &&
+                sortLists(allLists, listPref, mediaPref).map((list, index) => (
+                    <ListContainer
+                        key={list.name}
+                        list={list}
+                        listCategory={listCategory}
+                        refreshList={refreshList}
+                        expandByDefault={index===0}
+                        tvListNames={tvListNames}
+                        movieListNames={movieListNames}
+                    />
+                ))}
+            </div>
         </div>
     )
 }
 function ListContainer (props) {
-    const {list, listCategory, refreshList, expandByDefault, handleEditUserMedia} = props;
+    const {list, listCategory, refreshList, expandByDefault,
+            movieListNames, tvListNames} = props;
     return (
         <div className={listContainerStyle.listContainer}>
                 <CollapsibleCard 
@@ -111,7 +70,8 @@ function ListContainer (props) {
                         listCategory={listCategory}
                         list={list}
                         refreshList={refreshList}
-                        handleEditUserMedia={handleEditUserMedia}
+                        tvListNames={tvListNames}
+                        movieListNames={movieListNames}
                         />
                 </CollapsibleCard>
         </div>
@@ -127,28 +87,31 @@ function ListDetails (props) {
     )
 }
 function AllUserMediaContainer (props) {
-    const {mediaInstants, listCategory, list, refreshList, handleEditUserMedia} = props;
+    const {mediaInstants, listCategory, list, refreshList,
+            tvListNames, movieListNames} = props;
     return (
         <div className={listContainerStyle.allUserMoviesContainer}>
             {mediaInstants.map(instant => (
-                <CombinedDetails 
+                <UserMediaCard
                     key={instant._id}
                     userMedia={instant.userMedia}
                     listCategory={listCategory}
                     list={list}
                     refreshList={refreshList}
-                    handleEditUserMedia={handleEditUserMedia}
+                    tvListNames={tvListNames}
+                    movieListNames={movieListNames}
                 />
                 )
             )}
         </div>
     )
 }
-function CombinedDetails (props) { //temporarily using this to mix the positions of each details collapsible card
-    const {listCategory, list, userMedia, refreshList, handleEditUserMedia} = props;
+function UserMediaCard (props) {
     const [wait, setWaitForServer] = useState(false);
-    const {isWatched, toWatchNotes, reviewNotes,
+    const {listCategory, list, userMedia, refreshList, tvListNames, movieListNames} = props;
+    const {isWatched, toWatchNotes, reviewNotes, streamingSource,
         userRating, media, imdbID} = userMedia;
+    const {title, posterUrl, imdbRating, releaseDate, plot} = media;
     const handleRemoveFromList = () => {
         setWaitForServer(true);
         fetchOrDeleteFromApi(`lists/${listCategory}/${list._id}/${imdbID}`, 'delete')
@@ -162,36 +125,39 @@ function CombinedDetails (props) { //temporarily using this to mix the positions
             wait={wait}
             waitText={"Removing movie from list"}
             />
-        <MovieActions
+        <MovieActionsMenuContainer
             handleRemoveFromList={handleRemoveFromList}
-            handleEditUserMedia={handleEditUserMedia}
             userMedia={userMedia}
+            refreshList={refreshList}
+            tvListNames={tvListNames}
+            movieListNames={movieListNames}
+            listCategory={listCategory}
         />
         <div className={userMovieStyle.menuSpace}>Hello There</div>
         <div className={userMovieStyle.movieDetails}>
             <div className={userMovieStyle.posterContainer}>
                 <img 
-                    src={media.posterUrl || defaultPoster}
-                    alt={media.title+" poster"}
+                    src={posterUrl || defaultPoster}
+                    alt={title+" poster"}
                     className={userMovieStyle.poster}
                     />
             </div>
-            <h1 className={userMovieStyle.movieTitle}>{media.title}</h1>
+            <h1 className={userMovieStyle.movieTitle}>{title}</h1>
             <p className={userMovieStyle.streamingSource}>
-                {userMedia.streamingSource && userMedia.streamingSource.toUpperCase()}
+                {streamingSource && streamingSource.toUpperCase()}
             </p>
             <p className={userMovieStyle.imdbRating}>
-                <a href={`https://imdb.com/title/${media.imdbID}`} target="_blank" rel="noopener noreferrer">IMDB</a>
-                <span className={userMovieStyle.imdbRatingSpan}>{media.imdbRating || "-"}</span>/10
+                <a href={`https://imdb.com/title/${imdbID}`} target="_blank" rel="noopener noreferrer">IMDB</a>
+                <span className={userMovieStyle.imdbRatingSpan}>{imdbRating || "-"}</span>/10
             </p>
-            <p className={userMovieStyle.releaseDate}><span>{media.releaseDate}</span></p>
+            <p className={userMovieStyle.releaseDate}><span>{releaseDate}</span></p>
             <CollapsibleCard
                 cardHeader="Watch Notes"
                 isCollapsed={true}
                 hideButton={false}
                 collapseButton={<CgArrowsExpandUpLeft />}
             >
-                <ToWatchNotes toWatchNotes={toWatchNotes}/>
+                <p className={userMovieStyle.toWatchNotes}>{toWatchNotes || "-"}</p>
             </CollapsibleCard>
             <CollapsibleCard
                 cardHeader="Plot"
@@ -199,9 +165,8 @@ function CombinedDetails (props) { //temporarily using this to mix the positions
                 hideButton={false}
                 collapseButton={<CgArrowsExpandUpLeft />}
             >
-                <p className={userMovieStyle.plot}>{media.plot || "-"}</p>
+                <p className={userMovieStyle.plot}>{plot || "-"}</p>
             </CollapsibleCard>
-            <WatchStatus {...{isWatched}} />
             {
                 isWatched &&
                 (
@@ -222,18 +187,38 @@ function CombinedDetails (props) { //temporarily using this to mix the positions
     </div>
     )
 }
-function MovieActions (props) {
-    const {handleRemoveFromList, handleEditUserMedia, userMedia} = props;
+function MovieActionsMenuContainer (props) {
+    // state for adding media to another list
+    const [openAddToOtherList, setOpenAddToOtherList] = useState(false);
+    const {handleRemoveFromList, userMedia, refreshList,
+            tvListNames, movieListNames, listCategory} = props;
+    const {toWatchListsTv} = tvListNames;
+    const {toWatchLists} = movieListNames;
+    // state for editing user media popup
+    const [editingUserMedia, setEditingUserMedia] = useState(false);
+    const handleOpenEditMedia = () => {
+        setEditingUserMedia(true);
+    }
+    const handleCloseEditMedia = () => {
+        setEditingUserMedia(false);
+    }
+    const handleOpenAddToOtherList = () => {
+        setOpenAddToOtherList(true);
+    }
+    const handleCloseAddToOtherList = () => {
+        setOpenAddToOtherList(false);
+    }
     return (
         <div className={userMovieStyle.menuContainer}>
             <CollapsibleCard 
-                collapseButton={<HiDotsHorizontal />}
+                collapseButton={<HiDotsHorizontal className={userMovieStyle.menuButton}/>}
                 skipAllStyling={true}
                 isCollapsed={true}
                 hideOnFocusLost={true}
             >
                 <div className={userMovieStyle.buttonContainer}>
-                    <button onClick={handleEditUserMedia(userMedia)}>Edit</button>
+                    <button onClick={handleOpenEditMedia}>Edit</button>
+                    <button onClick={handleOpenAddToOtherList}>Add to List</button>
                     <button 
                         className={userMovieStyle.remove}
                         onClick={handleRemoveFromList}
@@ -241,17 +226,35 @@ function MovieActions (props) {
                         Remove
                     </button>
                 </div>
+                <PopUpActivity
+                    useActivity={openAddToOtherList}
+                    handleActivityClose={handleCloseAddToOtherList}
+                >
+                    <AddToList
+                        imdbID={userMedia.imdbID}
+                        refreshList={refreshList}
+                        handleActivityClose={handleCloseAddToOtherList}
+                        toWatchListsTv={toWatchListsTv}
+                        toWatchLists={toWatchLists}
+                        showMovies={listCategory === 'towatch'}
+                        showTv={listCategory === 'towatchtv'}
+                        streamingSource={userMedia.streamingSource}
+                    />
+                </PopUpActivity>
+                <PopUpActivity
+                    useActivity={editingUserMedia}
+                    handleActivityClose={handleCloseEditMedia}
+                >
+                    <EditUserMedia
+                        userMedia={userMedia}
+                        listCategory={listCategory}
+                        refreshList={refreshList}
+                        handleActivityClose={handleCloseEditMedia}
+                    />
+                </PopUpActivity>
             </CollapsibleCard>
         </div>
     )
-}
-function ToWatchNotes (props) {
-    return (
-        <p className={userMovieStyle.toWatchNotes}>{props.toWatchNotes || "-"}</p>
-    )
-}
-function WatchStatus (props) {
-    return null
 }
 function UserNotesAndRating (props) {
     return (

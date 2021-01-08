@@ -29,6 +29,9 @@
     margin: auto;
     text-align: center;
 }
+.compensateMobileBottom {
+    display: none;
+}
 @media only screen and (min-width: 680px) {
     .dashboard {
         max-width: 85%;

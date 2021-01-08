@@ -28,6 +28,7 @@ export default function ListSelector (props) {
                             {icon}
                         </button>
                     ))}
+                    {movieListNames.length === 0? "-": undefined}
                 </div>
             }
             {
