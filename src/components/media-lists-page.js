@@ -108,16 +108,22 @@ function AllUserMediaContainer (props) {
 }
 function UserMediaCard (props) {
     const [wait, setWaitForServer] = useState(false);
+    const [showMoreInfo, setShowMoreInfo] = useState(false);
     const {listCategory, list, userMedia, refreshList, tvListNames, movieListNames} = props;
-    const {isWatched, toWatchNotes, reviewNotes, streamingSource,
-        userRating, media, imdbID} = userMedia;
-    const {title, posterUrl, imdbRating, releaseDate, plot} = media;
+    const { streamingSource, media, imdbID} = userMedia;
+    const {title, posterUrl, releaseDate} = media;
     const handleRemoveFromList = () => {
         setWaitForServer(true);
         fetchOrDeleteFromApi(`lists/${listCategory}/${list._id}/${imdbID}`, 'delete')
             .then(()=>refreshList(listCategory))
             .catch(err => window.alert(err))
             .finally(() => {setWaitForServer(false)});
+    };
+    const handleOpenShowMoreInfo = () => {
+        setShowMoreInfo(true);
+    };
+    const handleCloseShowMoreInfo = () => {
+        setShowMoreInfo(false);
     };
     return (
     <div className={userMovieStyle.userMovie}>
@@ -146,45 +152,102 @@ function UserMediaCard (props) {
             <p className={userMovieStyle.streamingSource}>
                 {streamingSource && streamingSource.toUpperCase()}
             </p>
-            <p className={userMovieStyle.imdbRating}>
-                <a href={`https://imdb.com/title/${imdbID}`} target="_blank" rel="noopener noreferrer">IMDB</a>
-                <span className={userMovieStyle.imdbRatingSpan}>{imdbRating || "-"}</span>/10
-            </p>
             <p className={userMovieStyle.releaseDate}><span>{releaseDate}</span></p>
-            <CollapsibleCard
-                cardHeader="Watch Notes"
-                isCollapsed={true}
-                hideButton={false}
-                collapseButton={<CgArrowsExpandUpLeft />}
+            <button
+                className={userMovieStyle.moreInfoButton}
+                onClick={handleOpenShowMoreInfo}
             >
-                <p className={userMovieStyle.toWatchNotes}>{toWatchNotes || "-"}</p>
-            </CollapsibleCard>
-            <CollapsibleCard
-                cardHeader="Plot"
-                isCollapsed={true}
-                hideButton={false}
-                collapseButton={<CgArrowsExpandUpLeft />}
+                More Info
+            </button>
+            <PopUpActivity
+                useActivity={showMoreInfo}
+                handleActivityClose={handleCloseShowMoreInfo}
             >
-                <p className={userMovieStyle.plot}>{plot || "-"}</p>
-            </CollapsibleCard>
-            {
-                isWatched &&
-                (
-                    <CollapsibleCard
-                        cardHeader="Your Review"
-                        isCollapsed={true}
-                        hideButton={false}
-                        collapseButton={<CgArrowsExpandUpLeft />}
-                    >
-                        <UserNotesAndRating
-                            userRating={userRating}
-                            reviewNotes={reviewNotes}
-                        />
-                    </CollapsibleCard>
-                )
-            }
+                <MoreInfoCard
+                    media={media}
+                    userMedia={userMedia}
+                />
+            </PopUpActivity>
         </div>
     </div>
+    )
+}
+function MoreInfoCard (props) {
+    const {media, userMedia} = props;
+    const {title, genre, runtime, releaseDate, posterUrl, plot, imdbRating, actors,
+            runYears, totalSeasons} = media;
+    const {isWatched, toWatchNotes, reviewNotes, userRating, imdbID} = userMedia;
+
+    return (
+        <div className={userMovieStyle.moreInfoContainer}>
+            <section className={userMovieStyle.posterAndMainInfoContainer}>
+                <div className={userMovieStyle.posterInMoreContainer}>
+                    <img
+                        src={posterUrl || defaultPoster}
+                        alt={`${title} poster`}
+                        className={userMovieStyle.posterInMore}
+                    />
+                </div>
+                <div className={userMovieStyle.mainInfoContainer}>
+                    <h1 className={userMovieStyle.movieTitle}>{title}</h1>
+                    <p className={userMovieStyle.runtime}>({runtime?runtime:'-'} min)</p>
+                    <p className={userMovieStyle.genre}>{genre && genre.join(', ')}</p>
+                    <p className={userMovieStyle.releaseDate}>
+                        {
+                            (runYears && totalSeasons) ?
+                            `${runYears} (${totalSeasons} season${totalSeasons>1?'s':""})` :
+                            releaseDate
+                        }
+                    </p>
+                    <p className={userMovieStyle.imdbRating}>
+                        <a href={`https://imdb.com/title/${imdbID}`} target="_blank" rel="noopener noreferrer">IMDB</a>
+                        <span className={userMovieStyle.imdbRatingSpan}>{imdbRating || "-"}</span>/10
+                    </p>
+                </div>
+            </section>
+            <section className={userMovieStyle.otherInfoContainer}>
+                <CollapsibleCard
+                    cardHeader="Cast"
+                    isCollapsed={false}
+                    hideButton={false}
+                    collapseButton={<CgArrowsExpandUpLeft />}
+                >
+                    <p className={userMovieStyle.actors}>{actors.join(', ')}</p>
+                </CollapsibleCard>
+                <CollapsibleCard
+                    cardHeader="Your Watch Notes"
+                    isCollapsed={false}
+                    hideButton={false}
+                    collapseButton={<CgArrowsExpandUpLeft />}
+                >
+                    <p className={userMovieStyle.toWatchNotes}>{toWatchNotes || "-"}</p>
+                </CollapsibleCard>
+                <CollapsibleCard
+                    cardHeader="Plot"
+                    isCollapsed={false}
+                    hideButton={false}
+                    collapseButton={<CgArrowsExpandUpLeft />}
+                >
+                    <p className={userMovieStyle.plot}>{plot || "-"}</p>
+                </CollapsibleCard>
+                {
+                    isWatched &&
+                    (
+                        <CollapsibleCard
+                            cardHeader="Your Review"
+                            isCollapsed={false}
+                            hideButton={false}
+                            collapseButton={<CgArrowsExpandUpLeft />}
+                        >
+                            <UserNotesAndRating
+                                userRating={userRating}
+                                reviewNotes={reviewNotes}
+                            />
+                        </CollapsibleCard>
+                    )
+                }
+            </section>
+        </div>
     )
 }
 function MovieActionsMenuContainer (props) {
@@ -220,6 +283,7 @@ function MovieActionsMenuContainer (props) {
                     <div className={userMovieStyle.buttonContainer}>
                         <button onClick={handleOpenEditMedia}>Edit</button>
                         <button onClick={handleOpenAddToOtherList}>Add to List</button>
+                        <button onClick={undefined}>Completed?</button>
                         <button
                             className={userMovieStyle.remove}
                             onClick={handleRemoveFromList}

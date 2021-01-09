@@ -72,7 +72,7 @@ export default function EditUserMedia (props) {
                 <div className={style.mediaPosterContainer}>
                     <img
                         src={media.posterUrl || defaultPoster}
-                        alt={media.title + " poster"}
+                        alt={`${media.title} poster`}
                         className={style.mediaPoster}
                     />
                 </div>
