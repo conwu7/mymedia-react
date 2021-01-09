@@ -57,3 +57,8 @@ export const SearchSchema = Yup.object().shape({
 export const StreamingSchema = Yup.object().shape({
     streamingSource: Yup.string().max(20, 'Too Long - Max 20 characters')
 })
+
+export const FeedbackSchema = Yup.object().shape({
+    feedbackType: Yup.string().required('Required'),
+    feedbackMessage: Yup.string().required('Required').max(500, 'Too Long - Max 500 characters'),
+})

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { putOrPostToApi } from "../helpers/common";
 import { HiOutlineSortAscending } from 'react-icons/hi';
-import { RiEditLine, RiLogoutCircleLine, RiDeleteBin2Line, RiEditBoxLine } from 'react-icons/ri';
+import { RiEditLine, RiLogoutCircleLine, RiDeleteBin2Line, RiEditBoxLine, RiFeedbackLine } from 'react-icons/ri';
 import style from "../stylesheets/pages/settings.module.scss";
 import { PopUpActivity } from "../components/common";
 import { EditList, NewList } from "../components/settings/new-edit-list";
 import DeleteList from "../components/settings/delete-list";
 import SortPreferences from "../components/settings/sort-preferences";
+import { Feedback } from "../components/settings/feedback";
 
 export default function Settings (props) {
     // state for new list popup
@@ -17,6 +18,8 @@ export default function Settings (props) {
     const [deletingList, setDeletingList] = useState(false);
     // state for modify sort preferences popup
     const [modifyingSortPref, setModifyingSortPref] = useState(false);
+    // state for feedback form popup
+    const [openFeedback, setOpenFeedback] = useState(false);
     const {refreshList, tvListNames, movieListNames, updateUser,
             listPref, mediaPref } = props;
     const handleLogout = async () => {
@@ -52,6 +55,12 @@ export default function Settings (props) {
     const handleCloseModifySortPref = () => {
         setModifyingSortPref(false);
     }
+    const handleOpenFeedback = () => {
+        setOpenFeedback(true);
+    }
+    const handleCloseFeedBack = () => {
+        setOpenFeedback(false);
+    }
     return (
         <div className={style.settingsContainer}>
             <button
@@ -81,6 +90,13 @@ export default function Settings (props) {
             >
                 <span>Sort Preferences</span>
                 <HiOutlineSortAscending />
+            </button>
+            <button
+                className={style.mainLinks}
+                onClick={handleOpenFeedback}
+                >
+                <span>Submit Feedback</span>
+                <RiFeedbackLine />
             </button>
             <button
                 onClick={handleLogout}
@@ -134,6 +150,13 @@ export default function Settings (props) {
                     updateUser={updateUser}
                     handleActivityClose={handleCloseModifySortPref}
                 />
+            </PopUpActivity>
+            <PopUpActivity
+                // FEEDBACK FORM
+                useActivity={openFeedback}
+                handleActivityClose={handleCloseFeedBack}
+                >
+                <Feedback />
             </PopUpActivity>
         </div>
     )
