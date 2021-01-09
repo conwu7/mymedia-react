@@ -160,6 +160,10 @@ $poster-height-desktop: 270px;
     .otherInfoContainer {
         margin: 0 auto 10px;
         padding: 10px;
+
+        div {
+            color: black;
+        }
     }
 }
 @media only screen and (min-width: 680px) {

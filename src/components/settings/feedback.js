@@ -47,7 +47,7 @@ export function Feedback (props) {
                         onChange={formik.handleChange}
                         value={formik.values.feedbackType}
                     >
-                        <option value="selectOne" disabled={true}>Select One</option>
+                        <option value="selectOne" disabled={true}>Select a type</option>
                         <option value="bugs">Bugs</option>
                         <option value="featureRequest">Feature Request</option>
                         <option value="generalFeedback">General Feedback</option>

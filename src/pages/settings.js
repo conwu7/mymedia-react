@@ -92,7 +92,7 @@ export default function Settings (props) {
                 <HiOutlineSortAscending />
             </button>
             <button
-                className={style.mainLinks}
+                className={`${style.mainLinks} ${style.feedback}`}
                 onClick={handleOpenFeedback}
                 >
                 <span>Submit Feedback</span>

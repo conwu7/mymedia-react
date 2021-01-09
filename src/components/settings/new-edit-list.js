@@ -160,7 +160,7 @@ function ListForm (props) {
                 />
             </fieldset>
             <div className="errorDiv">
-                {formik.touched.listName && formik.errors.listName}
+                {formik.errors.listName}
             </div>
             <fieldset>
                 <label htmlFor="description">Description</label>

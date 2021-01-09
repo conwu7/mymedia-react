@@ -212,7 +212,7 @@ function MoreInfoCard (props) {
                     hideButton={false}
                     collapseButton={<CgArrowsExpandUpLeft />}
                 >
-                    <p className={userMovieStyle.actors}>{actors.join(', ')}</p>
+                    <p className={userMovieStyle.actors}>{actors && actors.join(', ')}</p>
                 </CollapsibleCard>
                 <CollapsibleCard
                     cardHeader="Your Watch Notes"
