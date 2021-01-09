@@ -261,7 +261,7 @@ export function AddToList (props) {
                 wait={wait}
                 waitText="Saving to your list"
             />
-            <div className={style.addToWatchNotes}>
+            <div>
                 <div>
                     <fieldset className={style.streamingSource}>
                         <label htmlFor="streamingSource">Streaming Source</label>
@@ -288,7 +288,10 @@ export function AddToList (props) {
                     </fieldset>
                 </div>
                 <div className="errorDiv">
-                    {formik.touched.streamingSource && formik.errors.streamingSource}
+                    {
+                        formik.errors.streamingSource &&
+                        `${formik.errors.streamingSource} (Currently ${formik.values.streamingSource.length})`
+                    }
                 </div>
             </div>
             <ListSelector

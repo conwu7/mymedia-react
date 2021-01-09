@@ -1,8 +1,8 @@
 .listContainer {
     display: flex;
-    width: 90%;
+    width: 85%;
     margin: 0 auto 10px;
-    padding: 5px;
+    padding: 10px;
     box-shadow: 0 0 8px 1px rgba(32,33,36,.15);
     border-radius: 10px;
     background-color: white;
@@ -21,6 +21,10 @@
 .listDetails {
     width: 100%;
     padding: 10px 10px;
+}
+.listName {
+    font-weight: 700;
+    color: darkslategrey;
 }
 .listDescription {
     color: dimgrey;

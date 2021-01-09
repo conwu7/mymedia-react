@@ -81,7 +81,7 @@ function ListDetails (props) {
     const {list} = props;
     return (
         <div className={listContainerStyle.listDetails}>
-            <h1>{list.name.toLocaleUpperCase()}</h1>
+            <h1 className={listContainerStyle.listName}>{list.name.toLocaleUpperCase()}</h1>
             <h2 className={listContainerStyle.listDescription}>{list.description}</h2>
         </div>
     )
@@ -209,51 +209,53 @@ function MovieActionsMenuContainer (props) {
         setOpenAddToOtherList(false);
     }
     return (
-        <div className={userMovieStyle.menuContainer}>
-            <CollapsibleCard 
-                collapseButton={<HiDotsHorizontal className={userMovieStyle.menuButton}/>}
-                skipAllStyling={true}
-                isCollapsed={true}
-                hideOnFocusLost={true}
+        <>
+            <div className={userMovieStyle.menuContainer}>
+                <CollapsibleCard
+                    collapseButton={<HiDotsHorizontal className={userMovieStyle.menuButton}/>}
+                    skipAllStyling={true}
+                    isCollapsed={true}
+                    hideOnFocusLost={true}
+                >
+                    <div className={userMovieStyle.buttonContainer}>
+                        <button onClick={handleOpenEditMedia}>Edit</button>
+                        <button onClick={handleOpenAddToOtherList}>Add to List</button>
+                        <button
+                            className={userMovieStyle.remove}
+                            onClick={handleRemoveFromList}
+                        >
+                            Remove
+                        </button>
+                    </div>
+                </CollapsibleCard>
+            </div>
+            <PopUpActivity
+                useActivity={openAddToOtherList}
+                handleActivityClose={handleCloseAddToOtherList}
             >
-                <div className={userMovieStyle.buttonContainer}>
-                    <button onClick={handleOpenEditMedia}>Edit</button>
-                    <button onClick={handleOpenAddToOtherList}>Add to List</button>
-                    <button 
-                        className={userMovieStyle.remove}
-                        onClick={handleRemoveFromList}
-                    >
-                        Remove
-                    </button>
-                </div>
-                <PopUpActivity
-                    useActivity={openAddToOtherList}
+                <AddToList
+                    imdbID={userMedia.imdbID}
+                    refreshList={refreshList}
                     handleActivityClose={handleCloseAddToOtherList}
-                >
-                    <AddToList
-                        imdbID={userMedia.imdbID}
-                        refreshList={refreshList}
-                        handleActivityClose={handleCloseAddToOtherList}
-                        toWatchListsTv={toWatchListsTv}
-                        toWatchLists={toWatchLists}
-                        showMovies={listCategory === 'towatch'}
-                        showTv={listCategory === 'towatchtv'}
-                        streamingSource={userMedia.streamingSource}
-                    />
-                </PopUpActivity>
-                <PopUpActivity
-                    useActivity={editingUserMedia}
+                    toWatchListsTv={toWatchListsTv}
+                    toWatchLists={toWatchLists}
+                    showMovies={listCategory === 'towatch'}
+                    showTv={listCategory === 'towatchtv'}
+                    streamingSource={userMedia.streamingSource}
+                />
+            </PopUpActivity>
+            <PopUpActivity
+                useActivity={editingUserMedia}
+                handleActivityClose={handleCloseEditMedia}
+            >
+                <EditUserMedia
+                    userMedia={userMedia}
+                    listCategory={listCategory}
+                    refreshList={refreshList}
                     handleActivityClose={handleCloseEditMedia}
-                >
-                    <EditUserMedia
-                        userMedia={userMedia}
-                        listCategory={listCategory}
-                        refreshList={refreshList}
-                        handleActivityClose={handleCloseEditMedia}
-                    />
-                </PopUpActivity>
-            </CollapsibleCard>
-        </div>
+                />
+            </PopUpActivity>
+        </>
     )
 }
 function UserNotesAndRating (props) {

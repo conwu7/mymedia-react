@@ -96,20 +96,30 @@ export default function EditUserMedia (props) {
                         />
                         <datalist id="streamingSources">
                             <option value="NETFLIX"/>
-                            <option value="HBO"/>
+                            <option value="HBO MAX"/>
                             <option value="AMAZON"/>
                             <option value="DISNEY+"/>
+                            <option value="APPLE TV+"/>
                             <option value="HULU"/>
                             <option value="PEACOCK"/>
+                            <option value="CBS"/>
+                            <option value="SHOWTIME"/>
+                            <option value="STARZ"/>
                             <option value="BUY/RENT"/>
                         </datalist>
                     </fieldset>
+                    <div className="errorDiv">
+                        {
+                            formik.errors.streamingSource &&
+                            `${formik.errors.streamingSource} (Currently ${formik.values.streamingSource.length})`
+                        }
+                    </div>
                     <UserMediaTextFields
                         formik={formik}
                         fieldName="toWatchNotes"
                         fieldText="Watch Notes"
                     />
-                    <div>
+                    <div className={style.fieldContainer}>
                         <span>Watched?</span>
                         <div className={style.watchStatusButtons}>
                             <button
@@ -128,7 +138,7 @@ export default function EditUserMedia (props) {
                             </button>
                         </div>
                     </div>
-                    <div>
+                    <div className={style.fieldContainer}>
                         <span>Your Rating</span>
                         <RatingStars
                             rating={formik.values.userRating}
@@ -150,7 +160,7 @@ export default function EditUserMedia (props) {
 function UserMediaTextFields (props) {
     const {formik, fieldName, fieldText} = props;
     return (
-        <div className={style[fieldName]}>
+        <div className={`${style[fieldName]} ${style.fieldContainer}`}>
             <CollapsibleCard
                 isCollapsed={true}
                 cardHeader={

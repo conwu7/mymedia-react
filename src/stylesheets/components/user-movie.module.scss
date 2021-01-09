@@ -9,13 +9,6 @@ $poster-height-desktop: 270px;
     max-width: $poster-width;
     padding: 5px 0;
 
-    span, p {
-        text-decoration: none;
-        color: black;
-    }
-    span {
-        font-size: 19px;
-    }
     .menuSpace {
         height: 25px;
     }
@@ -75,17 +68,20 @@ $poster-height-desktop: 270px;
         min-height: 40px;
         max-height: 60px;
         overflow: auto;
+        font-size: 16px;
+        font-weight: 600;
+        color: darkslategray
     }
     .movieDetails, .userMovieDetails {
         color: darkslategray;
         font-size: 0.95em;
 
-        h1 {
-            font-weight: bold;
-            color: darkslategray
-        }
-        .releaseDate, .imdbRating {
+        .imdbRating {
             font-size: 0.9em;
+            color: rgb(73, 99, 90);
+        }
+        .releaseDate {
+            font-size: 16px;
             color: rgb(73, 99, 90);
         }
         .imdbRatingSpan, .userRating {
@@ -101,15 +97,17 @@ $poster-height-desktop: 270px;
         }
         .plot, .toWatchNotes, .reviewNotes {
             color: dimgrey;
-
         }
     }
     .movieDetails>*, .userMovieDetails>* {
         margin: 5px 0;
     }
     .streamingSource {
+        max-width: 100%;
+        word-break: break-all;
         color: gray;
-        font-weight: bold;
+        font-weight: 600;
+        font-size: 14px;
     }
 }
 @media only screen and (min-width: 680px) {

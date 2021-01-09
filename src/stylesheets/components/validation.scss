@@ -4,7 +4,10 @@
     margin: 10px 2px 15px;
     text-align: center;
     transition: all 200ms ease-out;
+    font-size: 20px;
 }
 .errorDiv:empty {
     margin: 0;
+    padding: 0;
+    overflow: hidden;
 }

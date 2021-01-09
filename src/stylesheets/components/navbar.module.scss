@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@800&display=swap');
+
 .navbar {
     position: -webkit-sticky;
     position: sticky;
@@ -18,18 +20,22 @@
     .appName {
         width: 100%;
         text-align: left;
-        font-family: 'Righteous', serif;
+        font-family: 'Dosis', sans-serif;
+        text-transform: uppercase;
+        //font-family: 'Righteous', sans-serif;
         font-size: 1.2em;
+        a {
+            font-weight: 700;
+        }
     }
+
     li {
         margin: 15px 20px;
-        font-weight: bold;
     }
     a, button {
         padding: 0;
         border: none;
         font-size: 1em;
-        font-weight: inherit;
         text-decoration: none;
         color: inherit;
         background-color: inherit;
