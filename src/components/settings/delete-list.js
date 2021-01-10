@@ -15,11 +15,14 @@ export default function DeleteList (props) {
         setWaitForServer(true);
         try {
             await fetchOrDeleteFromApi(`lists/${listCategory}/${listID}`, 'delete');
-            // handleActivityClose();
-            refreshList(listCategory)
+            refreshList(listCategory);
         } catch (err) {
-            if (err === 'not-found') refreshList(listCategory);
-            window.alert('Unsuccessful - List could have been deleted on a different device');
+            if (err === 'not-found') {
+                refreshList(listCategory);
+                window.alert('Unsuccessful - List could have been deleted on a different device');
+                return
+            }
+            window.alert(`Unsuccessful - ${err}`);
         } finally {
             setWaitForServer(false);
         }
