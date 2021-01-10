@@ -32,7 +32,7 @@ export function NewList (props) {
                 handleActivityClose();
             } catch (err) {
                 if (err === 'not-found') refreshList(values.typeOfList);
-                window.alert('Unsuccessful - List could have been deleted on a different device');
+                window.alert(`Unsuccessful - ${err}`);
             } finally {
                 setWaitForServer(false);
             }
@@ -108,6 +108,8 @@ export function EditList (props) {
                        handleSelection={handleSelection}
                        tvListNames={toWatchListsTv}
                        movieListNames={toWatchLists}
+                       refreshList={refreshList}
+                       hideNewListButton={true}
                     />
             }
             {

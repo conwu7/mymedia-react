@@ -40,6 +40,8 @@ export default function DeleteList (props) {
                 handleSelection={handleSelection}
                 tvListNames={toWatchListsTv}
                 movieListNames={toWatchLists}
+                refreshList={refreshList}
+                hideNewListButton={true}
             />
             <WaitForServer
                 wait={wait}

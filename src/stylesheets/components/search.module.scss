@@ -90,7 +90,6 @@
                 padding: 10px 15px;
                 margin: 5px auto;
                 font-size: 1.15em;
-                color: inherit;
             }
             li {
                 display: block;
@@ -107,14 +106,14 @@
         label, input, textarea {
             margin: 10px 10px;
         }
-        textarea {
-            border: 2px solid lightgray;
-            border-radius: 10px;
-            height: 150px;
-            width: 90%;
-            font-size: 1.05em;
-            font-family: inherit;
-        }
+        //textarea {
+        //    border: 2px solid lightgray;
+        //    border-radius: 10px;
+        //    height: 150px;
+        //    width: 90%;
+        //    font-size: 1.05em;
+        //    font-family: inherit;
+        //}
         .userNotesLabel {
             max-width: 70vw;
             margin: auto;

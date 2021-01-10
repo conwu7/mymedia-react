@@ -218,7 +218,6 @@ function NonSpecificListAction (props) {
                     toWatchLists={toWatchLists}
                />
             </PopUpActivity>
-
         </div>
     )
 }
@@ -285,6 +284,7 @@ export function AddToList (props) {
                 handleSelection={handleSelection}
                 tvListNames={toWatchListsTv}
                 movieListNames={toWatchLists}
+                refreshList={refreshList}
             />
         </div>
     )
