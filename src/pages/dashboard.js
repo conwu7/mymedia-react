@@ -112,7 +112,8 @@ export default function Dashboard (props) {
     }
     const handleUpdatedList = (listCategory) => {
         getLists(listCategory)
-            .then(refreshListNames);
+            .then(refreshListNames)
+            .then(updateCompletedList);
     }
     if (!user) return (
         <h1 className={dashboardStyle.noUserMessage}>

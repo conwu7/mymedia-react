@@ -303,7 +303,6 @@ function MovieActionsMenuContainer (props) {
                 `lists/${listCategory}/${imdbID}/completed`,
                 'post'
             )
-            updateCompletedLists();
             refreshList(listCategory);
         } catch (err) {
             window.alert(err);
