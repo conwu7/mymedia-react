@@ -25,6 +25,9 @@ export default function Dashboard (props) {
     // state for list names (no media details)
     const [movieListNames, setMovieListNames] = useState([]);
     const [tvListNames, setTvListNames] = useState([]);
+    const [allowLoadCompletedLists, setAllowLoadCompletedLists] = useState(false);
+    const [completedLists, setCompletedLists] = useState({});
+    const [refreshCompletedLists, setRefreshCompletedLists] = useState(0);
     // function to handle blockAppOverflow state change
     useEffect(() => {
         const App = document.getElementsByTagName('body')[0];
@@ -46,6 +49,17 @@ export default function Dashboard (props) {
             .finally(() => {
                 setUpdatingLists(false)
             });
+    }
+    // function to get completed lists
+    useEffect(() => {
+        if (allowLoadCompletedLists) {
+            fetchOrDeleteFromApi('lists/completed', 'get')
+                .then(results => setCompletedLists(results))
+                .catch(err => console.log(err));
+        }
+    }, [allowLoadCompletedLists, refreshCompletedLists]);
+    const updateCompletedList = () => {
+        setRefreshCompletedLists(refreshCompletedLists+1);
     }
     // function to update list names
     const refreshListNames = useCallback(
@@ -84,6 +98,7 @@ export default function Dashboard (props) {
                     .catch(err => console.log(err))
             setAllLists({towatch: movieLists, towatchtv: tvLists});
             setUpdatingLists(false);
+            setAllowLoadCompletedLists(true);
         }
 
         initialGetLists()
@@ -117,6 +132,8 @@ export default function Dashboard (props) {
                         refreshList={handleUpdatedList}
                         tvListNames={tvListNames}
                         movieListNames={movieListNames}
+                        completedList={completedLists.completedLists}
+                        updateCompletedList={updateCompletedList}
                         setBlockAppOverflow={setBlockAppOverflow}
                     />
                 </PageTransition>
@@ -130,6 +147,8 @@ export default function Dashboard (props) {
                         refreshList={handleUpdatedList}
                         tvListNames={tvListNames}
                         movieListNames={movieListNames}
+                        completedList={completedLists.completedListsTv}
+                        updateCompletedList={updateCompletedList}
                         setBlockAppOverflow={setBlockAppOverflow}
                     />
                 </PageTransition>

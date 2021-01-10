@@ -9,13 +9,14 @@ import listContainerStyle from '../stylesheets/components/list-container.module.
 import userMovieStyle from '../stylesheets/components/user-movie.module.scss';
 
 import defaultPoster from '../images/default-poster.png';
-import { fetchOrDeleteFromApi, sortLists } from '../helpers/common';
+import {fetchOrDeleteFromApi, putOrPostToApi, sortLists} from '../helpers/common';
 import WaitForServer from "./wait-for-server";
 import { AddToList } from "./search";
 
 export default function MediaListsPage (props) {
     const {allLists, refreshList, listPref, mediaPref,
-            listCategory, tvListNames, movieListNames} = props;
+            listCategory, tvListNames, movieListNames,
+                completedList, updateCompletedList} = props;
     return (
         <div className={listContainerStyle.mediaListPage}>
             <div className={listContainerStyle.allListsContainer}>
@@ -38,15 +39,34 @@ export default function MediaListsPage (props) {
                         expandByDefault={index===0}
                         tvListNames={tvListNames}
                         movieListNames={movieListNames}
+                        updateCompletedLists={updateCompletedList}
                     />
                 ))}
+
+                <div className={listContainerStyle.completedListContainer}>
+                    {
+                        (completedList && completedList.length!==0 &&
+                            completedList.mediaInstants && completedList.mediaInstants.length !== 0) &&
+                        <ListContainer
+                            list={sortLists([completedList], listPref, mediaPref)[0]}
+                            listCategory={listCategory}
+                            refreshList={refreshList}
+                            expandByDefault={false}
+                            tvListNames={tvListNames}
+                            movieListNames={movieListNames}
+                            useCompleted={true}
+                            updateCompletedLists={updateCompletedList}
+                        />
+                    }
+                </div>
+
             </div>
         </div>
     )
 }
 function ListContainer (props) {
-    const {list, listCategory, refreshList, expandByDefault,
-            movieListNames, tvListNames} = props;
+    const {list, listCategory, refreshList, expandByDefault, useCompleted,
+            movieListNames, tvListNames, updateCompletedLists} = props;
     return (
         <div className={listContainerStyle.listContainer}>
                 <CollapsibleCard 
@@ -72,6 +92,8 @@ function ListContainer (props) {
                         refreshList={refreshList}
                         tvListNames={tvListNames}
                         movieListNames={movieListNames}
+                        updateCompletedLists={updateCompletedLists}
+                        useCompleted={useCompleted}
                         />
                 </CollapsibleCard>
         </div>
@@ -87,8 +109,8 @@ function ListDetails (props) {
     )
 }
 function AllUserMediaContainer (props) {
-    const {mediaInstants, listCategory, list, refreshList,
-            tvListNames, movieListNames} = props;
+    const {mediaInstants, listCategory, list, refreshList, useCompleted,
+            tvListNames, movieListNames, updateCompletedLists} = props;
     return (
         <div className={listContainerStyle.allUserMoviesContainer}>
             {mediaInstants.map(instant => (
@@ -100,6 +122,8 @@ function AllUserMediaContainer (props) {
                     refreshList={refreshList}
                     tvListNames={tvListNames}
                     movieListNames={movieListNames}
+                    updateCompletedLists={updateCompletedLists}
+                    useCompleted={useCompleted}
                 />
                 )
             )}
@@ -107,18 +131,11 @@ function AllUserMediaContainer (props) {
     )
 }
 function UserMediaCard (props) {
-    const [wait, setWaitForServer] = useState(false);
     const [showMoreInfo, setShowMoreInfo] = useState(false);
-    const {listCategory, list, userMedia, refreshList, tvListNames, movieListNames} = props;
-    const { streamingSource, media, imdbID} = userMedia;
+    const {listCategory, list, userMedia, refreshList, useCompleted,
+            tvListNames, movieListNames, updateCompletedLists} = props;
+    const { streamingSource, media} = userMedia;
     const {title, posterUrl, releaseDate} = media;
-    const handleRemoveFromList = () => {
-        setWaitForServer(true);
-        fetchOrDeleteFromApi(`lists/${listCategory}/${list._id}/${imdbID}`, 'delete')
-            .then(()=>refreshList(listCategory))
-            .catch(err => window.alert(err))
-            .finally(() => {setWaitForServer(false)});
-    };
     const handleOpenShowMoreInfo = () => {
         setShowMoreInfo(true);
     };
@@ -127,17 +144,15 @@ function UserMediaCard (props) {
     };
     return (
     <div className={userMovieStyle.userMovie}>
-        <WaitForServer
-            wait={wait}
-            waitText={"Removing movie from list"}
-            />
         <MovieActionsMenuContainer
-            handleRemoveFromList={handleRemoveFromList}
             userMedia={userMedia}
             refreshList={refreshList}
             tvListNames={tvListNames}
             movieListNames={movieListNames}
             listCategory={listCategory}
+            list={list}
+            useCompleted={useCompleted}
+            updateCompletedLists={updateCompletedLists}
         />
         <div className={userMovieStyle.menuSpace}>Hello There</div>
         <div className={userMovieStyle.movieDetails}>
@@ -251,10 +266,12 @@ function MoreInfoCard (props) {
     )
 }
 function MovieActionsMenuContainer (props) {
+    const [wait, setWaitForServer] = useState(false);
     // state for adding media to another list
     const [openAddToOtherList, setOpenAddToOtherList] = useState(false);
-    const {handleRemoveFromList, userMedia, refreshList,
-            tvListNames, movieListNames, listCategory} = props;
+    const {userMedia, refreshList, tvListNames, movieListNames, useCompleted,
+            listCategory, list, updateCompletedLists} = props;
+    const {imdbID, _id} = userMedia;
     const {toWatchListsTv} = tvListNames;
     const {toWatchLists} = movieListNames;
     // state for editing user media popup
@@ -271,8 +288,42 @@ function MovieActionsMenuContainer (props) {
     const handleCloseAddToOtherList = () => {
         setOpenAddToOtherList(false);
     }
+    const handleRemoveFromList = () => {
+        setWaitForServer(true);
+        fetchOrDeleteFromApi(`lists/${listCategory}/${list._id}/${imdbID}`, 'delete')
+            .then(()=>refreshList(listCategory))
+            .catch(err => window.alert(err))
+            .finally(() => {setWaitForServer(false)});
+    };
+    const handleMarkComplete = async () => {
+        setWaitForServer(true);
+        try {
+            await putOrPostToApi(
+                {listID: list._id, userMediaID: _id},
+                `lists/${listCategory}/${imdbID}/completed`,
+                'post'
+            )
+            updateCompletedLists();
+            refreshList(listCategory);
+        } catch (err) {
+            window.alert(err);
+        } finally {
+            setWaitForServer(false);
+        }
+    }
+    const handleMarkInComplete = async () => {
+        setWaitForServer(true);
+        fetchOrDeleteFromApi(`lists/${listCategory}/${imdbID}/completed`, 'delete')
+            .then(() => updateCompletedLists())
+            .catch(err => window.alert(err))
+            .finally(() => {setWaitForServer(false)});
+    }
     return (
         <>
+            <WaitForServer
+                wait={wait}
+                waitText={"Removing movie from list"}
+            />
             <div className={userMovieStyle.menuContainer}>
                 <CollapsibleCard
                     collapseButton={<HiDotsHorizontal className={userMovieStyle.menuButton}/>}
@@ -283,10 +334,18 @@ function MovieActionsMenuContainer (props) {
                     <div className={userMovieStyle.buttonContainer}>
                         <button onClick={handleOpenEditMedia}>Edit</button>
                         <button onClick={handleOpenAddToOtherList}>Add to List</button>
-                        <button onClick={undefined}>Completed?</button>
+                        {
+                            !useCompleted &&
+                            <button
+                                className={userMovieStyle.markComplete}
+                                onClick={handleMarkComplete}
+                            >
+                                Completed?
+                            </button>
+                        }
                         <button
                             className={userMovieStyle.remove}
-                            onClick={handleRemoveFromList}
+                            onClick={useCompleted ? handleMarkInComplete : handleRemoveFromList}
                         >
                             Remove
                         </button>

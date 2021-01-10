@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 
-import { CenteredSearchBar,PopUpActivity } from './common';
+import {CenteredSearchBar, PopUpActivity, StreamingSourceFieldset} from './common';
 import ListSelector from "./list-selector";
 import style from '../stylesheets/components/search.module.scss';
 
@@ -227,16 +227,19 @@ export function AddToList (props) {
             showTv, showMovies, streamingSource} = props;
     const formik = useFormik({
         initialValues: {
-            streamingSource: streamingSource || ""
+            streamingSource: streamingSource || "selectOne"
         },
         onSubmit: () => {},
+        validate: (values) => (
+            (values.streamingSource === "selectOne") ? {streamingSource: 'Required'} : undefined
+        ),
         validationSchema: StreamingSchema,
     });
     const [wait, setWaitForServer] = useState(false);
     const handleAddToList = async (listCategory, listID) => {
-        if (formik.errors.streamingSource) return
+        const {streamingSource} = formik.values;
+        if (streamingSource === 'selectOne') return
         setWaitForServer(true);
-        formik.values.streamingSource = formik.values.streamingSource.toUpperCase();
         try {
             await putOrPostToApi(
                 formik.values,
@@ -263,34 +266,15 @@ export function AddToList (props) {
             />
             <div>
                 <div>
-                    <fieldset className={style.streamingSource}>
-                        <label htmlFor="streamingSource">Streaming Source</label>
-                        <input
-                            name="streamingSource"
-                            id="streamingSource"
-                            list="streamingSources"
-                            onChange={formik.handleChange}
-                            value={formik.values.streamingSource}
-                        />
-                        <datalist id="streamingSources">
-                            <option value="NETFLIX"/>
-                            <option value="HBO MAX"/>
-                            <option value="AMAZON"/>
-                            <option value="DISNEY+"/>
-                            <option value="APPLE TV+"/>
-                            <option value="HULU"/>
-                            <option value="PEACOCK"/>
-                            <option value="CBS"/>
-                            <option value="SHOWTIME"/>
-                            <option value="STARZ"/>
-                            <option value="BUY/RENT"/>
-                        </datalist>
-                    </fieldset>
+                    <StreamingSourceFieldset
+                        fieldsetClass={style.streamingSource}
+                        formik={formik}
+                    />
                 </div>
                 <div className="errorDiv">
                     {
-                        formik.errors.streamingSource &&
-                        `${formik.errors.streamingSource} (Currently ${formik.values.streamingSource.length})`
+                        formik.values.streamingSource === 'selectOne' &&
+                        'Required'
                     }
                 </div>
             </div>

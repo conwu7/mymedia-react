@@ -211,3 +211,35 @@ export function SubmitButton (props) {
         </button>
     )
 }
+// fieldset for streamingSource
+export function StreamingSourceFieldset (props) {
+    const {formik, fieldsetClass} = props;
+    return (
+        <fieldset className={fieldsetClass}>
+            <label htmlFor="streamingSource">Streaming Source</label>
+            <select
+                name="streamingSource"
+                id="streamingSource"
+                onChange={formik.handleChange}
+                value={formik.values.streamingSource}
+            >
+                <option value="selectOne" disabled={true}>Choose One</option>
+                <option value="NETFLIX">Netflix</option>
+                <option value="HBO MAX">HBO</option>
+                <option value="AMAZON">Amazon</option>
+                <option value="DISNEY+">Disney+</option>
+                <option value="APPLE TV+">Apple Tv+</option>
+                <option value="HULU">Hulu</option>
+                <option value="PEACOCK">Peacock</option>
+                <option value="CBS">CBS</option>
+                <option value="SHOWTIME">Showtime</option>
+                <option value="STARZ">STARZ</option>
+                <option value="BUY/RENT">Buy/Rent</option>
+                <option value="Plex">Plex</option>
+                <option value="OTHER">Other</option>
+                <option value="NO IDEA">No Idea</option>
+                <option value="NONE">None</option>
+            </select>
+        </fieldset>
+    )
+}

@@ -44,6 +44,9 @@ $poster-height-desktop: 270px;
                 color: gray;
                 font-size: 1em;
             }
+            button.markComplete {
+                color: green;
+            }
             button.remove {
                 color: firebrick;
             }

@@ -3,7 +3,7 @@ import { putOrPostToApi } from "../helpers/common";
 import style from '../stylesheets/components/edit-user-media.module.scss';
 import searchStyle from '../stylesheets/components/search.module.scss';
 import defaultPoster from '../images/default-poster.png';
-import { CollapsibleCard, SubmitButton } from "./common";
+import { CollapsibleCard, StreamingSourceFieldset, SubmitButton } from "./common";
 import { FiCheckCircle, FiXCircle, FiStar } from 'react-icons/fi';
 import React, { useState } from "react";
 import { UserMediaSchema } from '../helpers/validation';
@@ -22,8 +22,11 @@ export default function EditUserMedia (props) {
             isWatched: !!userMedia.isWatched,
             userRating: userMedia.userRating || 0,
             reviewNotes: userMedia.reviewNotes || "",
-            streamingSource: userMedia.streamingSource || "",
+            streamingSource: userMedia.streamingSource || "selectOne",
         },
+        validate: (values) => (
+            (values.streamingSource === "selectOne") ? {streamingSource: 'Required'} : undefined
+        ),
         validationSchema: UserMediaSchema,
         onSubmit: async values => {
             if (
@@ -85,33 +88,14 @@ export default function EditUserMedia (props) {
                     className={style.form}
                     onSubmit={formik.handleSubmit}
                 >
-                    <fieldset className={searchStyle.streamingSource}>
-                        <label htmlFor="streamingSource">Streaming Source</label>
-                        <input
-                            name="streamingSource"
-                            id="streamingSource"
-                            list="streamingSources"
-                            onChange={formik.handleChange}
-                            value={formik.values.streamingSource}
-                        />
-                        <datalist id="streamingSources">
-                            <option value="NETFLIX"/>
-                            <option value="HBO MAX"/>
-                            <option value="AMAZON"/>
-                            <option value="DISNEY+"/>
-                            <option value="APPLE TV+"/>
-                            <option value="HULU"/>
-                            <option value="PEACOCK"/>
-                            <option value="CBS"/>
-                            <option value="SHOWTIME"/>
-                            <option value="STARZ"/>
-                            <option value="BUY/RENT"/>
-                        </datalist>
-                    </fieldset>
+                    <StreamingSourceFieldset
+                        fieldsetClass={searchStyle.streamingSource}
+                        formik={formik}
+                    />
                     <div className="errorDiv">
                         {
                             formik.errors.streamingSource &&
-                            `${formik.errors.streamingSource} (Currently ${formik.values.streamingSource.length})`
+                            `${formik.errors.streamingSource}`
                         }
                     </div>
                     <UserMediaTextFields
