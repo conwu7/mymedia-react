@@ -2,7 +2,7 @@ import style from '../../stylesheets/pages/settings.module.scss';
 import { putOrPostToApi } from "../../helpers/common";
 import { useState } from 'react';
 import WaitForServer from "../wait-for-server";
-import { SubmitButton } from "../common";
+import { CommonStyledButton } from "../common";
 
 /*
 alpha+ : alpha ascending. a-z
@@ -95,7 +95,7 @@ export default function SortPreferences (props) {
                         <option value="release-">Release Year - New to Old</option>
                     </select>
                 </fieldset>
-                <SubmitButton text="Save"/>
+                <CommonStyledButton text="Save"/>
             </form>
         </div>
     )

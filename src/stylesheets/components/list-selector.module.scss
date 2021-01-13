@@ -3,12 +3,23 @@ $buttonBorder: 2px solid rgba(208, 208, 208, 0.2);
 .listCategory {
   margin: 20px;
   text-align: center;
-  font-size: 1.1em;
+  font-size: 20px;
+  font-weight: 500;
 }
-button.listButton {
+.listButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border-left: none;
+  border-right: none;
+  border-top: $buttonBorder;
+  border-bottom: $buttonBorder;
+  border-radius: 10px;
+  background-color: whitesmoke;
   padding: 10px 15px;
   margin: 5px auto;
-  font-size: 19px;
+  font-size: 16px;
 
   svg {
     font-weight: bold;

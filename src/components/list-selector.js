@@ -1,9 +1,8 @@
 import { MdRadioButtonUnchecked } from 'react-icons/md';
 import style from '../stylesheets/components/list-selector.module.scss';
-import listStyle from '../stylesheets/components/list-button.module.scss';
 import React, { useState } from 'react';
-import {PopUpActivity} from "./common";
-import {NewList} from "./settings/new-edit-list";
+import {PopUpActivity, CommonStyledButton} from "./common";
+import { NewList } from "./settings/new-edit-list";
 
 // component that shows you lists provided and executes
 // the handleSelection function after clicking on one of them
@@ -21,7 +20,7 @@ export default function ListSelector (props) {
         <section>
             {
                 showMovies &&
-                <div className={listStyle.container}>
+                <>
                     <p className={style.listCategory}>MOVIES</p>
                     {movieListNames.map(list => (
                         <button
@@ -35,11 +34,11 @@ export default function ListSelector (props) {
                         </button>
                     ))}
                     {movieListNames.length === 0? "-": undefined}
-                </div>
+                </>
             }
             {
                 showTv &&
-                    <div className={listStyle.container}>
+                    <>
                         <p className={style.listCategory}>TV SHOWS</p>
                         {tvListNames.map(list => (
                             <button
@@ -53,17 +52,16 @@ export default function ListSelector (props) {
                             </button>
                         ))}
                         {tvListNames.length === 0? "-": undefined}
-                    </div>
+                    </>
             }
             {
                 !hideNewListButton &&
                 <section>
-                    <button
-                        className={style.createNewButton}
+                    <CommonStyledButton
+                        type="button"
                         onClick={handleOpenNewList}
-                    >
-                        Create New List
-                    </button>
+                        text="Create New List"
+                    />
                 </section>
             }
             <PopUpActivity

@@ -4,7 +4,7 @@ import { putOrPostToApi } from "../../helpers/common";
 import WaitForServer from "../wait-for-server";
 import style from "../../stylesheets/pages/settings.module.scss";
 import { FeedbackSchema } from '../../helpers/validation';
-import {SubmitButton} from "../common";
+import {CommonStyledButton} from "../common";
 
 export function Feedback (props) {
     const {handleActivityClose} = props;
@@ -73,7 +73,7 @@ export function Feedback (props) {
                     }
                 </div>
                 <fieldset>
-                    <SubmitButton />
+                    <CommonStyledButton />
                 </fieldset>
             </form>
             <WaitForServer

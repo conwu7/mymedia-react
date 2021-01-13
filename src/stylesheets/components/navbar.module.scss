@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@800&display=swap');
 
-.navbar {
+.navbarContainer {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
@@ -9,30 +9,28 @@
     box-shadow: 0 0 8px 1px rgba(32,33,36,.28);
     background-color: white;
     z-index: 999;
-
-    ul {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        list-style: none;
+}
+.navbarList {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    list-style: none;
+}
+.appName {
+    width: 100%;
+    text-align: left;
+    font-family: 'Dosis', sans-serif;
+    text-transform: uppercase;
+    //font-family: 'Righteous', sans-serif;
+    font-size: 20px;
+    a {
+        font-weight: 700;
     }
-    .appName {
-        width: 100%;
-        text-align: left;
-        font-family: 'Dosis', sans-serif;
-        text-transform: uppercase;
-        //font-family: 'Righteous', sans-serif;
-        font-size: 1.2em;
-        a {
-            font-weight: 700;
-        }
-    }
-
-    li {
-        margin: 15px 20px;
-    }
-    a, button {
+}
+.navbarItem {
+    margin: 15px 20px;
+    a {
         padding: 0;
         border: none;
         font-size: 1em;

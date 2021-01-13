@@ -4,10 +4,10 @@ import style from '../stylesheets/components/navbar.module.scss';
 
 export function NavBar () {
     return (
-        <div className={style.navbar}>
-            <ul>
-                <li className={style.appName}>
-                    <a href="/">MyMediaLists.App</a>
+        <div className={style.navbarContainer}>
+            <ul className={style.navbarList}>
+                <li className={`${style.navbarItem} ${style.appName}`}>
+                    <a href="/">MyMediaLists</a>
                 </li>
             </ul>
         </div>
@@ -16,10 +16,10 @@ export function NavBar () {
 
 export function NavBarNoUser () {
     return (
-        <div className={style.navbar}>
-            <ul>
-                <li><Link to="/signup">SIGN UP</Link></li>
-                <li><Link to="/login">LOGIN</Link></li>
+        <div className={style.navbarContainer}>
+            <ul className={style.navbarList}>
+                <li className={style.navbarItem}><Link to="/signup">SIGN UP</Link></li>
+                <li className={style.navbarItem}><Link to="/login">LOGIN</Link></li>
             </ul>
         </div>
     )

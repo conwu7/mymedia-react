@@ -9,6 +9,7 @@ import collapsibleCardStyle from '../stylesheets/components/collapsible-card.mod
 import centeredSearchBarStyle from '../stylesheets/components/centered-search-bar.module.scss';
 import popUpActivityStyle from '../stylesheets/components/pop-up-activity.module.scss';
 import submitButtonStyle from '../stylesheets/components/submit-button.module.scss';
+import streamingStyle from '../stylesheets/components/streaming.module.scss';
 
 // returns a button that closes an activity. styled by the parent.
 export function CloseActivityButton (props) {
@@ -20,23 +21,28 @@ export function CloseActivityButton (props) {
                     <GrClose />
                     </button>
 }
-/*
-    Component that shows the children passed in a pop up window
-    useActivity:  bool value to have the window open or closed
-    optional : close button
-*/
+    /** Component that shows the children passed in a pop up window
+    *   useActivity:  bool value to have the window open or closed
+    *   optional : close button
+    */
 export function PopUpActivity (props) {
     const {closeButton: cButton, children, useActivity, handleActivityClose} = props;
     const transitions = useTransition(
         useActivity, null, {
-            from: {opacity: 0, marginTop: 600},
-            enter: {opacity: 1, marginTop: 0},
-            leave: {opacity: 0, marginTop: 600, zIndex: 1}
+            from: {opacity: 0, transform: 'translate(0, 100%)'},
+            enter: {opacity: 1, transform: 'translate(0, 0)'},
+            leave: {opacity: 0, transform: 'translate(0, -100%)'}
         }
+        // useActivity, null, {
+        //     from: {opacity: 0, marginTop: 600},
+        //     enter: {opacity: 1, marginTop: 0},
+        //     leave: {opacity: 0, marginTop: 600, zIndex: 1}
+        // }
     )
     let closeButton;
     if (!cButton) {
         closeButton=<CloseActivityButton
+                        className={popUpActivityStyle.closeButton}
                         handleActivityClose={handleActivityClose}
                     />
     } else {
@@ -123,7 +129,8 @@ export function CollapsibleCard (props) {
                     (skipAllStyling?
                     <button
                         type="button"
-                        onClick={handleCollapse} 
+                        onClick={handleCollapse}
+                        className={collapsibleCardStyle.collapseButton}
                     >
                         {collapseButton?
                             collapseButton
@@ -134,7 +141,12 @@ export function CollapsibleCard (props) {
                     <button
                         type="button"
                         onClick={handleCollapse} 
-                        className={`${collapsibleCardStyle[buttonSize]} ${isCollapsed?collapsibleCardStyle.btnExpand:""}`}>
+                        className={
+                            `${collapsibleCardStyle.collapseButton} 
+                            ${collapsibleCardStyle[buttonSize]} 
+                            ${isCollapsed?collapsibleCardStyle.btnExpand:""}`
+                        }
+                    >
                         {collapseButton?
                             collapseButton
                             :<MdExpandLess />
@@ -167,10 +179,10 @@ export function CenteredSearchBar (props) {
         inputRef.current.focus();
     }, [inputRef])
     return (
-        <div className={centeredSearchBarStyle.container}>
+        <div>
             <form
                 onSubmit={onSubmit}
-                className={showSearchButton?centeredSearchBarStyle.useSearchButton:""}>
+                className={`${showSearchButton?centeredSearchBarStyle.useSearchButton:""} ${centeredSearchBarStyle.form}`}>
                 <input 
                     onClick={handleClick}
                     onChange={onChange}
@@ -181,7 +193,7 @@ export function CenteredSearchBar (props) {
                     placeholder={placeholder}
                     disabled={disabled}
                     ref={inputRef}
-                    className={fullWidth?centeredSearchBarStyle.fullWidth:""}
+                    className={`${fullWidth?centeredSearchBarStyle.fullWidth:""} ${centeredSearchBarStyle.input}`}
                 />
                 {showSearchButton?(
                     <button
@@ -198,7 +210,7 @@ export function CenteredSearchBar (props) {
     )
 }
 // styled submit button
-export function SubmitButton (props) {
+export function CommonStyledButton (props) {
     const {type, onClick, text, disabled} = props;
     return (
         <button
@@ -213,10 +225,15 @@ export function SubmitButton (props) {
 }
 // fieldset for streamingSource
 export function StreamingSourceFieldset (props) {
-    const {formik, fieldsetClass} = props;
+    const {formik} = props;
     return (
-        <fieldset className={fieldsetClass}>
-            <label htmlFor="streamingSource">Streaming Source</label>
+        <fieldset className={streamingStyle.streamingSource}>
+            <label
+                htmlFor="streamingSource"
+                // className={}
+            >
+                Streaming Source
+            </label>
             <select
                 name="streamingSource"
                 id="streamingSource"

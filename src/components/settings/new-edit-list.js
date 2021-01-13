@@ -6,7 +6,7 @@ import ListSelector from "../list-selector";
 import { BiEditAlt } from 'react-icons/bi';
 import { ListSchema } from '../../helpers/validation';
 import WaitForServer from "../wait-for-server";
-import { SubmitButton } from "../common";
+import { CommonStyledButton } from "../common";
 
 export function NewList (props) {
     const {handleActivityClose, refreshList} = props;
@@ -185,7 +185,7 @@ function ListForm (props) {
                 }
             </div>
             <fieldset>
-                <SubmitButton />
+                <CommonStyledButton />
             </fieldset>
         </form>
     )

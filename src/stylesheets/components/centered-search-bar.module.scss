@@ -1,51 +1,50 @@
-.container {
-    $inputAndButtonMargin: 0 10px 15px;
-    $borderRadius: 7px;
-    $inputAndButtonHeight: 40px;
+$inputAndButtonMargin: 15px;
+$borderRadius: 7px;
+$inputAndButtonHeight: 40px;
 
-    form {
-        display: flex;
-        width: 100%;
-        justify-content: center;
-        align-items: stretch;
-    }
-    input {
-        height: 30px;
-        width: 60%;
-        margin: $inputAndButtonMargin;
-        margin-right: 0;
-        border: 1px solid transparent;
-        outline: none;
-        font-size: 1.05em;
-        text-align: center;
-        transition: all 200ms linear;
-    }
-    input:hover {
+.form {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: stretch;
+}
+.input {
+    height: 30px;
+    width: 60%;
+    margin: 15px auto;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    outline: none;
+    font-size: 16px;
+    text-align: center;
+    transition: all 200ms linear;
+
+    &:hover {
         box-shadow: 0 1px 6px rgba(32,33,36,.28);
     }
-    input.fullWidth {
+    &.fullWidth {
         width: 100%;
         margin: 0;
     }
-    button.searchButton {
+}
+.useSearchButton {
+    .input, .searchButton {
+        box-sizing: border-box;
+        height: $inputAndButtonHeight;
+        box-shadow: 0 1px -1px rgba(32,33,36,.28);
+        border-radius: 0; // reset from default
+    }
+    .input {
+        margin: $inputAndButtonMargin 0 $inputAndButtonMargin $inputAndButtonMargin;
+        border-radius: $borderRadius 0 0 $borderRadius;
+    }
+    .searchButton {
         background: darkslategray;
         width: fit-content;
         color: white;
         margin: $inputAndButtonMargin $inputAndButtonMargin $inputAndButtonMargin 0;
-        border: none;
-        border-top-right-radius: $borderRadius;
-        border-bottom-right-radius: $borderRadius;
+        border-radius: 0 $borderRadius $borderRadius 0;
         text-align: center;
         font-size: 1.2em;
-    }
-    .useSearchButton {
-        input {
-            border-radius: $borderRadius 0 0 $borderRadius;
-        }
-        input, button {
-            box-sizing: border-box;
-            height: $inputAndButtonHeight;
-            box-shadow: 0 1px -1px rgba(32,33,36,.28);
-        }
     }
 }

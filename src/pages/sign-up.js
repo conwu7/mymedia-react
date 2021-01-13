@@ -5,7 +5,7 @@ import style from '../stylesheets/pages/sign-up.module.scss';
 import { putOrPostToApi } from '../helpers/common';
 import { SignUpSchema } from "../helpers/validation";
 import WaitForServer from "../components/wait-for-server";
-import {SubmitButton} from "../components/common";
+import {CommonStyledButton} from "../components/common";
 
 export default function SignUpForm (props) {
     const [wait, setWaitForServer] = useState(false);
@@ -82,7 +82,7 @@ export default function SignUpForm (props) {
                         {formik.touched.password && formik.errors.password}
                     </div>
                 </fieldset>
-                <SubmitButton
+                <CommonStyledButton
                     text={wait? "Creating your account" : "Submit"}
                     disabled={wait}
                 />

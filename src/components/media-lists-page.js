@@ -5,8 +5,8 @@ import EditUserMedia from "./edit-user-media";
 import { HiDotsHorizontal } from 'react-icons/hi';
 import { CgArrowsExpandUpLeft } from 'react-icons/cg';
 
-import listContainerStyle from '../stylesheets/components/list-container.module.scss';
-import userMovieStyle from '../stylesheets/components/user-movie.module.scss';
+import listContainerStyle from '../stylesheets/pages/media-list-page.module.scss';
+import userMediaStyle from '../stylesheets/components/user-media.module.scss';
 
 import defaultPoster from '../images/default-poster.png';
 import {fetchOrDeleteFromApi, putOrPostToApi, sortLists} from '../helpers/common';
@@ -79,9 +79,9 @@ function ListContainer (props) {
                     {
                         !list.mediaInstants || list.mediaInstants.length === 0 ?
                             <div className={listContainerStyle.emptyLists}>
-                                <p>This list is empty</p>
-                                <p>To add a {listCategory === 'towatch' ? 'movie' : 'tv show'},</p>
-                                <p>Search for one then click "add to list" on a result</p>
+                                <p className={listContainerStyle.emptyListText}>This list is empty</p>
+                                <p className={listContainerStyle.emptyListText}>To add a {listCategory === 'towatch' ? 'movie' : 'tv show'},</p>
+                                <p className={listContainerStyle.emptyListText}>Search for one then click "add to list" on a result</p>
                             </div>
                             : undefined
                     }
@@ -143,7 +143,7 @@ function UserMediaCard (props) {
         setShowMoreInfo(false);
     };
     return (
-    <div className={userMovieStyle.userMovie}>
+    <div className={userMediaStyle.userMediaCard}>
         <MovieActionsMenuContainer
             userMedia={userMedia}
             refreshList={refreshList}
@@ -154,22 +154,22 @@ function UserMediaCard (props) {
             useCompleted={useCompleted}
             updateCompletedLists={updateCompletedLists}
         />
-        <div className={userMovieStyle.menuSpace}>Hello There</div>
-        <div className={userMovieStyle.movieDetails}>
-            <div className={userMovieStyle.posterContainer}>
+        <div className={userMediaStyle.menuSpace}>Hello There</div>
+        <div className={userMediaStyle.mediaDetails}>
+            <div className={userMediaStyle.posterContainer}>
                 <img 
                     src={posterUrl || defaultPoster}
                     alt={title+" poster"}
-                    className={userMovieStyle.poster}
+                    className={userMediaStyle.poster}
                     />
             </div>
-            <h1 className={userMovieStyle.movieTitle}>{title}</h1>
-            <p className={userMovieStyle.streamingSource}>
+            <h1 className={userMediaStyle.mediaTitle}>{title}</h1>
+            <p className={userMediaStyle.streamingSource}>
                 {streamingSource && streamingSource.toUpperCase()}
             </p>
-            <p className={userMovieStyle.releaseDate}><span>{releaseDate}</span></p>
+            <p className={userMediaStyle.releaseDate}><span>{releaseDate}</span></p>
             <button
-                className={userMovieStyle.moreInfoButton}
+                className={userMediaStyle.moreInfoButton}
                 onClick={handleOpenShowMoreInfo}
             >
                 More Info
@@ -194,40 +194,40 @@ function MoreInfoCard (props) {
     const {isWatched, toWatchNotes, reviewNotes, userRating, imdbID} = userMedia;
 
     return (
-        <div className={userMovieStyle.moreInfoContainer}>
-            <section className={userMovieStyle.posterAndMainInfoContainer}>
-                <div className={userMovieStyle.posterInMoreContainer}>
+        <div className={userMediaStyle.moreInfoContainer}>
+            <section className={userMediaStyle.posterAndMainInfoContainer}>
+                <div className={userMediaStyle.posterInMoreContainer}>
                     <img
                         src={posterUrl || defaultPoster}
                         alt={`${title} poster`}
-                        className={userMovieStyle.posterInMore}
+                        className={userMediaStyle.posterInMore}
                     />
                 </div>
-                <div className={userMovieStyle.mainInfoContainer}>
-                    <h1 className={userMovieStyle.movieTitle}>{title}</h1>
-                    <p className={userMovieStyle.runtime}>({runtime?runtime:'-'} min)</p>
-                    <p className={userMovieStyle.genre}>{genre && genre.join(', ')}</p>
-                    <p className={userMovieStyle.releaseDate}>
+                <div className={userMediaStyle.mainInfoContainer}>
+                    <h1 className={userMediaStyle.mediaTitle}>{title}</h1>
+                    <p className={userMediaStyle.runtime}>({runtime?runtime:'-'} min)</p>
+                    <p className={userMediaStyle.genre}>{genre && genre.join(', ')}</p>
+                    <p className={userMediaStyle.releaseDate}>
                         {
                             (runYears && totalSeasons) ?
                             `${runYears} (${totalSeasons} season${totalSeasons>1?'s':""})` :
                             releaseDate
                         }
                     </p>
-                    <p className={userMovieStyle.imdbRating}>
+                    <p className={userMediaStyle.imdbRating}>
                         <a href={`https://imdb.com/title/${imdbID}`} target="_blank" rel="noopener noreferrer">IMDB</a>
-                        <span className={userMovieStyle.imdbRatingSpan}>{imdbRating || "-"}</span>/10
+                        <span className={userMediaStyle.imdbRatingSpan}>{imdbRating || "-"}</span>/10
                     </p>
                 </div>
             </section>
-            <section className={userMovieStyle.otherInfoContainer}>
+            <section className={userMediaStyle.otherInfoContainer}>
                 <CollapsibleCard
                     cardHeader="Cast"
                     isCollapsed={false}
                     hideButton={false}
                     collapseButton={<CgArrowsExpandUpLeft />}
                 >
-                    <p className={userMovieStyle.actors}>{actors && actors.join(', ')}</p>
+                    <p className={userMediaStyle.actors}>{actors && actors.join(', ')}</p>
                 </CollapsibleCard>
                 <CollapsibleCard
                     cardHeader="Your Watch Notes"
@@ -235,7 +235,7 @@ function MoreInfoCard (props) {
                     hideButton={false}
                     collapseButton={<CgArrowsExpandUpLeft />}
                 >
-                    <p className={userMovieStyle.toWatchNotes}>{toWatchNotes || "-"}</p>
+                    <p className={userMediaStyle.toWatchNotes}>{toWatchNotes || "-"}</p>
                 </CollapsibleCard>
                 <CollapsibleCard
                     cardHeader="Plot"
@@ -243,7 +243,7 @@ function MoreInfoCard (props) {
                     hideButton={false}
                     collapseButton={<CgArrowsExpandUpLeft />}
                 >
-                    <p className={userMovieStyle.plot}>{plot || "-"}</p>
+                    <p className={userMediaStyle.plot}>{plot || "-"}</p>
                 </CollapsibleCard>
                 {
                     isWatched &&
@@ -323,27 +323,27 @@ function MovieActionsMenuContainer (props) {
                 wait={wait}
                 waitText={"Removing movie from list"}
             />
-            <div className={userMovieStyle.menuContainer}>
+            <div className={userMediaStyle.menuContainer}>
                 <CollapsibleCard
-                    collapseButton={<HiDotsHorizontal className={userMovieStyle.menuButton}/>}
+                    collapseButton={<HiDotsHorizontal className={userMediaStyle.menuButton}/>}
                     skipAllStyling={true}
                     isCollapsed={true}
                     hideOnFocusLost={true}
                 >
-                    <div className={userMovieStyle.buttonContainer}>
+                    <div className={userMediaStyle.buttonContainer}>
                         <button onClick={handleOpenEditMedia}>Edit</button>
                         <button onClick={handleOpenAddToOtherList}>Add to List</button>
                         {
                             !useCompleted &&
                             <button
-                                className={userMovieStyle.markComplete}
+                                className={userMediaStyle.markComplete}
                                 onClick={handleMarkComplete}
                             >
                                 Completed?
                             </button>
                         }
                         <button
-                            className={userMovieStyle.remove}
+                            className={userMediaStyle.remove}
                             onClick={useCompleted ? handleMarkInComplete : handleRemoveFromList}
                         >
                             Remove
@@ -384,9 +384,9 @@ function UserNotesAndRating (props) {
     return (
         <div>
             <p>
-                <span className={userMovieStyle.userRating}>{props.userRating===0?"-":props.userRating}</span>/10
+                <span className={userMediaStyle.userRating}>{props.userRating===0?"-":props.userRating}</span>/10
             </p>
-            <p className={userMovieStyle.reviewNotes}>{props.reviewNotes || "-"}</p>
+            <p className={userMediaStyle.reviewNotes}>{props.reviewNotes || "-"}</p>
         </div>
     )
 }

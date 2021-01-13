@@ -83,14 +83,14 @@ function SearchBar (props) {
     return (
         <React.Fragment>
             <CenteredSearchBar
-            inputName="searchString"
-            type="text"
-            onChange={formik.handleChange}
-            blur={formik.handleBlur}
-            value={formik.values.searchString}
-            onSubmit={formik.handleSubmit}
-            showSearchButton={true}
-            disabled={disabled}
+                inputName="searchString"
+                type="text"
+                onChange={formik.handleChange}
+                blur={formik.handleBlur}
+                value={formik.values.searchString}
+                onSubmit={formik.handleSubmit}
+                showSearchButton={true}
+                disabled={disabled}
             />
             <div className="errorDiv">
                 {formik.touched.searchString && formik.errors.searchString}
@@ -110,9 +110,10 @@ function SearchResultsContainer (props) {
             tabIndex="1"
             style={{outline: "none"}}
             ref={resultsRef}
+            className={style.searchResultsContainer}
         >
             {isSearching ?
-                <div className={style.loading}><AiOutlineLoading/></div>
+                <div className={style.loadingContainer}><AiOutlineLoading/></div>
                 : !isSearchComplete ?
                     <p className={style.notSearchedYet}>Press Enter or click Search!</p>
                     : searchResults.length === 0 ?
@@ -142,12 +143,22 @@ function ResultCardOMDB (props) { //using OMDB api properties
         <div className={style.resultCard}>
             <div className={style.posterContainer}>
                 {typeof i !== 'undefined'?
-                <div><img src={imageUrl} alt="movie poster"/></div>
-                : <img src={posterUrl || defaultPoster} alt={title+" poster"} />
+                <div>
+                    <img
+                        src={imageUrl}
+                        alt="movie poster"
+                        className={style.resultImage}
+                    />
+                </div>
+                : <img
+                        src={posterUrl || defaultPoster}
+                        alt={title+" poster"}
+                        className={style.resultImage}
+                    />
                 }
             </div>
             <div className={style.movieInfoContainer}>
-                <h1 className={style.movieTitle}>{media.l}</h1>
+                <h1 className={style.mediaTitle}>{media.l}</h1>
                 <p className={style.mediaType}>
                     {
                         media.q==='feature'?

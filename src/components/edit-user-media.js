@@ -1,9 +1,8 @@
 import { useFormik } from "formik";
 import { putOrPostToApi } from "../helpers/common";
 import style from '../stylesheets/components/edit-user-media.module.scss';
-import searchStyle from '../stylesheets/components/search.module.scss';
 import defaultPoster from '../images/default-poster.png';
-import { CollapsibleCard, StreamingSourceFieldset, SubmitButton } from "./common";
+import { CollapsibleCard, StreamingSourceFieldset, CommonStyledButton } from "./common";
 import { FiCheckCircle, FiXCircle, FiStar } from 'react-icons/fi';
 import React, { useState } from "react";
 import { UserMediaSchema } from '../helpers/validation';
@@ -88,10 +87,7 @@ export default function EditUserMedia (props) {
                     className={style.form}
                     onSubmit={formik.handleSubmit}
                 >
-                    <StreamingSourceFieldset
-                        fieldsetClass={searchStyle.streamingSource}
-                        formik={formik}
-                    />
+                    <StreamingSourceFieldset formik={formik}/>
                     <div className="errorDiv">
                         {
                             formik.errors.streamingSource &&
@@ -105,17 +101,21 @@ export default function EditUserMedia (props) {
                     />
                     <div className={style.fieldContainer}>
                         <span>Watched?</span>
-                        <div className={style.watchStatusButtons}>
+                        <div className={style.watchStatusContainer}>
                             <button
                                 type="button"
-                                className={isWatched?style.watched:""}
+                                className={
+                                   `${style.watchStatusButton} ${isWatched? style.watched : ""}`
+                                }
                                 onClick={handleWatched(true)}
                             >
                                 <FiCheckCircle />
                             </button>
                             <button
                                 type="button"
-                                className={!isWatched?style.notWatched:""}
+                                className={
+                                    `${style.watchStatusButton} ${!isWatched?style.notWatched:""}`
+                                }
                                 onClick={handleWatched(false)}
                             >
                                 <FiXCircle />
@@ -135,7 +135,7 @@ export default function EditUserMedia (props) {
                         fieldName="reviewNotes"
                         fieldText="Review Notes"
                     />
-                    <SubmitButton text="Save" />
+                    <CommonStyledButton text="Save" />
                 </form>
             </section>
         </div>
@@ -144,12 +144,15 @@ export default function EditUserMedia (props) {
 function UserMediaTextFields (props) {
     const {formik, fieldName, fieldText} = props;
     return (
-        <div className={`${style[fieldName]} ${style.fieldContainer}`}>
+        <div className={style.fieldContainer}>
             <CollapsibleCard
                 isCollapsed={true}
                 cardHeader={
                     <div>
-                        <label htmlFor={fieldName}>
+                        <label
+                            htmlFor={fieldName}
+                            className={style.label}
+                        >
                             Expand to edit {fieldText}
                         </label>
                     </div>
@@ -163,6 +166,7 @@ function UserMediaTextFields (props) {
                                     onBlur={formik.handleBlur}
                                     onSubmit={formik.handleSubmit}
                                     value={formik.values[fieldName]}
+                                    className={style.textarea}
                                 />
             </CollapsibleCard>
             <div className="errorDiv">
@@ -189,13 +193,15 @@ function RatingStars (props) {
         }
     }
     return (
-        <div className={style.ratingStars}>
+        <div className={style.ratingStarsContainer}>
             {starMap.map((star) => (
                 <button
                     type="button"
                     key={star}
                     onClick={handleSelection(star)}
-                    className={star<=localRating?style.shadedStars:""}
+                    className={
+                        `${style.ratingStarButtons} ${star <= localRating ? style.shadedStars : ""}`
+                    }
                 >
                     <FiStar />
                 </button>

@@ -156,7 +156,9 @@ export default function Settings (props) {
                 useActivity={openFeedback}
                 handleActivityClose={handleCloseFeedBack}
                 >
-                <Feedback />
+                <Feedback
+                    handleActivityClose={handleCloseFeedBack}
+                />
             </PopUpActivity>
         </div>
     )

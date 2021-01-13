@@ -237,7 +237,10 @@ function PageSelector (props) {
                         <button
                             key={page.value}
                             onClick={handlePageChange(page.value, page.text)}
-                            className={currentPage === page.value ? selectorStyle.activeCategory : undefined}
+                            className={
+                                `${selectorStyle.selectorButton} 
+                                ${currentPage === page.value ? selectorStyle.activeCategory : undefined}`
+                            }
                         >
                             <div className={selectorStyle.imageContainer}>
                                 {page.icon}
