@@ -15,7 +15,9 @@ body {
     width: 100%;
     font-family: 'Quicksand', sans-serif;
     background-color: whitesmoke;
-
+}
+.noAppOverflow {
+    overflow: hidden;
 }
 button, input {
   font-family: 'Quicksand', sans-serif;

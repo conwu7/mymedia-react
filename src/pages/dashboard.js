@@ -16,8 +16,6 @@ export default function Dashboard (props) {
     const {user, updateUser, mediaPref, listPref} = props;
     // state for current page
     const [currentPage, setCurrentPage] = useState('movies');
-    // state to block overflow and background details when there's a popup activity
-    const [blockAppOverflow, setBlockAppOverflow] = useState(false);
     // state for storing all lists
     const [allLists, setAllLists] = useState({empty: true});
     // state to prevent extra get List fetches
@@ -28,15 +26,6 @@ export default function Dashboard (props) {
     const [allowLoadCompletedLists, setAllowLoadCompletedLists] = useState(false);
     const [completedLists, setCompletedLists] = useState({});
     const [refreshCompletedLists, setRefreshCompletedLists] = useState(0);
-    // function to handle blockAppOverflow state change
-    useEffect(() => {
-        const App = document.getElementsByTagName('body')[0];
-        if (blockAppOverflow) {
-            App.style.overflow = "hidden";
-        } else {
-            App.style.overflow = "auto";
-        }
-    }, [blockAppOverflow]);
     // function to update lists. Not used for initial render
     const getLists = (listCategory) => {
         if (updatingLists) return
@@ -135,7 +124,6 @@ export default function Dashboard (props) {
                         movieListNames={movieListNames}
                         completedList={completedLists.completedLists}
                         updateCompletedList={updateCompletedList}
-                        setBlockAppOverflow={setBlockAppOverflow}
                     />
                 </PageTransition>
                 <PageTransition isCurrentPage={currentPage === 'tvShows'}>
@@ -150,7 +138,6 @@ export default function Dashboard (props) {
                         movieListNames={movieListNames}
                         completedList={completedLists.completedListsTv}
                         updateCompletedList={updateCompletedList}
-                        setBlockAppOverflow={setBlockAppOverflow}
                     />
                 </PageTransition>
                 <PageTransition isCurrentPage={currentPage === 'search'}>

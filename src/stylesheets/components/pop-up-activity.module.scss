@@ -5,9 +5,15 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.6);
     overflow: hidden;
+    animation: getDarker 500ms linear normal forwards;
+}
+.fadeAway {
+    animation: getTransparent 500ms linear reverse forwards;
+}
+@keyframes getDarker {
+    from {background-color: transparent}
+    to {background-color: rgba(0, 0, 0, 0.6)}
 }
 .closeButtonContainer {
     width: 100%;

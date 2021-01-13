@@ -29,9 +29,9 @@ export function PopUpActivity (props) {
     const {closeButton: cButton, children, useActivity, handleActivityClose} = props;
     const transitions = useTransition(
         useActivity, null, {
-            from: {opacity: 0, transform: 'translate(0, 100%)'},
-            enter: {opacity: 1, transform: 'translate(0, 0)'},
-            leave: {opacity: 0, transform: 'translate(0, -100%)'}
+            from: {transform: 'translate(0, 100%)'},
+            enter: {transform: 'translate(0, 0)', opacity: 1},
+            leave: {transform: 'translate(0, -100%)', opacity: 0}
         }
         // useActivity, null, {
         //     from: {opacity: 0, marginTop: 600},
@@ -53,7 +53,8 @@ export function PopUpActivity (props) {
             <animated.div 
                 key={key}
                 style={tProps}
-                className={popUpActivityStyle.popUpContainer}
+                className={`${popUpActivityStyle.popUpContainer} 
+                            ${!useActivity?popUpActivityStyle.fadeAway:''}`}
             >
                 <div className={popUpActivityStyle.closeButtonContainer}>
                     {closeButton}
