@@ -4,13 +4,14 @@ import { RiMovie2Line, RiMenu5Line, RiSearchLine } from 'react-icons/ri';
 
 import MediaListsPage from '../components/media-lists-page';
 import SearchForMedia from '../components/search';
+import { ComponentPageTransition } from "../components/common";
 import Settings from './settings';
 
 import dashboardStyle from '../stylesheets/pages/dashboard.module.scss';
 import selectorStyle from '../stylesheets/components/list-types-selector.module.scss';
 
 import { fetchOrDeleteFromApi } from '../helpers/common';
-import { animated, useSpring } from "react-spring";
+import SiteSample from "../components/site-samples";
 
 export default function Dashboard (props) {
     const {user, updateUser, mediaPref, listPref} = props;
@@ -105,14 +106,15 @@ export default function Dashboard (props) {
             .then(updateCompletedList);
     }
     if (!user) return (
-        <h1 className={dashboardStyle.noUserMessage}>
-            Sign up or login to manage your media lists
-        </h1>
+        <>
+
+            <SiteSample />
+        </>
     )
     return (
         <>
             <div id="appDashboard" className={dashboardStyle.dashboard}>
-                <PageTransition isCurrentPage={currentPage === 'movies'}>
+                <ComponentPageTransition isCurrentPage={currentPage === 'movies'}>
                     <MediaListsPage
                         listCategory="towatch"
                         allLists={allLists.towatch}
@@ -125,8 +127,8 @@ export default function Dashboard (props) {
                         completedList={completedLists.completedLists}
                         updateCompletedList={updateCompletedList}
                     />
-                </PageTransition>
-                <PageTransition isCurrentPage={currentPage === 'tvShows'}>
+                </ComponentPageTransition>
+                <ComponentPageTransition isCurrentPage={currentPage === 'tvShows'}>
                     <MediaListsPage
                         listCategory="towatchtv"
                         allLists={allLists.towatchtv}
@@ -139,8 +141,8 @@ export default function Dashboard (props) {
                         completedList={completedLists.completedListsTv}
                         updateCompletedList={updateCompletedList}
                     />
-                </PageTransition>
-                <PageTransition isCurrentPage={currentPage === 'search'}>
+                </ComponentPageTransition>
+                <ComponentPageTransition isCurrentPage={currentPage === 'search'}>
                     <SearchForMedia
                         currentPage={currentPage}
                         isSpecificList={false}
@@ -148,8 +150,8 @@ export default function Dashboard (props) {
                         tvListNames={tvListNames}
                         movieListNames={movieListNames}
                     />
-                </PageTransition>
-                <PageTransition isCurrentPage={currentPage === 'settings'}>
+                </ComponentPageTransition>
+                <ComponentPageTransition isCurrentPage={currentPage === 'settings'}>
                     <Settings
                         refreshList={handleUpdatedList}
                         tvListNames={tvListNames}
@@ -158,7 +160,7 @@ export default function Dashboard (props) {
                         mediaPref={mediaPref}
                         updateUser={updateUser}
                     />
-                </PageTransition>
+                </ComponentPageTransition>
             </div>
             <div
                 style={{height: "65px"}}
@@ -168,24 +170,6 @@ export default function Dashboard (props) {
                 handlePages={handlePages}
             />
         </>
-    )
-}
-
-function PageTransition (props) {
-    const {isCurrentPage, children} = props;
-    const spring = useSpring({
-        to: {
-            position: isCurrentPage ? 'relative' : 'absolute',
-            overflow: isCurrentPage ? 'none' : 'hidden',
-            top: isCurrentPage ? 0: 0,
-            opacity: isCurrentPage ? 1 : 0,
-            height: isCurrentPage ? 'fit-content' : 0,
-        }
-    });
-    return (
-        <animated.div style={spring}>
-            {children}
-        </animated.div>
     )
 }
 

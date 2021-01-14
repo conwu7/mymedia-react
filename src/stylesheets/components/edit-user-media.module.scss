@@ -1,6 +1,7 @@
 .editUserMediaContainer {
   display: flex;
   flex-direction: column;
+  border-radius: 10px;
   background-color: white;
 }
 .posterAndTitleContainer {
@@ -100,6 +101,13 @@
   }
 }
 @media only screen and (min-width: 680px) {
+  .editUserMediaContainer {
+    width: 50vw;
+    margin: auto;
+  }
+  .mediaPosterContainer {
+    text-align: right;
+  }
   .mediaPoster {
     width: 150px;
     height: auto;

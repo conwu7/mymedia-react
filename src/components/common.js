@@ -33,11 +33,6 @@ export function PopUpActivity (props) {
             enter: {transform: 'translate(0, 0)', opacity: 1},
             leave: {transform: 'translate(0, -100%)', opacity: 0}
         }
-        // useActivity, null, {
-        //     from: {opacity: 0, marginTop: 600},
-        //     enter: {opacity: 1, marginTop: 0},
-        //     leave: {opacity: 0, marginTop: 600, zIndex: 1}
-        // }
     )
     let closeButton;
     if (!cButton) {
@@ -259,5 +254,26 @@ export function StreamingSourceFieldset (props) {
                 <option value="NONE">None</option>
             </select>
         </fieldset>
+    )
+}
+
+export function ComponentPageTransition (props) {
+    const {isCurrentPage, children, className} = props;
+    const spring = useSpring({
+        to: {
+            position: isCurrentPage ? 'relative' : 'absolute',
+            overflow: isCurrentPage ? 'none' : 'hidden',
+            top: isCurrentPage ? 0: 0,
+            opacity: isCurrentPage ? 1 : 0,
+            height: isCurrentPage ? 'fit-content' : 0,
+        }
+    });
+    return (
+        <animated.div
+            style={spring}
+            className={className || ""}
+        >
+            {children}
+        </animated.div>
     )
 }

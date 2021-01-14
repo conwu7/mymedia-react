@@ -62,7 +62,7 @@ export default function LoginForm (props) {
                     />
                 </fieldset>
                 <CommonStyledButton
-                    text={wait? "Submitting" : "Submit"}
+                    text={wait? "Submitting" : "Login"}
                     disabled={wait}
                 />
                 <div className="errorDiv">{serverError}</div>

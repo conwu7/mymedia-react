@@ -49,3 +49,23 @@
 .completedListContainer:empty {
     display: none;
 }
+@media only screen and (min-width: 1200px) {
+    .allListsContainer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    .listContainer {
+        width: 47%;
+        margin: 10px 0;
+    }
+    .completedListContainer {
+        width: 100%;
+
+        .listContainer {
+            margin: auto;
+            width: 93%;
+        }
+    }
+}

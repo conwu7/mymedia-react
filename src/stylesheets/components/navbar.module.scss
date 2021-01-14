@@ -12,30 +12,47 @@
 }
 .navbarList {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    width: 100%;
+    width: 95%;
+    margin: auto;
     list-style: none;
 }
-.appName {
-    width: 100%;
-    text-align: left;
-    font-family: 'Dosis', sans-serif;
-    text-transform: uppercase;
-    //font-family: 'Righteous', sans-serif;
-    font-size: 20px;
-    a {
-        font-weight: 700;
-    }
+.otherLinksContainer {
+    display: flex;
 }
 .navbarItem {
-    margin: 15px 20px;
+    display: flex;
+    align-items: center;
+    margin: 10px 5px;
     a {
         padding: 0;
         border: none;
-        font-size: 1em;
+        font-size: 20px;
         text-decoration: none;
         color: inherit;
+        font-weight: 700;
         background-color: inherit;
+        text-decoration: underline;
+    }
+}
+.appName {
+    text-align: left;
+    justify-self: flex-start;
+    font-family: 'Dosis', sans-serif;
+    text-transform: uppercase;
+    //font-family: 'Righteous', sans-serif;
+    font-size: 22px;
+    a {
+        font-weight: 700;
+        text-decoration: none;
+    }
+}
+@media only screen and (min-width: 800px) {
+    .navbarList {
+        width: 90%;
+    }
+    .navbarItem {
+        margin: 10px;
     }
 }

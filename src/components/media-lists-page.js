@@ -36,7 +36,7 @@ export default function MediaListsPage (props) {
                         list={list}
                         listCategory={listCategory}
                         refreshList={refreshList}
-                        expandByDefault={index===0}
+                        expandByDefault={index===0 || index===1}
                         tvListNames={tvListNames}
                         movieListNames={movieListNames}
                         updateCompletedLists={updateCompletedList}

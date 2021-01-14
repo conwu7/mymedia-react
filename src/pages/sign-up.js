@@ -83,7 +83,7 @@ export default function SignUpForm (props) {
                     </div>
                 </fieldset>
                 <CommonStyledButton
-                    text={wait? "Creating your account" : "Submit"}
+                    text={wait? "Creating your account" : "Signup"}
                     disabled={wait}
                 />
                 <div className="errorDiv">{serverError}</div>
