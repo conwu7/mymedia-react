@@ -8,11 +8,10 @@ import { useState } from 'react';
 import { GrPrevious, GrNext } from "react-icons/gr";
 
 import style from '../stylesheets/components/site-sample.module.scss';
-// import { Link } from "react-router-dom";
 import { ComponentPageTransition } from "./common";
 
 
-export default function SiteSample (props) {
+export default function SiteSample () {
     const [currentCount, setCurrentCount] = useState(1);
     const handleNext = () => {
         if (currentCount > 4) {
@@ -34,23 +33,25 @@ export default function SiteSample (props) {
             count: 1,
             description: [
                 "Create custom lists with unique names and descriptions",
-                "Add movies/shows to your lists from after searching",
-                "Adjust the list and item sort preferences to your liking",
-                "Add as many lists as you want"
+                "Add movies/shows to your lists from the search page",
+                "Set the list and item sort preferences to your liking",
             ]
         },
         {
             image: mediaActions,
             count: 2,
-            description: ["Perform actions on each item with smooth animations"]
+            description: [
+                "Perform actions on each item",
+                "Changes can be seen on the item when viewed from multiple lists"
+            ]
         },
         {
             image: mediaStatusNotes,
             count: 3,
             description: [
-                "Add watch notes to see later",
+                "Add watch notes that you can view later on",
                 "If you've watched it, add review notes and rate the item",
-                "See all this later in the 'More Info' section of each item"
+                "All these will show up in the 'More Info' section of each item"
                 ]
         },
         {
@@ -64,7 +65,7 @@ export default function SiteSample (props) {
         {
             image: search,
             count: 5,
-            description: ["Search for movies and shows and add them to your unique lists"]
+            description: ["Search for movies and shows and add them to your lists"]
         }
     ]
     return (
@@ -115,19 +116,6 @@ export default function SiteSample (props) {
                     </button>
                 </div>
             </div>
-            {/*<p className={style.signupOrLogin}>*/}
-            {/*    <Link to="/signup">Sign up</Link>*/}
-            {/*    <span className={style.noUserMessage}>*/}
-            {/*    to start managing your media lists*/}
-            {/*</span>*/}
-            {/*</p>*/}
-            {/*<p className={style.signupOrLogin}>OR</p>*/}
-            {/*<p className={style.signupOrLogin}>*/}
-            {/*    <Link to="/login">Login</Link>*/}
-            {/*    <span className={style.noUserMessage}>*/}
-            {/*    if you already have an existing account*/}
-            {/*</span>*/}
-            {/*</p>*/}
         </div>
     )
 }
