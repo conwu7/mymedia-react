@@ -1,16 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { BiCameraMovie } from 'react-icons/bi';
-import { RiMovie2Line, RiMenu5Line, RiSearchLine } from 'react-icons/ri';
+import React, {useCallback, useEffect, useState} from 'react';
+import {BiCameraMovie} from 'react-icons/bi';
+import {RiMenu5Line, RiMovie2Line, RiSearchLine} from 'react-icons/ri';
 
 import MediaListsPage from '../components/media-lists-page';
 import SearchForMedia from '../components/search';
-import { ComponentPageTransition } from "../components/common";
+import {ComponentPageTransition} from "../components/common";
 import Settings from './settings';
 
 import dashboardStyle from '../stylesheets/pages/dashboard.module.scss';
 import selectorStyle from '../stylesheets/components/list-types-selector.module.scss';
 
-import { fetchOrDeleteFromApi } from '../helpers/common';
+import {fetchOrDeleteFromApi} from '../helpers/common';
 import SiteSample from "../components/site-samples";
 
 export default function Dashboard (props) {
@@ -175,6 +175,15 @@ export default function Dashboard (props) {
 
 function PageSelector (props) {
     const {currentPage} = props;
+    const [defaultHeight, setDefaultHeight] = useState(null);
+    const [raiseComponent, setRaiseComponent] = useState(false);
+    // function to raise component if safari/chrome mobile toolbars are hidden.
+    useEffect(() => {
+        if (defaultHeight === null) setDefaultHeight(window.innerHeight);
+        const checkRaise = () => setRaiseComponent(window.innerHeight > defaultHeight);
+        window.addEventListener('resize', checkRaise);
+        return () => window.removeEventListener('resize', checkRaise);
+    }, [defaultHeight])
     const handlePageChange = (newPage, title) => {
         return ( () => {props.handlePages(newPage, title)} );
     }
@@ -222,7 +231,9 @@ function PageSelector (props) {
                 }
             </div>
             {/*Raise on fullscreen to compensate for ios/android non removable nav gesture ui bar*/}
-            <div className={selectorStyle.raiseOnFullscreen} />
+            <div
+                className={`${selectorStyle.raiseOnFullscreen} ${raiseComponent?selectorStyle.raise:""}`}
+            />
         </div>
     )
 }

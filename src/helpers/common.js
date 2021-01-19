@@ -10,6 +10,7 @@ export async function putOrPostToApi (values, url, method) {
             })
             const params = new URLSearchParams(formData.entries());
             const response = await fetch(`/api/${url}`, {method: method.toUpperCase(), body: params});
+            if (response.status===500) return reject('Server Unavailable');
             const apiResponse = await response.json();
             if (!apiResponse.success) {
                 if (apiResponse.err === 'no-user') return window.location.reload();
@@ -26,6 +27,7 @@ export function fetchOrDeleteFromApi (link, method) {
     return new Promise(async (resolve, reject) => {
         try {
             const response = await fetch(`/api/${link}`, {method: method.toUpperCase()});
+            if (response.status===500) return reject('Server Unavailable');
             const apiResponse = await response.json();
             if (!apiResponse.success) {
                 if (apiResponse.err === 'no-user') return window.location.reload();
@@ -39,17 +41,20 @@ export function fetchOrDeleteFromApi (link, method) {
 }
 // check for user with cookie and perform several passed functions
 export async function checkForUser (setUser, setUserCheckDone, setListPref, setMediaPref) {
-    return fetch('/api/getUserDetails')
-        .then(response => response.json())
+    return fetch('/api/getuserdetails')
+        .then(response => {
+            if (response.status===500) throw new Error('Server Unavailable');
+            return response.json()
+        })
         .then(apiResponse => {
             if (apiResponse.success) {
                 setUser(apiResponse.result.username);
                 setListPref(apiResponse.result.listSortPreference || "default");
                 setMediaPref(apiResponse.result.mediaSortPreference || "default");
             }
-            setUserCheckDone(true);
         })
         .catch(err => console.log(err))
+        .finally(() => setUserCheckDone(true));
 }
 // categories to iterate over
 export function getCategories () {

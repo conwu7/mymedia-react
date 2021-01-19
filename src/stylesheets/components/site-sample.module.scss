@@ -2,6 +2,8 @@
   padding: 5px 0;
   background-color: white;
   min-height: 100vh;
+  max-width: 1400px;
+  margin: auto;
   position: relative;
 }
 .noUserMessage {
@@ -114,7 +116,7 @@
   .imageAndDescContainer {
     position: relative;
     flex-direction: row-reverse;
-    width: 65vw;
+    width: 75%;
   }
   .description span {
     margin: 8px;

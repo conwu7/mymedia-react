@@ -31,6 +31,7 @@
     color: dimgrey;
 }
 .emptyLists {
+    width: 100%;
     text-align: center;
     color: grey;
     padding: 1px 15px;
@@ -58,7 +59,7 @@
     }
     .listContainer {
         width: 47%;
-        margin: 10px 0;
+        margin: 10px 5px;
     }
     .completedListContainer {
         width: 100%;

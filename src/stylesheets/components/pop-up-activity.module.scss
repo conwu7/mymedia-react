@@ -6,10 +6,15 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-    animation: getDarker 500ms linear normal forwards;
+    animation: getDarker 600ms linear normal forwards;
+    transition: opacity 400ms linear;
 }
 .fadeAway {
     animation: getTransparent 500ms linear reverse forwards;
+
+    & * {
+        opacity: 0.6;
+    }
 }
 @keyframes getDarker {
     from {background-color: transparent}

@@ -31,7 +31,7 @@ export function PopUpActivity (props) {
         useActivity, null, {
             from: {transform: 'translate(0, 100%)'},
             enter: {transform: 'translate(0, 0)', opacity: 1},
-            leave: {transform: 'translate(0, -100%)', opacity: 0}
+            leave: {transform: 'translate(0, 100%)', opacity: 0}
         }
     )
     let closeButton;
