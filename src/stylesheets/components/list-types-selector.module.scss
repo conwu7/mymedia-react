@@ -5,6 +5,7 @@
     width: 100%;
     background-color:whitesmoke;
     z-index: 2;
+    border-top: 1px solid lightgray;
 }
 .selectorContainer {
     display: flex;
@@ -12,7 +13,6 @@
     top: 0;
     justify-content: center;
     width: 100%;
-    border-top: 1px solid lightgray;
 }
 .selectorButton {
     width: 30%;
@@ -48,6 +48,8 @@
         justify-content: center;
         position: sticky;
         top: 0;
+        max-width: 800px;
+        margin: auto;
     }
     .selectorButton {
         width: 15%;

@@ -42,6 +42,8 @@
     }
 }
 .mainContentContainer {
+    max-width: 900px;
+    margin: auto;
     padding: 10px 0;
     border-radius: 10px;
     background-color: whitesmoke;
@@ -64,11 +66,5 @@
 @media all and (display-mode: standalone) {
     .mainContent {
         max-height: calc(100vh - 80px - 100px);
-    }
-}
-@media only screen and (min-width: 680px) {
-    .mainContentContainer {
-        margin: auto;
-        max-width: 75vw;
     }
 }
