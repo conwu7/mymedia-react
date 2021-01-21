@@ -1,70 +1,50 @@
-# Getting Started with Create React App
+﻿## My Media Lists - Organized media lists
+Check out the app at [MyMediaLists.app](https://mymedialists.app/).
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Instead of managing lists in every streaming service available or multiple apps, organize all your media in one single location. Create as many unique lists as you need for your tv shows and movies.
 
-## Available Scripts
+### Creating Lists
 
-In the project directory, you can run:
+You can create new lists either from the menu tab or from the ‘Add to list’ modal on the search tabs or a media card.
 
-### `npm start`
+Each list applies to only one form of media and is only shown on the media’s tab i.e. You can only add movies to a list with type of movies. To add items to a list, simple search for it and use the ‘Add to list’ button that is on each result.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Editing a list or it’s description can be done in the menu tab under ‘Edit Lists’.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+By default, lists, and the items within them are sorted by old to new. You can change this to any of the following (Ascending or Descending) in the ‘More’ tab under ‘Preferences’ -
+- 	Name (list)
+- 	Date Created (list)
+- 	Title (media)
+- 	Date Added to List (media)
+- 	Release Date (media)
+- 	IMDB rating (media)
 
-### `npm test`
+### Media Actions
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+You can choose a source for accessing content or streaming while selecting a list to add an item. This source will show up on the media tabs.
 
-### `npm run build`
+On each media item, there are five actions available. The first four are in a hidden menu above the media’s poster. Click on the three dots to expose the available actions.
+1. Edit -
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+-   Update the streaming source
+-   Add/update to watch notes
+-   Mark an item as watched
+-   Rate the item
+-   Add/update review notes
+2. Add to List - Add the item to another list.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   
+3. Mark Completed – This will remove the item from the current list and add it to a system created ‘Completed List’. The Completed list will always show up on the bottom of each page if it is not empty.
+   
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+4. Remove – Remove the item from the current list.
 
-### `npm run eject`
+The fifth action is available below the media’s poster.
+5. More Info – view more info about the media. Consists of movie/episode runtime, total number of seasons, IMDB rating, cast. It also includes your watch notes and your review notes if you have marked it as watched.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Bugs, Feature Requests or Other Feedback
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Submit any feedback on the ‘More’ tab under ‘Submit Feedback’. Let me know what you think or any features you think could improve the app.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Upcoming Features
+- Support for books and video games

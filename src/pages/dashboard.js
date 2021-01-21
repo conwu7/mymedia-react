@@ -163,7 +163,7 @@ export default function Dashboard (props) {
                 </ComponentPageTransition>
             </div>
             <div
-                style={{height: "65px"}}
+                style={{height: "80px"}}
                 className={currentPage === 'settings' ? dashboardStyle.compensateMobileBottom : undefined}/>
             <PageSelector
                 currentPage={currentPage}
