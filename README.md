@@ -1,5 +1,5 @@
 ﻿## My Media Lists - Organized media lists
-Check out the app at [MyMediaLists.app](https://mymedialists.app/).
+Check out the app at [MyMediaLists.app](https://www.mymedialists.app/)
 
 Instead of managing lists in every streaming service available or multiple apps, organize all your media in one single location. Create as many unique lists as you need for your tv shows and movies.
 
