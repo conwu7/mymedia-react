@@ -36,7 +36,7 @@ export default function LoginForm (props) {
         <div className={style.signUpPage}>
             <WaitForServer
                 wait={wait}
-                waitText="Logging you in"
+                waitText="Authenticating"
             />
             <form onSubmit={formik.handleSubmit} className={style.signUpForm}>
                 <fieldset>

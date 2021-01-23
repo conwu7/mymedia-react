@@ -97,7 +97,7 @@ export default function Preferences (props) {
                     </select>
                 </fieldset>
                 <fieldset>
-                    <label htmlFor="defaultMediaPage">Default Page</label>
+                    <label htmlFor="defaultMediaPage">Default Tab</label>
                     <select
                         name="defaultMediaPage"
                         id="defaultMediaPage"

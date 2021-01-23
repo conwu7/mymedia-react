@@ -18,6 +18,7 @@ export async function putOrPostToApi (values, url, method) {
             }
             resolve(apiResponse.result);
         } catch (err) {
+            if (err.message === 'Failed to fetch') return reject("You're offline");
             reject(err);
         }
     })
@@ -35,6 +36,7 @@ export function fetchOrDeleteFromApi (link, method) {
             }
             resolve(apiResponse.result);
         } catch (err) {
+            if (err.message === 'Failed to fetch') return reject("You're offline");
             reject(err);
         }
     })
