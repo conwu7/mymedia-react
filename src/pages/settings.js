@@ -6,7 +6,7 @@ import style from "../stylesheets/pages/settings.module.scss";
 import { PopUpActivity } from "../components/common";
 import { EditList, NewList } from "../components/settings/new-edit-list";
 import DeleteList from "../components/settings/delete-list";
-import SortPreferences from "../components/settings/sort-preferences";
+import Preferences from "../components/settings/preferences";
 import { Feedback } from "../components/settings/feedback";
 
 export default function Settings (props) {
@@ -21,7 +21,7 @@ export default function Settings (props) {
     // state for feedback form popup
     const [openFeedback, setOpenFeedback] = useState(false);
     const {refreshList, tvListNames, movieListNames, updateUser,
-            listPref, mediaPref } = props;
+            listPref, mediaPref, defaultMediaPage } = props;
     const handleLogout = async () => {
         try {
             if (!window.confirm("Are you sure you want to logout?")) return
@@ -88,7 +88,7 @@ export default function Settings (props) {
                 className={style.mainLinks}
                 onClick={handleOpenModifySortPref}
             >
-                <span>Sort Preferences</span>
+                <span>User Preferences</span>
                 <HiOutlineSortAscending />
             </button>
             <button
@@ -140,13 +140,14 @@ export default function Settings (props) {
                 />
             </PopUpActivity>
             <PopUpActivity
-                // SORT PREFERENCES
+                // USER PREFERENCES
                 useActivity={modifyingSortPref}
                 handleActivityClose={handleCloseModifySortPref}
             >
-                <SortPreferences
+                <Preferences
                     listPref={listPref}
                     mediaPref={mediaPref}
+                    defaultMediaPage={defaultMediaPage}
                     updateUser={updateUser}
                     handleActivityClose={handleCloseModifySortPref}
                 />

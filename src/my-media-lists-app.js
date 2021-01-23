@@ -15,13 +15,12 @@ import { checkForUser } from './helpers/common';
 
 function MyMediaListsApp() {
   const [user, setUser] = useState('');
-  const [listPref, setListPref] = useState('');
-  const [mediaPref, setMediaPref] = useState('');
+  const [userPreferences, setUserPreferences] = useState({notSet: true});
   const [isUserCheckDone, setUserCheckDone] = useState(false);
   // Get username, list and media sort preferences
   const updateUser = useCallback(
        () => {
-        return checkForUser(setUser, setUserCheckDone, setListPref, setMediaPref)
+        return checkForUser(setUser, setUserCheckDone, setUserPreferences)
             .catch(err => console.log(err));
       },
       []
@@ -32,7 +31,7 @@ function MyMediaListsApp() {
         .catch(err => console.log(err));
   }, [updateUser])
   // While confirming user cookie is still active
-  if (!isUserCheckDone || (user && (!listPref && !mediaPref))) return null;
+  if (!isUserCheckDone || (user && userPreferences.notSet)) return null;
   return (
     <div className="App" id="App">
       <Router>
@@ -48,8 +47,9 @@ function MyMediaListsApp() {
             <Dashboard
                 user={user}
                 updateUser={updateUser}
-                listPref={listPref}
-                mediaPref={mediaPref}
+                listPref={userPreferences.listSortPreferences}
+                mediaPref={userPreferences.mediaSortPreferences}
+                defaultMediaPage={userPreferences.defaultMediaPage}
             />
           </Route>
         </Switch>

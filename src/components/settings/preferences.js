@@ -17,38 +17,39 @@ release+ : release date ascending. oldest to newest
 release-
  */
 
-export default function SortPreferences (props) {
-    const {handleActivityClose, listPref, mediaPref, updateUser} = props;
+export default function Preferences (props) {
+    const {handleActivityClose, listPref, mediaPref, updateUser,defaultMediaPage} = props;
     const [wait, setWaitForServer] = useState(false);
-    const [sortPreferences, setSortPreferences] =
+    const [preferences, setSortPreferences] =
         useState({
             listSortPreference: (!listPref || listPref === 'default') ? 'created+' : listPref,
             mediaSortPreference: (!mediaPref || mediaPref === 'default') ? 'added+' : mediaPref,
+            defaultMediaPage: defaultMediaPage || 'movies',
         });
     const handleChange = (e) => {
         setSortPreferences({
-            ...sortPreferences,
+            ...preferences,
             [e.target.name]: e.target.value,
         })
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (
-            sortPreferences.listSortPreference === listPref &&
-            sortPreferences.mediaSortPreference === mediaPref
+            preferences.listSortPreference === listPref &&
+            preferences.mediaSortPreference === mediaPref &&
+            preferences.defaultMediaPage === defaultMediaPage
         ) return handleActivityClose();
         setWaitForServer(true);
         try {
             await putOrPostToApi(
-                sortPreferences,
-                'user/sortPreferences',
+                preferences,
+                'user/preferences',
                 'put'
             );
             await updateUser();
             handleActivityClose();
         } catch (err) {
             if (err) alert('Unable to save. Try again');
-            console.log(err);
         } finally {
             setWaitForServer(false);
         }
@@ -69,7 +70,7 @@ export default function SortPreferences (props) {
                         name="listSortPreference"
                         id="listSortPreference"
                         onChange={handleChange}
-                        value={sortPreferences.listSortPreference}
+                        value={preferences.listSortPreference}
                     >
                         <option value="alpha+">Alpha - A to Z</option>
                         <option value="alpha-">Alpha - Z to A</option>
@@ -83,7 +84,7 @@ export default function SortPreferences (props) {
                         name="mediaSortPreference"
                         id="mediaSortPreference"
                         onChange={handleChange}
-                        value={sortPreferences.mediaSortPreference}
+                        value={preferences.mediaSortPreference}
                     >
                         <option value="alpha+">Alpha - A to Z</option>
                         <option value="alpha-">Alpha - Z to A</option>
@@ -93,6 +94,18 @@ export default function SortPreferences (props) {
                         <option value="imdb-">IMDB Rating - Highest to Lowest</option>
                         <option value="release+">Release Year - Old to New</option>
                         <option value="release-">Release Year - New to Old</option>
+                    </select>
+                </fieldset>
+                <fieldset>
+                    <label htmlFor="defaultMediaPage">Default Page</label>
+                    <select
+                        name="defaultMediaPage"
+                        id="defaultMediaPage"
+                        onChange={handleChange}
+                        value={preferences.defaultMediaPage}
+                    >
+                        <option value="movies">Movies</option>
+                        <option value="tvShows">Tv Shows</option>
                     </select>
                 </fieldset>
                 <CommonStyledButton text="Save"/>

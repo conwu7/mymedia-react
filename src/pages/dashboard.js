@@ -14,9 +14,9 @@ import {fetchOrDeleteFromApi} from '../helpers/common';
 import SiteSample from "../components/site-samples";
 
 export default function Dashboard (props) {
-    const {user, updateUser, mediaPref, listPref} = props;
+    const {user, updateUser, mediaPref, listPref, defaultMediaPage} = props;
     // state for current page
-    const [currentPage, setCurrentPage] = useState('movies');
+    const [currentPage, setCurrentPage] = useState(defaultMediaPage || 'movies');
     // state for storing all lists
     const [allLists, setAllLists] = useState({empty: true});
     // state to prevent extra get List fetches
@@ -158,6 +158,7 @@ export default function Dashboard (props) {
                         movieListNames={movieListNames}
                         listPref={listPref}
                         mediaPref={mediaPref}
+                        defaultMediaPage={defaultMediaPage}
                         updateUser={updateUser}
                     />
                 </ComponentPageTransition>

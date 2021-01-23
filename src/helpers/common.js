@@ -40,7 +40,7 @@ export function fetchOrDeleteFromApi (link, method) {
     })
 }
 // check for user with cookie and perform several passed functions
-export async function checkForUser (setUser, setUserCheckDone, setListPref, setMediaPref) {
+export async function checkForUser (setUser, setUserCheckDone, setUserPreferences) {
     return fetch('/api/getuserdetails')
         .then(response => {
             if (response.status===500) throw new Error('Server Unavailable');
@@ -49,8 +49,12 @@ export async function checkForUser (setUser, setUserCheckDone, setListPref, setM
         .then(apiResponse => {
             if (apiResponse.success) {
                 setUser(apiResponse.result.username);
-                setListPref(apiResponse.result.listSortPreference || "default");
-                setMediaPref(apiResponse.result.mediaSortPreference || "default");
+                const {listSortPreference, mediaSortPreference, defaultMediaPage} = apiResponse.result;
+                setUserPreferences({
+                    listSortPreference,
+                    mediaSortPreference,
+                    defaultMediaPage,
+                })
             }
         })
         .catch(err => console.log(err))

@@ -5,8 +5,8 @@ $buttonBorder: 2px solid rgba(208, 208, 208, 0.2);
   flex-direction: column;
   justify-content: space-evenly;
   max-width: 900px;
-  padding: 10px;
-  margin: 15px auto;
+  padding: 0 10px;
+  margin: 10px auto;
   border-radius: 10px;
   overflow: hidden;
 
@@ -22,11 +22,12 @@ $buttonBorder: 2px solid rgba(208, 208, 208, 0.2);
     border-top: $buttonBorder;
     border-bottom: $buttonBorder;
     border-radius: 10px;
+    box-shadow: 0 0 4px 1px rgba(32,33,36,.15);
     text-align: left;
     color: darkslategray;
     font-size: 18px;
     font-weight: bold;
-    background-color: whitesmoke;
+    background-color: white;
 
     svg {
       font-weight: bold;

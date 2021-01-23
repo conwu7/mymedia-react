@@ -24,7 +24,7 @@
 .navbarItem {
     display: flex;
     align-items: center;
-    margin: 10px 5px;
+    margin: 12px 5px;
     a {
         padding: 0;
         border: none;
@@ -40,8 +40,8 @@
     font-family: 'Dosis', sans-serif;
     text-transform: uppercase;
     //font-family: 'Righteous', sans-serif;
-    font-size: 22px;
     a {
+        font-size: 22px;
         font-weight: 700;
         text-decoration: none;
     }
