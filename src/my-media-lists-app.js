@@ -47,8 +47,8 @@ function MyMediaListsApp() {
             <Dashboard
                 user={user}
                 updateUser={updateUser}
-                listPref={userPreferences.listSortPreferences}
-                mediaPref={userPreferences.mediaSortPreferences}
+                listPref={userPreferences.listSortPreference}
+                mediaPref={userPreferences.mediaSortPreference}
                 defaultMediaPage={userPreferences.defaultMediaPage}
             />
           </Route>
