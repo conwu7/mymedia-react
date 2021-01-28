@@ -276,6 +276,7 @@ function MovieActionsMenuContainer (props) {
     const {toWatchLists} = movieListNames;
     // state for editing user media popup
     const [editingUserMedia, setEditingUserMedia] = useState(false);
+    const [completingMedia, setCompletingMedia] = useState(false);
     const handleOpenEditMedia = () => {
         setEditingUserMedia(true);
     }
@@ -295,6 +296,13 @@ function MovieActionsMenuContainer (props) {
             .catch(err => window.alert(err))
             .finally(() => {setWaitForServer(false)});
     };
+    const handleOpenCompletingMedia = () => {
+        setCompletingMedia(true);
+    }
+    const handleCloseCompleteMedia = (markComplete) => {
+        setCompletingMedia(false);
+        if (markComplete === 'markComplete') handleMarkComplete().then(undefined);
+    }
     const handleMarkComplete = async () => {
         setWaitForServer(true);
         try {
@@ -337,7 +345,7 @@ function MovieActionsMenuContainer (props) {
                             !useCompleted &&
                             <button
                                 className={userMediaStyle.markComplete}
-                                onClick={handleMarkComplete}
+                                onClick={handleOpenCompletingMedia}
                             >
                                 Completed?
                             </button>
@@ -375,6 +383,18 @@ function MovieActionsMenuContainer (props) {
                     listCategory={listCategory}
                     refreshList={refreshList}
                     handleActivityClose={handleCloseEditMedia}
+                />
+            </PopUpActivity>
+            <PopUpActivity
+                useActivity={completingMedia}
+                handleActivityClose={handleCloseCompleteMedia}
+            >
+                <EditUserMedia
+                    isCompleting={true}
+                    userMedia={userMedia}
+                    listCategory={listCategory}
+                    refreshList={refreshList}
+                    handleActivityClose={handleCloseCompleteMedia}
                 />
             </PopUpActivity>
         </>

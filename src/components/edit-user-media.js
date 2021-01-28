@@ -9,7 +9,7 @@ import { UserMediaSchema } from '../helpers/validation';
 import WaitForServer from "./wait-for-server";
 
 export default function EditUserMedia (props) {
-    const {userMedia, listCategory, handleActivityClose, refreshList} = props;
+    const {userMedia, listCategory, handleActivityClose, refreshList, isCompleting} = props;
     const [wait, setWaitForServer] = useState(false);
     const userMediaType = listCategory==="towatchtv"?"userTvShows":"userMovies";
     const {media} = userMedia;
@@ -45,7 +45,7 @@ export default function EditUserMedia (props) {
                     'put'
                 )
                 refreshList(listCategory);
-                handleActivityClose();
+                handleActivityClose(isCompleting ? 'markComplete' : undefined);
             } catch (err) {
                 window.alert(err);
             } finally {
@@ -87,18 +87,24 @@ export default function EditUserMedia (props) {
                     className={style.form}
                     onSubmit={formik.handleSubmit}
                 >
-                    <StreamingSourceFieldset formik={formik}/>
-                    <div className="errorDiv">
-                        {
-                            formik.errors.streamingSource &&
-                            `${formik.errors.streamingSource}`
-                        }
-                    </div>
-                    <UserMediaTextFields
+                    {!isCompleting &&
+                        <>
+                            <StreamingSourceFieldset formik={formik}/>
+                            <div className="errorDiv">
+                                {
+                                    formik.errors.streamingSource &&
+                                    `${formik.errors.streamingSource}`
+                                }
+                            </div>
+                        </>
+                    }
+                    {!isCompleting &&
+                        <UserMediaTextFields
                         formik={formik}
                         fieldName="toWatchNotes"
                         fieldText="Watch Notes"
                     />
+                    }
                     <div className={style.fieldContainer}>
                         <span>Watched?</span>
                         <div className={style.watchStatusContainer}>
