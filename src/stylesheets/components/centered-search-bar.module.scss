@@ -9,6 +9,9 @@ $inputAndButtonHeight: 40px;
     align-items: stretch;
 }
 .clearInput {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: white;
     border: none;
     outline: none;
@@ -20,6 +23,9 @@ $inputAndButtonHeight: 40px;
         color: dimgrey;
     }
 }
+.input:placeholder-shown + .clearInput svg {
+    color: lightgrey;
+}
 .input {
     height: 30px;
     width: 60%;
@@ -30,7 +36,6 @@ $inputAndButtonHeight: 40px;
     font-size: 16px;
     text-align: center;
     transition: all 200ms linear;
-
 
     &.fullWidth {
         width: 100%;

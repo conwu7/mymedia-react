@@ -187,7 +187,7 @@ export function CenteredSearchBar (props) {
                     type="text"
                     name={inputName}
                     id={inputName}
-                    placeholder={placeholder}
+                    placeholder={placeholder || 'Type here to search'}
                     disabled={disabled}
                     ref={inputRef}
                     className={`${fullWidth ? centeredSearchBarStyle.fullWidth : ""} ${centeredSearchBarStyle.input}`}

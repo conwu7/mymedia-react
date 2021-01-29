@@ -119,7 +119,7 @@ function SearchResultsContainer (props) {
             {isSearching ?
                 <div className={style.loadingContainer}><AiOutlineLoading/></div>
                 : !isSearchComplete ?
-                    <p className={style.notSearchedYet}>Press Enter or click Search!</p>
+                    null
                     : searchResults.length === 0 ?
                         <p className={style.notSearchedYet}>{searchError}</p>
                         : searchResults.map(media => (
