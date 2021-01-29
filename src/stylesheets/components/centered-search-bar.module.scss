@@ -8,6 +8,18 @@ $inputAndButtonHeight: 40px;
     justify-content: center;
     align-items: stretch;
 }
+.clearInput {
+    background-color: white;
+    border: none;
+    outline: none;
+    margin: 15px auto;
+
+    svg {
+        height: 19px;
+        width: 19px;
+        color: dimgrey;
+    }
+}
 .input {
     height: 30px;
     width: 60%;
@@ -19,9 +31,7 @@ $inputAndButtonHeight: 40px;
     text-align: center;
     transition: all 200ms linear;
 
-    &:hover {
-        box-shadow: 0 1px 6px rgba(32,33,36,.28);
-    }
+
     &.fullWidth {
         width: 100%;
         margin: 0;

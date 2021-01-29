@@ -80,6 +80,9 @@ function SearchBar (props) {
         validate: (values) => setSearchString(values.searchString),
         onSubmit: () => handleSearch(),
     });
+    const clearInput = () => {
+        formik.resetForm();
+    }
     return (
         <React.Fragment>
             <CenteredSearchBar
@@ -90,6 +93,7 @@ function SearchBar (props) {
                 value={formik.values.searchString}
                 onSubmit={formik.handleSubmit}
                 showSearchButton={true}
+                clearInput={clearInput}
                 disabled={disabled}
             />
             <div className="errorDiv">

@@ -3,6 +3,7 @@ import { useSpring, animated, useTransition } from "react-spring";
 import { useMeasure } from "react-use";
 
 import { GrClose } from 'react-icons/gr';
+import { GiCancel } from 'react-icons/gi';
 import { MdExpandLess } from 'react-icons/md';
 
 import collapsibleCardStyle from '../stylesheets/components/collapsible-card.module.scss';
@@ -166,20 +167,20 @@ export function CollapsibleCard (props) {
 // return a style input bar component
 // parent provides event handlers, input properties.
 export function CenteredSearchBar (props) {
-    const {onChange, handleClick, value,
+    const {onChange, handleClick, value, clearInput,
          inputName, showSearchButton, fullWidth,
          placeholder, disabled, onSubmit} = props;
     const inputRef = React.createRef();
     // move focus to input on render
     useEffect(() => {
         inputRef.current.focus();
-    }, [inputRef])
+    }, [inputRef]);
     return (
         <div>
             <form
                 onSubmit={onSubmit}
                 className={`${showSearchButton?centeredSearchBarStyle.useSearchButton:""} ${centeredSearchBarStyle.form}`}>
-                <input 
+                <input
                     onClick={handleClick}
                     onChange={onChange}
                     value={value}
@@ -189,8 +190,14 @@ export function CenteredSearchBar (props) {
                     placeholder={placeholder}
                     disabled={disabled}
                     ref={inputRef}
-                    className={`${fullWidth?centeredSearchBarStyle.fullWidth:""} ${centeredSearchBarStyle.input}`}
+                    className={`${fullWidth ? centeredSearchBarStyle.fullWidth : ""} ${centeredSearchBarStyle.input}`}
                 />
+                <button
+                    type="button"
+                    onClick={clearInput}
+                    className={centeredSearchBarStyle.clearInput}>
+                    <GiCancel />
+                </button>
                 {showSearchButton?(
                     <button
                         className={centeredSearchBarStyle.searchButton}
