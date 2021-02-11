@@ -267,13 +267,14 @@ function MoreInfoCard (props) {
 }
 function MovieActionsMenuContainer (props) {
     const [wait, setWaitForServer] = useState(false);
-    // state for adding media to another list
-    const [openAddToOtherList, setOpenAddToOtherList] = useState(false);
     const {userMedia, refreshList, tvListNames, movieListNames, useCompleted,
             listCategory, list, updateCompletedLists} = props;
     const {imdbID, _id} = userMedia;
     const {toWatchListsTv} = tvListNames;
     const {toWatchLists} = movieListNames;
+    // state for adding media to another list
+    const [openAddToOtherList, setOpenAddToOtherList] = useState(false);
+    const [movingToOtherList, setMovingToOtherList] = useState(false);
     // state for editing user media popup
     const [editingUserMedia, setEditingUserMedia] = useState(false);
     const [completingMedia, setCompletingMedia] = useState(false);
@@ -286,8 +287,13 @@ function MovieActionsMenuContainer (props) {
     const handleOpenAddToOtherList = () => {
         setOpenAddToOtherList(true);
     }
-    const handleCloseAddToOtherList = () => {
+    const handleOpenMoveToOtherList = () => {
+        setMovingToOtherList(true);
+    }
+    const handleCloseAddToOtherList = (action) => {
         setOpenAddToOtherList(false);
+        setMovingToOtherList(false);
+        if (action === 'move') handleRemoveFromList();
     }
     const handleRemoveFromList = () => {
         setWaitForServer(true);
@@ -341,6 +347,7 @@ function MovieActionsMenuContainer (props) {
                     <div className={userMediaStyle.buttonContainer}>
                         <button onClick={handleOpenEditMedia}>Edit</button>
                         <button onClick={handleOpenAddToOtherList}>Add to List</button>
+                        <button onClick={handleOpenMoveToOtherList}>Move</button>
                         {
                             !useCompleted &&
                             <button
@@ -364,6 +371,22 @@ function MovieActionsMenuContainer (props) {
                 handleActivityClose={handleCloseAddToOtherList}
             >
                 <AddToList
+                    imdbID={userMedia.imdbID}
+                    refreshList={refreshList}
+                    handleActivityClose={handleCloseAddToOtherList}
+                    toWatchListsTv={toWatchListsTv}
+                    toWatchLists={toWatchLists}
+                    showMovies={listCategory === 'towatch'}
+                    showTv={listCategory === 'towatchtv'}
+                    streamingSource={userMedia.streamingSource}
+                />
+            </PopUpActivity>
+            <PopUpActivity
+                useActivity={movingToOtherList}
+                handleActivityClose={handleCloseAddToOtherList}
+            >
+                <AddToList
+                    isMoving={true}
                     imdbID={userMedia.imdbID}
                     refreshList={refreshList}
                     handleActivityClose={handleCloseAddToOtherList}

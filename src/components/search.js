@@ -238,7 +238,7 @@ function NonSpecificListAction (props) {
 }
 export function AddToList (props) {
     const {imdbID, refreshList, handleActivityClose, toWatchLists, toWatchListsTv,
-            showTv, showMovies, streamingSource} = props;
+            showTv, showMovies, streamingSource, isMoving} = props;
     const formik = useFormik({
         initialValues: {
             streamingSource: streamingSource || "selectOne"
@@ -260,7 +260,7 @@ export function AddToList (props) {
                 `lists/${listCategory}/${listID}/${imdbID}`,
                 'post');
             refreshList(listCategory);
-            handleActivityClose();
+            handleActivityClose(isMoving ? 'move' : null);
         } catch (err) {
             if (err === 'not-found') refreshList(listCategory);
             window.alert(`Unsuccessful -  ${err}`);
