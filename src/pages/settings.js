@@ -88,7 +88,7 @@ export default function Settings (props) {
                 className={style.mainLinks}
                 onClick={handleOpenModifySortPref}
             >
-                <span>User Preferences</span>
+                <span>Preferences</span>
                 <HiOutlineSortAscending />
             </button>
             <button
