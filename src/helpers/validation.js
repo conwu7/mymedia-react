@@ -52,6 +52,15 @@ export const SearchSchema = Yup.object().shape({
     searchString: Yup.string()
         .min(4, 'Search with at least 4 characters')
         .required('Required')
+        .test(
+            'firstCharacter',
+            'First character must be alphanumeric',
+            (value, context) => {
+                // true means valid here
+                if (!value) return true;
+                if (!isNaN(value[0])) return true;
+                return value[0].toUpperCase() !== value[0].toLowerCase()
+            })
 });
 
 export const StreamingSchema = Yup.object().shape({
