@@ -38,7 +38,10 @@ export default function MediaListsPage(props) {
                      Your {listCategory === "towatch" ? "movies" : "tv shows"}{" "}
                      list is empty
                   </p>
-                  <p>To create new lists, click on &quot;Menu&quot; on the bottom tab</p>
+                  <p>
+                     To create new lists, click on &quot;Menu&quot; on the
+                     bottom tab
+                  </p>
                   <p>then click &quot;Create New List&quot;</p>
                </div>
             ) : undefined}
@@ -109,7 +112,8 @@ function ListContainer(props) {
                      ,
                   </p>
                   <p className={listContainerStyle.emptyListText}>
-                     Search for one then click &quot;`add to list&quot;` on a result
+                     Search for one then click &quot;`add to list&quot;` on a
+                     result
                   </p>
                </div>
             ) : undefined}

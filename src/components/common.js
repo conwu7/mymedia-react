@@ -22,6 +22,7 @@ export function CloseActivityButton(props) {
 }
 
 export function PopUpActivity(props) {
+   const [scrollPosition, setScrollPosition] = useState(0)
    const {
       closeButton: cButton,
       children,
@@ -36,12 +37,14 @@ export function PopUpActivity(props) {
    useEffect(() => {
       // stop scrolling behind modal
       if (useActivity) {
-         document.body.style.position = 'fixed';
-         document.body.style.top = `-${window.scrollY}px`;
+         setScrollPosition(window.pageYOffset)
+         document.body.style.position = "fixed"
+         document.body.style.top = `-${window.scrollY}px`
          return
       }
-      document.body.style.position = '';
-      document.body.style.top = '';
+      setTimeout(() => window.scrollTo(0, scrollPosition), 500)
+      document.body.style.position = ""
+      document.body.style.top = ""
    }, [useActivity])
    let closeButton
    if (!cButton) {

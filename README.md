@@ -14,12 +14,12 @@ Editing a list or it’s description can be done in the menu tab under ‘Edit L
 
 By default, lists, and the items within them are sorted by old to new. You can change this to any of the following (Ascending or Descending) in the ‘More’ tab under ‘Preferences’ -
 
--      Name (list)
--      Date Created (list)
--      Title (media)
--      Date Added to List (media)
--      Release Date (media)
--      IMDB rating (media)
+-       Name (list)
+-       Date Created (list)
+-       Title (media)
+-       Date Added to List (media)
+-       Release Date (media)
+-       IMDB rating (media)
 
 ### Media Actions
 
