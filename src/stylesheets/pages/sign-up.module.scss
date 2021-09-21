@@ -1,27 +1,30 @@
 .signUpPage {
-    text-align: center;
+   text-align: center;
 }
 .signUpForm {
-    fieldset {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        flex-wrap: wrap;
-        width: 100%;
-    }
-    label, input, h1 {
-        display: inline-block;
-        margin: 10px;
-        font-size: 16px;
-    }
-    input {
-        padding-top: 10px;
-        padding-bottom: 10px;
-        border-radius: 10px;
-    }
-    label, input {
-        width: 40%;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
+   fieldset {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-wrap: wrap;
+      width: 100%;
+   }
+   label,
+   input,
+   h1 {
+      display: inline-block;
+      margin: 10px;
+      font-size: 16px;
+   }
+   input {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-radius: 10px;
+   }
+   label,
+   input {
+      width: 40%;
+      padding-left: 10px;
+      padding-right: 10px;
+   }
 }

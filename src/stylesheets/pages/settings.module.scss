@@ -1,95 +1,99 @@
 $buttonBorder: 2px solid rgba(208, 208, 208, 0.2);
 
 .settingsContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  max-width: 900px;
-  padding: 0 10px;
-  margin: 10px auto;
-  border-radius: 10px;
-  overflow: hidden;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-evenly;
+   max-width: 900px;
+   padding: 0 10px;
+   margin: 10px auto;
+   border-radius: 10px;
+   overflow: hidden;
 
-  button.mainLinks {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin: 7px auto;
-    padding: 15px;
-    border-left: none;
-    border-right: none;
-    border-top: $buttonBorder;
-    border-bottom: $buttonBorder;
-    border-radius: 10px;
-    box-shadow: 0 0 4px 1px rgba(32,33,36,.15);
-    text-align: left;
-    color: darkslategray;
-    font-size: 18px;
-    font-weight: bold;
-    background-color: white;
-
-    svg {
+   button.mainLinks {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin: 7px auto;
+      padding: 15px;
+      border-left: none;
+      border-right: none;
+      border-top: $buttonBorder;
+      border-bottom: $buttonBorder;
+      border-radius: 10px;
+      box-shadow: 0 0 4px 1px rgba(32, 33, 36, 0.15);
+      text-align: left;
+      color: darkslategray;
+      font-size: 18px;
       font-weight: bold;
-      height: 30px;
-      width: 30px;
-    }
-  }
-  button.deleteList {
-    color: indianred;
-  }
-  button.logout {
-    color: firebrick;
-  }
-  button.feedback {
-    color: seagreen;
-  }
+      background-color: white;
+
+      svg {
+         font-weight: bold;
+         height: 30px;
+         width: 30px;
+      }
+   }
+   button.deleteList {
+      color: indianred;
+   }
+   button.logout {
+      color: firebrick;
+   }
+   button.feedback {
+      color: seagreen;
+   }
 }
-.deleteContainer, .editContainer, .sortPrefContainer {
-  background-color: white;
-  padding: 10px;
-  text-align: center;
-  color: darkslategray;
+.deleteContainer,
+.editContainer,
+.sortPrefContainer {
+   background-color: white;
+   padding: 10px;
+   text-align: center;
+   color: darkslategray;
 }
 .deleteContainer {
-  svg {
-    color: firebrick;
-  }
+   svg {
+      color: firebrick;
+   }
 }
 .newListForm {
-  background-color: white;
-  padding: 10px;
-  border-radius: 10px;
+   background-color: white;
+   padding: 10px;
+   border-radius: 10px;
 
-  fieldset {
-    display: flex;
-    align-items: center;
-    margin: 10px auto;
-    justify-content: center;
-  }
+   fieldset {
+      display: flex;
+      align-items: center;
+      margin: 10px auto;
+      justify-content: center;
+   }
 
-  label {
-    display: inline-block;
-    padding: 0 10px;
-    font-size: 16px;
-    width: 35%;
-  }
-  select, input, textarea {
-    box-sizing: border-box;
-    height: 50px;
-    width: 60%;
-    border: 1px solid gray;
-    border-radius: 10px;
-    font-size: 16px;
-    font-family: inherit;
-    padding: 0 5px;
-  }
-  textarea {
-    padding: 10px 5px;
-    height: 100px;
-  }
-  option {
-    font-size: 16px;
-    font-family: inherit;
-  }
+   label {
+      display: inline-block;
+      padding: 0 10px;
+      font-size: 16px;
+      width: 35%;
+   }
+   select,
+   input,
+   textarea {
+      box-sizing: border-box;
+      height: 50px;
+      width: 60%;
+      border: 1px solid gray;
+      border-radius: 10px;
+      font-size: 16px;
+      font-family: inherit;
+      padding: 0 5px;
+   }
+   textarea {
+      padding: 10px 5px;
+      height: 100px;
+   }
+   option {
+      font-size: 16px;
+      font-family: inherit;
+   }
 }

@@ -1,56 +1,56 @@
-@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Dosis:wght@800&display=swap");
 
 .navbarContainer {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    width: 100%;
-    color: darkslategray;
-    box-shadow: 0 0 8px 1px rgba(32,33,36,.28);
-    background-color: white;
-    z-index: 999;
+   position: -webkit-sticky;
+   position: sticky;
+   top: 0;
+   width: 100%;
+   color: darkslategray;
+   box-shadow: 0 0 8px 1px rgba(32, 33, 36, 0.28);
+   background-color: white;
+   z-index: 999;
 }
 .navbarList {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 95%;
-    margin: auto;
-    list-style: none;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   width: 95%;
+   margin: auto;
+   list-style: none;
 }
 .otherLinksContainer {
-    display: flex;
+   display: flex;
 }
 .navbarItem {
-    display: flex;
-    align-items: center;
-    margin: 12px 5px;
-    a {
-        padding: 0;
-        border: none;
-        font-size: 20px;
-        color: inherit;
-        background-color: inherit;
-        text-decoration: underline;
-    }
+   display: flex;
+   align-items: center;
+   margin: 12px 5px;
+   a {
+      padding: 0;
+      border: none;
+      font-size: 20px;
+      color: inherit;
+      background-color: inherit;
+      text-decoration: underline;
+   }
 }
 .appName {
-    text-align: left;
-    justify-self: flex-start;
-    font-family: 'Dosis', sans-serif;
-    text-transform: uppercase;
-    //font-family: 'Righteous', sans-serif;
-    a {
-        font-size: 22px;
-        font-weight: 700;
-        text-decoration: none;
-    }
+   text-align: left;
+   justify-self: flex-start;
+   font-family: "Dosis", sans-serif;
+   text-transform: uppercase;
+   //font-family: 'Righteous', sans-serif;
+   a {
+      font-size: 22px;
+      font-weight: 700;
+      text-decoration: none;
+   }
 }
 @media only screen and (min-width: 800px) {
-    .navbarList {
-        width: 90%;
-    }
-    .navbarItem {
-        margin: 10px;
-    }
+   .navbarList {
+      width: 90%;
+   }
+   .navbarItem {
+      margin: 10px;
+   }
 }

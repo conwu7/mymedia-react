@@ -3,64 +3,67 @@ $borderRadius: 7px;
 $inputAndButtonHeight: 40px;
 
 .form {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: stretch;
+   display: flex;
+   width: 100%;
+   justify-content: center;
+   align-items: stretch;
 }
 .clearInput {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    border: none;
-    outline: none;
-    margin: 15px auto;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background-color: white;
+   border: none;
+   outline: none;
+   margin: 15px auto;
 
-    svg {
-        height: 19px;
-        width: 19px;
-        color: dimgrey;
-    }
+   svg {
+      height: 19px;
+      width: 19px;
+      color: dimgrey;
+   }
 }
 .input:placeholder-shown + .clearInput svg {
-    color: lightgrey;
+   color: lightgrey;
 }
 .input {
-    height: 30px;
-    width: 60%;
-    margin: 15px auto;
-    border-radius: 10px;
-    border: 1px solid transparent;
-    outline: none;
-    font-size: 16px;
-    text-align: center;
-    transition: all 200ms linear;
+   height: 30px;
+   width: 60%;
+   margin: 15px auto;
+   border-radius: 10px;
+   border: 1px solid transparent;
+   outline: none;
+   font-size: 16px;
+   text-align: center;
+   transition: all 200ms linear;
 
-    &.fullWidth {
-        width: 100%;
-        margin: 0;
-    }
+   &.fullWidth {
+      width: 100%;
+      margin: 0;
+   }
 }
 .useSearchButton {
-    .input, .searchButton {
-        box-sizing: border-box;
-        height: $inputAndButtonHeight;
-        box-shadow: 0 1px -1px rgba(32,33,36,.28);
-        border-radius: 0; // reset from default
-    }
-    .input {
-        margin: $inputAndButtonMargin 0 $inputAndButtonMargin $inputAndButtonMargin;
-        border-radius: $borderRadius 0 0 $borderRadius;
-        flex-grow: 2;
-    }
-    .searchButton {
-        background: darkslategray;
-        width: fit-content;
-        color: white;
-        margin: $inputAndButtonMargin $inputAndButtonMargin $inputAndButtonMargin 0;
-        border-radius: 0 $borderRadius $borderRadius 0;
-        text-align: center;
-        font-size: 1.2em;
-    }
+   .input,
+   .searchButton {
+      box-sizing: border-box;
+      height: $inputAndButtonHeight;
+      box-shadow: 0 1px -1px rgba(32, 33, 36, 0.28);
+      border-radius: 0; // reset from default
+   }
+   .input {
+      margin: $inputAndButtonMargin 0 $inputAndButtonMargin
+         $inputAndButtonMargin;
+      border-radius: $borderRadius 0 0 $borderRadius;
+      flex-grow: 2;
+   }
+   .searchButton {
+      background: darkslategray;
+      width: fit-content;
+      color: white;
+      margin: $inputAndButtonMargin $inputAndButtonMargin $inputAndButtonMargin
+         0;
+      border-radius: 0 $borderRadius $borderRadius 0;
+      text-align: center;
+      font-size: 1.2em;
+   }
 }

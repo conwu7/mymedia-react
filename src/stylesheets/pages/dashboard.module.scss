@@ -1,14 +1,14 @@
 .dashboard {
-    position: relative;
-    margin: auto;
-    width: 100%;
+   position: relative;
+   margin: auto;
+   width: 100%;
 }
 .compensateMobileBottom {
-    display: none;
+   display: none;
 }
 @media only screen and (min-width: 680px) {
-    .dashboard {
-        max-width: 85%;
-        margin: auto;
-    }
+   .dashboard {
+      max-width: 85%;
+      margin: auto;
+   }
 }

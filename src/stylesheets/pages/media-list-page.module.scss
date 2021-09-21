@@ -1,75 +1,75 @@
 .listContainer {
-    box-sizing: border-box;
-    display: flex;
-    width: 95%;
-    margin: 0 auto 10px;
-    padding: 10px;
-    box-shadow: 0 0 4px 1px rgba(32,33,36,.15);
-    border-radius: 10px;
-    background-color: white;
+   box-sizing: border-box;
+   display: flex;
+   width: 95%;
+   margin: 0 auto 10px;
+   padding: 10px;
+   box-shadow: 0 0 4px 1px rgba(32, 33, 36, 0.15);
+   border-radius: 10px;
+   background-color: white;
 }
 .allUserMoviesContainer {
-    display: flex;
-    width: 100%;
-    overflow: auto;
+   display: flex;
+   width: 100%;
+   overflow: auto;
 }
 .mediaListPage {
-    margin: 15px auto;
-    width: 100%;
+   margin: 15px auto;
+   width: 100%;
 }
 .allListsContainer {
-    width: 100%;
+   width: 100%;
 }
 .listDetails {
-    width: 100%;
-    padding: 10px 10px;
-    cursor: pointer;
+   width: 100%;
+   padding: 10px 10px;
+   cursor: pointer;
 }
 .listName {
-    font-weight: 700;
-    color: darkslategrey;
+   font-weight: 700;
+   color: darkslategrey;
 }
 .listDescription {
-    color: dimgrey;
+   color: dimgrey;
 }
 .emptyLists {
-    width: 100%;
-    text-align: center;
-    color: grey;
-    padding: 1px 15px;
+   width: 100%;
+   text-align: center;
+   color: grey;
+   padding: 1px 15px;
 }
 .emptyListText {
-    margin: 20px auto;
+   margin: 20px auto;
 }
 .completedListContainer {
-    box-sizing: border-box;
-    border-top: 2px solid #e7e7e7;
-    padding-top: 10px;
+   box-sizing: border-box;
+   border-top: 2px solid #e7e7e7;
+   padding-top: 10px;
 
-    .listName {
-        color: #b5b5b5;
-    }
+   .listName {
+      color: #b5b5b5;
+   }
 }
 .completedListContainer:empty {
-    display: none;
+   display: none;
 }
 @media only screen and (min-width: 1200px) {
-    .allListsContainer {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: flex-start;
-    }
-    .listContainer {
-        width: 49%;
-        margin: 10px 5px;
-    }
-    .completedListContainer {
-        width: 100%;
+   .allListsContainer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+   }
+   .listContainer {
+      width: 49%;
+      margin: 10px 5px;
+   }
+   .completedListContainer {
+      width: 100%;
 
-        .listContainer {
-            margin: auto;
-            width: calc(100% - 10px);
-        }
-    }
+      .listContainer {
+         margin: auto;
+         width: calc(100% - 10px);
+      }
+   }
 }

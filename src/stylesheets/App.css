@@ -1,27 +1,29 @@
 html {
-    scroll-behavior: smooth;
-
+   scroll-behavior: smooth;
 }
 body {
-    -webkit-text-size-adjust: none;
-    background-color: whitesmoke;
+   -webkit-text-size-adjust: none;
+   background-color: whitesmoke;
 }
 /** {*/
 /*    border: 1px solid red !important;*/
 /*}*/
 .App {
-    box-sizing: border-box;
-    min-height: 80vh;
-    width: 100%;
-    font-family: 'Quicksand', sans-serif;
-    background-color: whitesmoke;
+   box-sizing: border-box;
+   min-height: 80vh;
+   width: 100%;
+   font-family: "Quicksand", sans-serif;
+   background-color: whitesmoke;
 }
 .noAppOverflow {
-    overflow: hidden;
+   overflow: hidden;
 }
-button, input {
-  font-family: 'Quicksand', sans-serif;
-  -webkit-appearance: none;
-  cursor: pointer;
+button,
+input {
+   font-family: "Quicksand", sans-serif;
+   -webkit-appearance: none;
+   cursor: pointer;
 }
-strong { font-weight: bold; }
+strong {
+   font-weight: bold;
+}

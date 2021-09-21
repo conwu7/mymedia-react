@@ -1,42 +1,42 @@
 .collapsibleCard {
-    width: 100%;
-    font-family: inherit;
+   width: 100%;
+   font-family: inherit;
 }
 .cardHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
 }
 .cardHeader.useStyleHeader {
-    font-size: 1.1em;
-    text-decoration-line: underline;
-    text-decoration-color: lightgray;
+   font-size: 1.1em;
+   text-decoration-line: underline;
+   text-decoration-color: lightgray;
 }
 .collapseButton {
-    height: 100%;
-    border: none;
-    outline: none;
-    background-color: transparent;
+   height: 100%;
+   border: none;
+   outline: none;
+   background-color: transparent;
 
-    svg {
-        height: 22px;
-        width: 22px;
-        transform: rotate(0deg);
-        transition: transform 200ms;
-    }
-    svg {
-        fill: darkgray;
-    }
+   svg {
+      height: 22px;
+      width: 22px;
+      transform: rotate(0deg);
+      transition: transform 200ms;
+   }
+   svg {
+      fill: darkgray;
+   }
 }
 .btnExpand {
-    svg {
-        transform: rotate(180deg);
-    }
+   svg {
+      transform: rotate(180deg);
+   }
 }
 .largeBtn svg {
-    height: 35px;
-    width: 35px;
+   height: 35px;
+   width: 35px;
 }
 .collapsibleSection {
-    overflow: hidden;
+   overflow: hidden;
 }

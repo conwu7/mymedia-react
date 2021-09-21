@@ -1,66 +1,68 @@
 .selectorWrapper {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color:whitesmoke;
-    z-index: 2;
-    border-top: 1px solid lightgray;
+   position: fixed;
+   bottom: 0;
+   left: 0;
+   width: 100%;
+   background-color: whitesmoke;
+   z-index: 2;
+   border-top: 1px solid lightgray;
 }
 .selectorContainer {
-    display: flex;
-    position: relative;
-    top: 0;
-    justify-content: center;
-    width: 100%;
+   display: flex;
+   position: relative;
+   top: 0;
+   justify-content: center;
+   width: 100%;
 }
 .selectorButton {
-    width: 30%;
-    margin: 0 10px 5px;
-    border: 0;
-    color: #949494;
-    background-color: transparent;
-    outline: none;
-    cursor: pointer;
-    transition: 200ms ease;
-    font-size: 13px;
-    padding: 0;
+   width: 30%;
+   margin: 0 10px 5px;
+   border: 0;
+   color: #949494;
+   background-color: transparent;
+   outline: none;
+   cursor: pointer;
+   transition: 200ms ease;
+   font-size: 13px;
+   padding: 0;
 }
 .activeCategory {
-    font-weight: bold;
-    color: dimgrey;
+   font-weight: bold;
+   color: dimgrey;
 }
 .imageContainer svg {
-    width: 25px;
-    height: 30px;
+   width: 25px;
+   height: 30px;
 }
 .raiseOnFullscreen {
-    height: 0;
-    transition: all 200ms linear;
+   height: 0;
+   transition: all 200ms linear;
 }
 .raise {
-    display: block;
-    height: 25px;
-    background-color: whitesmoke;
+   display: block;
+   height: 25px;
+   background-color: whitesmoke;
 }
 @media only screen and (min-device-width: 680px) {
-    .selectorContainer {
-        justify-content: center;
-        position: sticky;
-        top: 0;
-        max-width: 800px;
-        margin: auto;
-    }
-    .selectorButton {
-        width: 15%;
-        padding: 0 30px;
-    }
-    .raise { height: 0 }
+   .selectorContainer {
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      max-width: 800px;
+      margin: auto;
+   }
+   .selectorButton {
+      width: 15%;
+      padding: 0 30px;
+   }
+   .raise {
+      height: 0;
+   }
 }
 @media all and (display-mode: standalone) {
-    .raiseOnFullscreen {
-        display: block;
-        height: 25px;
-        background-color: whitesmoke;
-    }
+   .raiseOnFullscreen {
+      display: block;
+      height: 25px;
+      background-color: whitesmoke;
+   }
 }
