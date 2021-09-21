@@ -21,8 +21,24 @@ export function CloseActivityButton(props) {
    )
 }
 
+function preventBackgroundScroll( event ) {
+
+   let isTouchMoveAllowed = true, target = event.target;
+
+   while ( target !== null ) {
+      if ( target.classList && target.classList.contains( 'disable-scrolling' ) ) {
+         isTouchMoveAllowed = false;
+         break;
+      }
+      target = target.parentNode;
+   }
+
+   if ( !isTouchMoveAllowed ) {
+      event.preventDefault();
+   }
+}
+
 export function PopUpActivity(props) {
-   const [scrollPosition, setScrollPosition] = useState(0)
    const {
       closeButton: cButton,
       children,
@@ -35,16 +51,11 @@ export function PopUpActivity(props) {
       leave: { transform: "translate(0, 100%)", opacity: 0 }
    })
    useEffect(() => {
-      // stop scrolling behind modal
       if (useActivity) {
-         setScrollPosition(window.pageYOffset)
-         document.body.style.position = "fixed"
-         document.body.style.top = `-${window.scrollY}px`
+         document.addEventListener("touchmove", preventBackgroundScroll)
          return
       }
-      setTimeout(() => window.scrollTo(0, scrollPosition), 500)
-      document.body.style.position = ""
-      document.body.style.top = ""
+      document.removeEventListener("touchmove", preventBackgroundScroll)
    }, [useActivity])
    let closeButton
    if (!cButton) {
@@ -64,7 +75,7 @@ export function PopUpActivity(props) {
                key={key}
                style={tProps}
                className={`${popUpActivityStyle.popUpContainer} 
-                            ${!useActivity ? popUpActivityStyle.fadeAway : ""}`}
+                            ${!useActivity ? popUpActivityStyle.fadeAway : ""} disable-scrolling`}
             >
                <div className={popUpActivityStyle.closeButtonContainer}>
                   {closeButton}
