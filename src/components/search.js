@@ -53,7 +53,7 @@ export default function SearchForMedia(props) {
          setSearchResults(searchResults)
       } catch (err) {
          setSearchResults([])
-         setSearchError(err)
+         setSearchError(err[0] || "Try searching with a different word")
       }
       setSearchComplete(true)
       setSearchingStatus(false)
